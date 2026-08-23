@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import * as d3 from 'd3';
 import { AuditReport, CompetitorMetric } from '../types';
 import { TrendingUp, Award, Activity, MousePointer, Info } from 'lucide-react';
+import { getChartPalette, getStoredAccessibilitySettings } from '../lib/accessibility';
 
 interface OrganicTrafficTrendChartProps {
   report: AuditReport;
@@ -19,6 +20,21 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
   const [scaleMode, setScaleMode] = useState<'dual' | 'growth'>('dual');
   const [hoveredData, setHoveredData] = useState<DataPoint | null>(null);
   const [tooltipPos, setTooltipPos] = useState<{ x: number; y: number } | null>(null);
+
+  // Accessibility Palette State
+  const [palette, setPalette] = useState(() => getChartPalette(getStoredAccessibilitySettings()));
+
+  useEffect(() => {
+    const handleAccChange = (e: any) => {
+      if (e.detail) {
+        setPalette(getChartPalette(e.detail));
+      } else {
+        setPalette(getChartPalette(getStoredAccessibilitySettings()));
+      }
+    };
+    window.addEventListener('accessibility-settings-changed', handleAccChange);
+    return () => window.removeEventListener('accessibility-settings-changed', handleAccChange);
+  }, []);
 
   // Generate 6 months of historical organic traffic trends
   // We'll base it on current traffic numbers but synthesize a realistic 6-month historical curve.
@@ -129,16 +145,16 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
       .attr('id', 'user-area-grad')
       .attr('x1', '0%').attr('y1', '0%')
       .attr('x2', '0%').attr('y2', '100%');
-    userGradient.append('stop').attr('offset', '0%').attr('stop-color', '#84cc16').attr('stop-opacity', 0.25);
-    userGradient.append('stop').attr('offset', '100%').attr('stop-color', '#84cc16').attr('stop-opacity', 0);
+    userGradient.append('stop').attr('offset', '0%').attr('stop-color', palette.primary).attr('stop-opacity', 0.25);
+    userGradient.append('stop').attr('offset', '100%').attr('stop-color', palette.primary).attr('stop-opacity', 0);
 
     const compGradients = competitors.map((c, i) => {
       const grad = defs.append('linearGradient')
         .attr('id', `comp-area-grad-${i}`)
         .attr('x1', '0%').attr('y1', '0%')
         .attr('x2', '0%').attr('y2', '100%');
-      const color = i === 0 ? '#10b981' : i === 1 ? '#0d9488' : '#0f766e';
-      grad.append('stop').attr('offset', '0%').attr('stop-color', color).attr('stop-opacity', 0.1);
+      const color = i === 0 ? palette.secondary : i === 1 ? palette.tertiary : palette.target;
+      grad.append('stop').attr('offset', '0%').attr('stop-color', color).attr('stop-opacity', 0.15);
       grad.append('stop').attr('offset', '100%').attr('stop-color', color).attr('stop-opacity', 0);
       return { domain: c.domain, color, gradId: `comp-area-grad-${i}` };
     });
@@ -147,7 +163,7 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
     const gridTicks = 5;
     svg.append('g')
       .attr('class', 'grid-lines')
-      .attr('opacity', 0.05)
+      .attr('opacity', palette.strokeWidth > 2 ? 0.35 : 0.15)
       .selectAll('line')
       .data(yUserScale.ticks(gridTicks))
       .enter()
@@ -156,7 +172,7 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
       .attr('x2', width - margin.right)
       .attr('y1', d => yUserScale(d))
       .attr('y2', d => yUserScale(d))
-      .attr('stroke', '#ffffff')
+      .attr('stroke', palette.grid)
       .attr('stroke-width', 1);
 
     // Draw X Axis
@@ -164,10 +180,11 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
     svg.append('g')
       .attr('transform', `translate(0, ${height - margin.bottom})`)
       .call(xAxis)
-      .attr('color', 'rgba(148, 163, 184, 0.3)')
+      .attr('color', palette.grid)
       .selectAll('text')
-      .attr('fill', '#94a3b8')
+      .attr('fill', palette.text)
       .attr('font-size', '11px')
+      .attr('font-weight', '700')
       .attr('dy', '10px');
 
     // Draw Left Y Axis (User Domain)
@@ -182,10 +199,11 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
     (svg.append('g') as any)
       .attr('transform', `translate(${margin.left}, 0)`)
       .call(yAxisLeft)
-      .attr('color', 'rgba(132, 204, 22, 0.4)')
+      .attr('color', palette.primary)
       .selectAll('text')
-      .attr('fill', '#a3e635')
-      .attr('font-size', '10px');
+      .attr('fill', palette.primary)
+      .attr('font-size', '11px')
+      .attr('font-weight', '700');
 
     // Draw Right Y Axis (Competitor Domain) only if in dual-axis mode
     if (scaleMode === 'dual') {
@@ -199,10 +217,11 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
       (svg.append('g') as any)
         .attr('transform', `translate(${width - margin.right}, 0)`)
         .call(yAxisRight)
-        .attr('color', 'rgba(16, 185, 129, 0.4)')
+        .attr('color', palette.secondary)
         .selectAll('text')
-        .attr('fill', '#10b981')
-        .attr('font-size', '10px');
+        .attr('fill', palette.secondary)
+        .attr('font-size', '11px')
+        .attr('font-weight', '700');
     }
 
     // Line Generators
@@ -282,8 +301,8 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
       .datum(chartData)
       .attr('d', userLine)
       .attr('fill', 'none')
-      .attr('stroke', '#84cc16')
-      .attr('stroke-width', 3.5);
+      .attr('stroke', palette.primary)
+      .attr('stroke-width', palette.strokeWidth + 1);
 
     // Circle markers for User Line
     svg.selectAll('.user-dot')
@@ -295,9 +314,9 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
         if (scaleMode === 'growth') return yUserScale((d.userValue / chartData[0].userValue) * 100);
         return yUserScale(d.userValue);
       })
-      .attr('r', 5)
-      .attr('fill', '#020617')
-      .attr('stroke', '#a3e635')
+      .attr('r', palette.strokeWidth > 2 ? 6 : 5)
+      .attr('fill', palette.bg)
+      .attr('stroke', palette.primary)
       .attr('stroke-width', 2.5);
 
     // Interactive Hover Overlay & vertical guide-line
@@ -349,7 +368,7 @@ export function OrganicTrafficTrendChart({ report }: OrganicTrafficTrendChartPro
         setTooltipPos(null);
       });
 
-  }, [scaleMode, report]);
+  }, [scaleMode, report, palette]);
 
   // Handle ResizeObserver to force chart redraw dynamically
   useEffect(() => {

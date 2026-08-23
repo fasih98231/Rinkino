@@ -4,6 +4,7 @@ export const SAMPLE_PROJECTS: AuditReport[] = [
   {
     id: 'fmf-glass-hardware',
     domain: 'fmfglasshardware.com',
+    auditStatus: 'Requires Action',
     businessContext: 'Commercial & Architectural Glass Hardware Manufacturer & Supplier. Supplying shower hinges, spider fittings, glass canopy systems, and architectural railing fixtures.',
     auditDate: '2026-08-22',
     overallHealthScore: 42,
@@ -466,6 +467,7 @@ export const SAMPLE_PROJECTS: AuditReport[] = [
   {
     id: 'tech-finanza-agency',
     domain: 'techfinanza.com',
+    auditStatus: 'In Progress',
     businessContext: 'Digital Growth, SEO & AI Automation Agency based in Karachi & serving global international clients.',
     auditDate: '2026-08-22',
     overallHealthScore: 68,
@@ -703,6 +705,108 @@ export const SAMPLE_PROJECTS: AuditReport[] = [
         geoAeoFocus: 'High information gain density and direct quote takeaways'
       }
     ]
+  },
+  {
+    id: 'apex-logistics',
+    domain: 'apexlogistics.io',
+    auditStatus: 'Completed',
+    businessContext: 'Global Freight Forwarding & Supply Chain Automation Platform.',
+    auditDate: '2026-08-20',
+    overallHealthScore: 88,
+    trafficRevivalPotential: '2.1x Organic Scale',
+    currentEstimatedTraffic: '42,000 visits / month',
+    potentialTrafficAfterRevival: '88,000 visits / month',
+    plainLanguageDiagnosis: 'Apex Logistics has completed primary technical fixes, Core Web Vitals optimizations, and Product schema integration. Traffic has stabilized and is on an upward trajectory.',
+    executiveSummary: 'Full revival plan executed successfully. All CWV metrics pass with green scores, schema markup validated across all product templates, and Perplexity AI citations secured.',
+    technicalAudit: {
+      overallTechnicalScore: 94,
+      robotsTxt: {
+        present: true,
+        status: 'valid',
+        url: 'https://apexlogistics.io/robots.txt',
+        details: 'Robots.txt is fully optimized with sitemap directives.',
+        disallowedPaths: ['/admin']
+      },
+      xmlSitemap: {
+        present: true,
+        status: 'valid',
+        url: 'https://apexlogistics.io/sitemap.xml',
+        urlsCount: 210,
+        details: 'Sitemap contains all 210 live pages with image namespaces.'
+      },
+      coreWebVitals: {
+        lcp: { value: 1.8, status: 'good', label: '1.8s (Target: < 2.5s)' },
+        inp: { value: 110, status: 'good', label: '110ms (Target: < 200ms)' },
+        cls: { value: 0.02, status: 'good', label: '0.02 (Target: < 0.1)' },
+        fcp: { value: 1.1, status: 'good', label: '1.1s (Target: < 1.8s)' },
+        ttfb: { value: 0.4, status: 'good', label: '0.4s (Target: < 0.8s)' }
+      },
+      indexingStatus: {
+        estimatedIndexed: 210,
+        totalPagesCrawled: 210,
+        noIndexFoundCount: 0,
+        canonicalMismatches: 0,
+        status: 'healthy'
+      },
+      securityAndHttps: {
+        isHttps: true,
+        mixedContent: false,
+        sslCertificateValid: true,
+        hstsEnabled: true
+      },
+      schemaMarkupAudit: {
+        presentTypes: ['Organization', 'WebSite', 'Service', 'FAQPage', 'BreadcrumbList'],
+        missingCrucialTypes: [],
+        schemaHealthScore: 98,
+        syntaxErrorsCount: 0
+      },
+      mobileFriendliness: {
+        score: 96,
+        viewportConfigured: true,
+        tapTargetIssues: 0,
+        status: 'pass'
+      }
+    },
+    geoAeoAioMatrix: {
+      geoScore: 89,
+      aeoScore: 92,
+      aioScore: 87,
+      llmCitationLikelihood: 94,
+      informationGainDensity: 'High',
+      quotabilityIndex: 91,
+      entityAuthorityRecognition: 'Established Entity',
+      snippetCaptureReadiness: {
+        directAnswerParagraphs: 14,
+        comparisonTablesCount: 8,
+        structuredBulletDefinitions: 22
+      },
+      llmPerceptionAnalysis: {
+        perplexityCitationStatus: 'Fully Cited',
+        chatGptSearchIndexScore: 92,
+        geminiGroundingStatus: 'Primary Source',
+        claudeEntityKnowledge: 'High Verification'
+      },
+      keyRecommendationsForGeo: ['Maintain quarterly information gain updates.']
+    },
+    competitors: [
+      {
+        domain: 'flexport.com',
+        name: 'Flexport',
+        authorityScore: 82,
+        monthlyOrganicTraffic: '180,000',
+        totalOrganicKeywords: 14200,
+        keywordOverlapPercent: 44,
+        backlinksCount: '48.2k',
+        topRankedKeyword: 'digital freight forwarder',
+        strengths: ['Brand dominance', 'Deep logistics calculator tools']
+      }
+    ],
+    keywordGaps: [],
+    contentGaps: [],
+    onPageIssues: [],
+    backlinkGaps: [],
+    revivalRoadmap: [],
+    contentCalendar: []
   }
 ];
 

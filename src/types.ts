@@ -160,9 +160,19 @@ export interface ContentCalendarSuggestion {
   geoAeoFocus: string;
 }
 
+export type AuditStatus = 'Requires Action' | 'In Progress' | 'Completed';
+
+export function getAuditStatus(project: AuditReport): AuditStatus {
+  if (project.auditStatus) return project.auditStatus;
+  if (project.overallHealthScore >= 80) return 'Completed';
+  if (project.overallHealthScore >= 60) return 'In Progress';
+  return 'Requires Action';
+}
+
 export interface AuditReport {
   id: string;
   domain: string;
+  auditStatus?: AuditStatus;
   businessContext?: string;
   auditDate: string;
   overallHealthScore: number; // 0 - 100
@@ -246,6 +256,20 @@ export interface FileEditDiff {
   }[];
 }
 
+export interface GroundingSource {
+  title: string;
+  uri: string;
+  snippet?: string;
+}
+
+export interface GroundedSearchResult {
+  searchQueries: string[];
+  groundedAnswer: string;
+  sources: GroundingSource[];
+  domainFoundInGrounding: boolean;
+  domainGroundingRank?: number | null;
+}
+
 export interface LlmTestSimulationResult {
   query: string;
   domainRank: number | null;
@@ -254,6 +278,17 @@ export interface LlmTestSimulationResult {
   competitorsMentioned: string[];
   whyRankedHere: string;
   howToWinSpotOne: string;
+  engines?: {
+    name: 'ChatGPT Search' | 'Perplexity AI' | 'Google Gemini (SGE)' | 'Claude 3.7 Search';
+    domainRank: number;
+    isCited: boolean;
+    citationSnippet: string;
+    confidenceScore: number;
+    competitorsMentioned: string[];
+    reasoning: string;
+    geoOptimizationTip: string;
+  }[];
+  groundedSearch?: GroundedSearchResult;
 }
 
 export interface LlmSimulationResult {
@@ -269,4 +304,5 @@ export interface LlmSimulationResult {
     reasoning: string;
     geoOptimizationTip: string;
   }[];
+  groundedSearch?: GroundedSearchResult;
 }

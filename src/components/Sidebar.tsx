@@ -24,8 +24,47 @@ import {
   Bell,
   Share2,
   X,
+  Search,
+  Filter,
+  AlertTriangle,
+  Clock,
+  CheckCircle2,
+  Plus,
 } from 'lucide-react';
-import { AuditReport } from '../types';
+import { AuditReport, AuditStatus, getAuditStatus } from '../types';
+
+// Helper Component for Audit Status Badges
+function StatusBadge({ status, size = 'sm' }: { status: AuditStatus; size?: 'sm' | 'xs' }) {
+  switch (status) {
+    case 'Requires Action':
+      return (
+        <span className={`inline-flex items-center gap-1 font-semibold rounded border bg-amber-950/60 text-amber-400 border-amber-800/40 ${
+          size === 'xs' ? 'text-[8px] px-1 py-0.2' : 'text-[9px] px-1.5 py-0.5'
+        }`}>
+          <AlertTriangle className={size === 'xs' ? 'w-2.5 h-2.5' : 'w-3 h-3'} />
+          <span>Requires Action</span>
+        </span>
+      );
+    case 'In Progress':
+      return (
+        <span className={`inline-flex items-center gap-1 font-semibold rounded border bg-cyan-950/60 text-cyan-400 border-cyan-800/40 ${
+          size === 'xs' ? 'text-[8px] px-1 py-0.2' : 'text-[9px] px-1.5 py-0.5'
+        }`}>
+          <Clock className={size === 'xs' ? 'w-2.5 h-2.5' : 'w-3 h-3'} />
+          <span>In Progress</span>
+        </span>
+      );
+    case 'Completed':
+      return (
+        <span className={`inline-flex items-center gap-1 font-semibold rounded border bg-emerald-950/60 text-emerald-400 border-emerald-800/40 ${
+          size === 'xs' ? 'text-[8px] px-1 py-0.2' : 'text-[9px] px-1.5 py-0.5'
+        }`}>
+          <CheckCircle2 className={size === 'xs' ? 'w-2.5 h-2.5' : 'w-3 h-3'} />
+          <span>Completed</span>
+        </span>
+      );
+  }
+}
 
 // Helper Component for High-Fidelity Custom-Animated SVG Icons
 function AnimatedSidebarIcon({ tabId, isActive }: { tabId: string; isActive: boolean }) {
@@ -185,6 +224,50 @@ export function Sidebar({
   onCloseMobileSidebar,
 }: SidebarProps) {
   const [isProjectDropdownOpen, setIsProjectDropdownOpen] = useState(false);
+  const [projectSearchQuery, setProjectSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<'All' | AuditStatus>('All');
+  const projectDropdownRef = useRef<HTMLDivElement>(null);
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  // Auto-focus search input when dropdown opens
+  useEffect(() => {
+    if (isProjectDropdownOpen) {
+      setTimeout(() => {
+        searchInputRef.current?.focus();
+      }, 50);
+    }
+  }, [isProjectDropdownOpen]);
+
+  // Click outside to close project dropdown
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (projectDropdownRef.current && !projectDropdownRef.current.contains(event.target as Node)) {
+        setIsProjectDropdownOpen(false);
+      }
+    }
+    if (isProjectDropdownOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isProjectDropdownOpen]);
+
+  // Filter projects by domain search query & audit status
+  const filteredProjects = projects.filter((proj) => {
+    const matchesSearch = proj.domain.toLowerCase().includes(projectSearchQuery.toLowerCase().trim()) ||
+      (proj.businessContext && proj.businessContext.toLowerCase().includes(projectSearchQuery.toLowerCase().trim()));
+    const status = getAuditStatus(proj);
+    const matchesStatus = statusFilter === 'All' || status === statusFilter;
+    return matchesSearch && matchesStatus;
+  });
+
+  const statusCounts = {
+    All: projects.length,
+    'Requires Action': projects.filter((p) => getAuditStatus(p) === 'Requires Action').length,
+    'In Progress': projects.filter((p) => getAuditStatus(p) === 'In Progress').length,
+    'Completed': projects.filter((p) => getAuditStatus(p) === 'Completed').length,
+  };
 
   // Set up tab configurations with unique premium icons in highly logical sequence
   const tabs = [
@@ -223,47 +306,159 @@ export function Sidebar({
         )}
       </div>
 
-      {/* Domain switcher within the sidebar */}
-      <div className="px-4 py-3 border-b border-slate-900/40">
-        <div className="relative">
-          <button
-            onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
-            className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800/80 hover:border-lime-500/30 transition-all text-xs cursor-pointer"
-          >
-            <div className="flex items-center gap-2 truncate">
-              <Globe className="w-3.5 h-3.5 text-lime-400 shrink-0" />
-              <span className="font-semibold text-zinc-200 truncate">{currentProject.domain}</span>
-            </div>
-            <ChevronDown className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${isProjectDropdownOpen ? 'rotate-180' : ''}`} />
-          </button>
-
-          {isProjectDropdownOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
-              <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
-                Audited Properties
+      {/* Domain switcher with Search & Filter Bar */}
+      <div className="px-3 py-3 border-b border-slate-900/60 relative" ref={projectDropdownRef}>
+        <button
+          onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
+          className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-xl bg-zinc-900/90 border border-zinc-800 hover:border-lime-500/40 transition-all text-xs cursor-pointer group shadow-sm"
+        >
+          <div className="flex items-center gap-2 truncate min-w-0">
+            <Globe className="w-3.5 h-3.5 text-lime-400 shrink-0 group-hover:scale-110 transition-transform" />
+            <div className="flex flex-col text-left truncate min-w-0">
+              <span className="font-bold text-zinc-100 truncate text-[11px]">{currentProject.domain}</span>
+              <div className="mt-0.5">
+                <StatusBadge status={getAuditStatus(currentProject)} size="xs" />
               </div>
-              {projects.map((proj) => (
-                <button
-                  key={proj.id}
-                  onClick={() => {
-                    onSelectProject(proj);
-                    setIsProjectDropdownOpen(false);
-                  }}
-                  className={`w-full text-left px-2 py-1.5 rounded-md text-xs flex items-center justify-between transition-colors cursor-pointer ${
-                    proj.id === currentProject.id
-                      ? 'bg-lime-950/40 text-lime-400 font-semibold border border-lime-850/25'
-                      : 'text-slate-300 hover:bg-slate-900'
-                  }`}
-                >
-                  <span className="truncate">{proj.domain}</span>
-                  <span className="text-[9px] text-emerald-400 font-mono bg-emerald-950/40 px-1 rounded border border-emerald-900/30">
-                    {proj.overallHealthScore}/100
-                  </span>
-                </button>
-              ))}
             </div>
-          )}
-        </div>
+          </div>
+          <ChevronDown className={`w-3.5 h-3.5 text-zinc-400 transition-transform duration-200 shrink-0 ${isProjectDropdownOpen ? 'rotate-180' : ''}`} />
+        </button>
+
+        {isProjectDropdownOpen && (
+          <div className="absolute top-full left-1.5 right-1.5 mt-1.5 bg-zinc-950 border border-zinc-800 rounded-xl shadow-2xl p-2.5 z-50 animate-in fade-in slide-in-from-top-1 duration-150 space-y-2.5">
+            
+            {/* Header */}
+            <div className="flex items-center justify-between px-0.5">
+              <div className="flex items-center gap-1.5">
+                <Filter className="w-3 h-3 text-lime-400" />
+                <span className="text-[10px] font-bold uppercase tracking-wider text-zinc-400">
+                  Projects ({projects.length})
+                </span>
+              </div>
+              <button
+                onClick={() => setIsProjectDropdownOpen(false)}
+                className="text-zinc-500 hover:text-zinc-300 p-0.5 rounded cursor-pointer"
+              >
+                <X className="w-3 h-3" />
+              </button>
+            </div>
+
+            {/* Search Bar Input */}
+            <div className="relative">
+              <Search className="w-3.5 h-3.5 text-zinc-500 absolute left-2.5 top-1/2 -translate-y-1/2 pointer-events-none" />
+              <input
+                ref={searchInputRef}
+                type="text"
+                value={projectSearchQuery}
+                onChange={(e) => setProjectSearchQuery(e.target.value)}
+                placeholder="Search domain..."
+                className="w-full bg-zinc-900 border border-zinc-800 focus:border-lime-500/60 rounded-lg pl-8 pr-7 py-1.5 text-xs text-zinc-200 placeholder-zinc-500 focus:outline-none transition-colors"
+              />
+              {projectSearchQuery && (
+                <button
+                  onClick={() => setProjectSearchQuery('')}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-300 p-0.5 cursor-pointer"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+
+            {/* Audit Status Filter Pills */}
+            <div className="space-y-1">
+              <span className="text-[9px] font-bold text-zinc-500 uppercase tracking-wider block px-0.5">
+                Status Filter
+              </span>
+              <div className="grid grid-cols-2 gap-1">
+                {(['All', 'Requires Action', 'In Progress', 'Completed'] as const).map((status) => {
+                  const count = statusCounts[status];
+                  const isSelected = statusFilter === status;
+                  return (
+                    <button
+                      key={status}
+                      onClick={() => setStatusFilter(status)}
+                      className={`px-1.5 py-1 rounded text-[9px] font-medium flex items-center justify-between border transition-all cursor-pointer ${
+                        isSelected
+                          ? 'bg-lime-500/15 text-lime-300 border-lime-500/40 font-bold'
+                          : 'bg-zinc-900/60 text-zinc-400 border-zinc-800/60 hover:bg-zinc-850 hover:text-zinc-200'
+                      }`}
+                    >
+                      <span className="truncate">{status}</span>
+                      <span className={`text-[8px] font-mono px-1 rounded ${
+                        isSelected ? 'bg-lime-950 text-lime-400' : 'bg-zinc-950 text-zinc-500'
+                      }`}>
+                        {count}
+                      </span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* Projects List */}
+            <div className="max-h-52 overflow-y-auto space-y-1 pr-0.5 scrollbar-thin border-t border-zinc-900 pt-2">
+              {filteredProjects.length === 0 ? (
+                <div className="py-4 text-center space-y-1.5">
+                  <p className="text-[11px] text-zinc-500">No matching projects found</p>
+                  <button
+                    onClick={() => {
+                      setProjectSearchQuery('');
+                      setStatusFilter('All');
+                    }}
+                    className="text-[10px] text-lime-400 hover:underline font-semibold cursor-pointer"
+                  >
+                    Clear search & filters
+                  </button>
+                </div>
+              ) : (
+                filteredProjects.map((proj) => {
+                  const isCurrent = proj.id === currentProject.id;
+                  const projStatus = getAuditStatus(proj);
+                  return (
+                    <button
+                      key={proj.id}
+                      onClick={() => {
+                        onSelectProject(proj);
+                        setIsProjectDropdownOpen(false);
+                      }}
+                      className={`w-full text-left p-2 rounded-lg text-xs flex flex-col gap-1 transition-all cursor-pointer border ${
+                        isCurrent
+                          ? 'bg-lime-950/40 text-lime-300 border-lime-500/30 shadow-sm'
+                          : 'bg-zinc-900/40 hover:bg-zinc-900 border-zinc-800/40 text-zinc-300'
+                      }`}
+                    >
+                      <div className="flex items-center justify-between gap-1">
+                        <span className="font-semibold truncate text-zinc-100">{proj.domain}</span>
+                        <span className="text-[9px] text-emerald-400 font-mono bg-emerald-950/50 px-1.5 py-0.2 rounded border border-emerald-900/40 shrink-0">
+                          {proj.overallHealthScore}/100
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-[9px]">
+                        <StatusBadge status={projStatus} size="xs" />
+                        <span className="text-zinc-500 font-mono">{proj.auditDate}</span>
+                      </div>
+                    </button>
+                  );
+                })
+              )}
+            </div>
+
+            {/* Bottom Action */}
+            <div className="pt-1 border-t border-zinc-900">
+              <button
+                onClick={() => {
+                  setIsProjectDropdownOpen(false);
+                  onOpenNewAudit();
+                }}
+                className="w-full text-center py-1.5 text-xs text-lime-400 hover:bg-lime-950/40 rounded-lg flex items-center justify-center gap-1.5 font-semibold transition-colors border border-lime-900/30 cursor-pointer"
+              >
+                <Plus className="w-3.5 h-3.5" />
+                Audit New Domain
+              </button>
+            </div>
+
+          </div>
+        )}
       </div>
 
       {/* Tabs navigation list */}

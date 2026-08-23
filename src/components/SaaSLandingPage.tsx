@@ -646,7 +646,35 @@ export const SaaSLandingPage: React.FC<SaaSLandingPageProps> = ({
 
   const handleValidateCustomSchema = () => {
     try {
-      const parsed = JSON.parse(customJsonInput);
+      if (!customJsonInput || typeof customJsonInput !== 'string') {
+        setValidationResult({
+          valid: false,
+          score: 0,
+          issues: ['JSON Schema is empty or undefined'],
+          nodesExtracted: 0
+        });
+        return;
+      }
+      const clean = customJsonInput.trim();
+      if (!clean || clean === 'undefined' || clean === 'null') {
+        setValidationResult({
+          valid: false,
+          score: 0,
+          issues: ['JSON Schema is empty or undefined'],
+          nodesExtracted: 0
+        });
+        return;
+      }
+      const parsed = JSON.parse(clean);
+      if (!parsed || typeof parsed !== 'object') {
+        setValidationResult({
+          valid: false,
+          score: 0,
+          issues: ['Root JSON structure must be a JSON object'],
+          nodesExtracted: 0
+        });
+        return;
+      }
       const issues: string[] = [];
       let score = 100;
 

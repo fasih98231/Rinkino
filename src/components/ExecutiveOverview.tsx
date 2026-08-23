@@ -18,6 +18,7 @@ import {
 import { AuditReport, RevivalRoadmapPhase, PriorityLevel } from '../types';
 import { exportProjectToPDF } from '../utils/pdfExport';
 import { OrganicTrafficTrendChart } from './OrganicTrafficTrendChart';
+import { InteractiveRoadmapTimeline } from './InteractiveRoadmapTimeline';
 
 interface ExecutiveOverviewProps {
   report: AuditReport;
@@ -87,6 +88,20 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({
       ...prev,
       [taskKey]: !prev[taskKey],
     }));
+  };
+
+  const handleSetPhaseTasksComplete = (phaseIndex: number, complete: boolean) => {
+    const phase = report.revivalRoadmap[phaseIndex];
+    if (!phase) return;
+
+    setCompletedTasks((prev) => {
+      const next = { ...prev };
+      phase.actionItems.forEach((_, idx) => {
+        const taskKey = `p${phase.phaseNumber}-${idx}`;
+        next[taskKey] = complete;
+      });
+      return next;
+    });
   };
 
   const getPriorityBadge = (priority: PriorityLevel) => {
@@ -315,135 +330,15 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({
       {/* 6-Month Organic Traffic Comparison Trend */}
       <OrganicTrafficTrendChart report={report} />
 
-      {/* 30 / 60 / 90-Day Structured Site Revival Roadmap */}
-      <div className="bg-slate-900/40 border border-slate-800 rounded-2xl p-6 shadow-xl text-slate-100">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-5 border-b border-slate-800">
-          <div>
-            <div className="flex items-center gap-2">
-              <h3 className="text-lg font-bold text-white flex items-center gap-2">
-                <Calendar className="w-5 h-5 text-lime-400" />
-                30 / 60 / 90-Day Site Revival & Authority Expansion Roadmap
-              </h3>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-mono bg-lime-950 text-lime-400 border border-lime-800/50">
-                Strategic Execution Plan
-              </span>
-            </div>
-            <p className="text-xs text-slate-400 mt-1">
-              Phased roadmap to systematically overhaul technical foundations, capture competitor keyword gaps, and dominate LLM citations.
-            </p>
-          </div>
-
-          {/* Phase Switcher & Export Buttons */}
-          <div className="flex flex-wrap items-center gap-2 shrink-0">
-            <button
-              onClick={() => exportProjectToPDF(report)}
-              className="px-3.5 py-1.5 rounded-lg bg-gradient-to-r from-lime-500 to-emerald-500 hover:opacity-95 text-black text-xs font-bold flex items-center gap-1.5 transition-all shadow-md shadow-lime-600/15 border border-lime-400/20 cursor-pointer"
-            >
-              <Download className="w-3.5 h-3.5 text-black animate-pulse" />
-              Export PDF Proposal
-            </button>
-
-            <div className="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800">
-              {report.revivalRoadmap.map((phase, idx) => (
-                <button
-                  key={phase.phaseNumber}
-                  onClick={() => setActivePhaseIndex(idx)}
-                  className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
-                    activePhaseIndex === idx
-                      ? 'bg-lime-500/10 text-lime-300 border border-lime-500/20 shadow-sm'
-                      : 'text-slate-400 hover:text-slate-200'
-                  }`}
-                >
-                  Phase {phase.phaseNumber} ({idx === 0 ? '1-30d' : idx === 1 ? '31-60d' : '61-90d'})
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-
-        {/* Active Phase Details */}
-        <div className="mt-5 space-y-5">
-          {/* Phase Header Banner */}
-          <div className="p-4 rounded-xl bg-gradient-to-r from-slate-950 via-slate-950 to-lime-950/20 border border-slate-800 flex flex-col md:flex-row md:items-center justify-between gap-3">
-            <div>
-              <div className="text-xs font-mono text-lime-400 uppercase tracking-wider font-semibold">
-                {currentPhase.timeframe}
-              </div>
-              <h4 className="text-base font-bold text-white mt-0.5">{currentPhase.title}</h4>
-              <p className="text-xs text-slate-300 mt-1">{currentPhase.theme}</p>
-            </div>
-            <div className="p-3 rounded-lg bg-slate-900/40 border border-slate-800 shrink-0 text-left md:text-right">
-              <div className="text-[11px] text-slate-400 font-semibold uppercase">Expected Outcome:</div>
-              <div className="text-xs font-bold text-lime-400 mt-0.5">{currentPhase.expectedOutcome}</div>
-            </div>
-          </div>
-
-          {/* Task Action Items List */}
-          <div className="space-y-3">
-            {currentPhase.actionItems.map((item, idx) => {
-              const taskKey = `p${currentPhase.phaseNumber}-${idx}`;
-              const isChecked = !!completedTasks[taskKey];
-
-              return (
-                <div
-                  key={idx}
-                  onClick={() => toggleTask(taskKey)}
-                  className={`p-4 rounded-xl border flex items-start justify-between gap-4 transition-all cursor-pointer ${
-                    isChecked
-                      ? 'bg-emerald-950/20 border-emerald-800/40 opacity-75'
-                      : 'bg-slate-950/40 border-slate-800 hover:border-lime-500/40 hover:bg-slate-950/60'
-                  }`}
-                >
-                  <div className="flex items-start gap-3.5">
-                    <div
-                      className={`mt-0.5 w-5 h-5 rounded-md flex items-center justify-center transition-colors ${
-                        isChecked
-                          ? 'bg-emerald-500 text-slate-950'
-                          : 'border border-slate-700 bg-slate-900 hover:border-lime-400'
-                      }`}
-                    >
-                      {isChecked && <CheckCircle2 className="w-4 h-4 stroke-[3]" />}
-                    </div>
-
-                    <div className="space-y-1">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span
-                          className={`text-xs font-semibold ${
-                            isChecked ? 'line-through text-slate-400' : 'text-slate-100'
-                          }`}
-                        >
-                          {item.task}
-                        </span>
-                        <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
-                          {item.category}
-                        </span>
-                        <span className={`text-[10px] font-mono px-2 py-0.5 rounded border uppercase ${getPriorityBadge(item.priority)}`}>
-                          {item.priority}
-                        </span>
-                      </div>
-                      <div className="text-[11px] text-slate-400">
-                        <strong className="text-slate-300">Target Impact:</strong> {item.impact}
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="shrink-0 pt-0.5">
-                    <span
-                      className={`text-[11px] font-mono font-medium px-2 py-1 rounded ${
-                        isChecked
-                          ? 'bg-emerald-950/60 text-emerald-400 border border-emerald-800/30'
-                          : 'bg-slate-900/60 text-slate-400 border border-slate-850'
-                      }`}
-                    >
-                      {isChecked ? 'Completed' : 'Pending Action'}
-                    </span>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </div>
+      {/* 30 / 60 / 90-Day Interactive Milestone Timeline */}
+      <InteractiveRoadmapTimeline
+        roadmap={report.revivalRoadmap}
+        completedTasks={completedTasks}
+        onToggleTask={toggleTask}
+        onSetPhaseTasksComplete={handleSetPhaseTasksComplete}
+        activePhaseIndex={activePhaseIndex}
+        onSelectPhase={setActivePhaseIndex}
+      />
     </div>
   );
 };

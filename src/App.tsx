@@ -29,6 +29,7 @@ import { SettingsModal } from './components/SettingsModal';
 import { CommandPalette } from './components/CommandPalette';
 import { SaaSLandingPage } from './components/SaaSLandingPage';
 import { Footer } from './components/Footer';
+import { applyAccessibilityToDOM, getStoredAccessibilitySettings } from './lib/accessibility';
 
 export function App() {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);
@@ -125,6 +126,12 @@ export function App() {
       return next;
     });
   };
+
+  // Load stored accessibility / high contrast preferences on initial mount
+  useEffect(() => {
+    const accSettings = getStoredAccessibilitySettings();
+    applyAccessibilityToDOM(accSettings);
+  }, []);
 
   // Helper to adjust accent saturation dynamically for optimal contrast/accessibility
   useEffect(() => {
@@ -541,6 +548,14 @@ export function App() {
                   domain={currentProject.domain}
                   onNavigateToSchemaStudio={() => setActiveTab('schema-studio')}
                   onNavigateToFileUpdater={() => setActiveTab('file-diff')}
+                  onReAudit={() =>
+                    handleRunAudit({
+                      domain: currentProject.domain,
+                      businessContext: currentProject.businessContext || 'Target crawled from fast-start audit prompt.',
+                      competitorCount: 3,
+                      crawlDepth: 25,
+                    })
+                  }
                 />
               )}
 

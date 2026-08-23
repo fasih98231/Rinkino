@@ -216,3 +216,103 @@
     linear-gradient(to bottom, rgba(163, 230, 53, 0.025) 1px, transparent 1px);
 }
 
+/* WCAG 2.1 AAA High-Contrast Accessibility Mode Overrides */
+.high-contrast-mode {
+  --accent-neon: #00FF00 !important;
+  --accent-neon-bg: rgba(0, 255, 0, 0.25) !important;
+  --accent-neon-border: #00FF00 !important;
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+.high-contrast-mode body,
+.high-contrast-mode #root,
+.high-contrast-mode main,
+.high-contrast-mode header,
+.high-contrast-mode sidebar,
+.high-contrast-mode aside {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+}
+
+/* Force solid thick high contrast borders on all cards, panels, and sections */
+.high-contrast-mode .bg-slate-950,
+.high-contrast-mode .bg-slate-900,
+.high-contrast-mode .bg-slate-900\/40,
+.high-contrast-mode .bg-slate-900\/60,
+.high-contrast-mode .bg-slate-900\/80,
+.high-contrast-mode .bg-slate-950\/40,
+.high-contrast-mode .bg-slate-950\/60,
+.high-contrast-mode .bg-\[\#0f172a\],
+.high-contrast-mode .bg-\[\#070c18\],
+.high-contrast-mode .glass-card,
+.high-contrast-mode .glass-panel {
+  background-color: #050505 !important;
+  border-color: #FFFFFF !important;
+  border-width: 2px !important;
+  color: #FFFFFF !important;
+  box-shadow: none !important;
+}
+
+/* Elevate readability of muted slate texts to WCAG AAA 7:1+ ratio */
+.high-contrast-mode .text-slate-400,
+.high-contrast-mode .text-slate-500,
+.high-contrast-mode .text-slate-600,
+.high-contrast-mode .text-zinc-400,
+.high-contrast-mode .text-zinc-500,
+.high-contrast-mode .text-gray-400,
+.high-contrast-mode .text-gray-500 {
+  color: #FFFFFF !important;
+  font-weight: 600 !important;
+}
+
+.high-contrast-mode .text-slate-300,
+.high-contrast-mode .text-slate-200,
+.high-contrast-mode .text-slate-100 {
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast-mode .text-lime-400,
+.high-contrast-mode .text-lime-300 {
+  color: #00FF00 !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast-mode .text-cyan-400,
+.high-contrast-mode .text-cyan-300 {
+  color: #00FFFF !important;
+  font-weight: 700 !important;
+}
+
+/* Interactive controls, buttons, inputs */
+.high-contrast-mode button,
+.high-contrast-mode input,
+.high-contrast-mode select,
+.high-contrast-mode textarea {
+  border-width: 2px !important;
+  border-color: #FFFF00 !important;
+}
+
+.high-contrast-mode button:focus-visible,
+.high-contrast-mode a:focus-visible,
+.high-contrast-mode input:focus-visible {
+  outline: 3px solid #FFFF00 !important;
+  outline-offset: 3px !important;
+}
+
+/* SVG Chart Elements in High Contrast Mode */
+.high-contrast-mode svg text {
+  fill: #FFFFFF !important;
+  font-weight: 700 !important;
+}
+
+.high-contrast-mode .recharts-polar-grid-angle line,
+.high-contrast-mode .recharts-polar-grid-concentric circle,
+.high-contrast-mode .recharts-cartesian-grid line {
+  stroke: #777777 !important;
+  stroke-width: 1.5px !important;
+  stroke-dasharray: none !important;
+}
+
+
