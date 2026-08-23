@@ -1,0 +1,6 @@
+{
+  "name": "Master SEO Agent - GEO, AEO & LLM Ranking Engine",
+  "description": "Award-winning SEO, GEO, AEO, and LLM ranking intelligence platform with competitor gap analysis, technical audits, Core Web Vitals, 4-pass humanized content generation, and 30-60-90 day site revival roadmaps.",
+  "requestFramePermissions": ["microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
