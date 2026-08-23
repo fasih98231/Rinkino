@@ -24,6 +24,7 @@ interface CompetitorGapAnalysisProps {
   keywordGaps: KeywordGapItem[];
   domain: string;
   onGenerateContentForKeyword: (keyword: string) => void;
+  isLoading?: boolean;
 }
 
 export const CompetitorGapAnalysis: React.FC<CompetitorGapAnalysisProps> = ({
@@ -31,6 +32,7 @@ export const CompetitorGapAnalysis: React.FC<CompetitorGapAnalysisProps> = ({
   keywordGaps,
   domain,
   onGenerateContentForKeyword,
+  isLoading = false,
 }) => {
   const [filterIntent, setFilterIntent] = useState<string>('all');
   const [selectedHeatmapCell, setSelectedHeatmapCell] = useState<{
@@ -38,6 +40,50 @@ export const CompetitorGapAnalysis: React.FC<CompetitorGapAnalysisProps> = ({
     rankId: string;
     keywords: KeywordGapItem[];
   } | null>(null);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6 animate-pulse">
+        {/* Live Crawler Console Skeleton */}
+        <div className="p-6 rounded-2xl bg-[#070c18] border border-slate-800 space-y-3">
+          <div className="h-5 bg-slate-800 rounded w-1/3"></div>
+          <div className="h-24 bg-black/60 rounded-xl p-4 space-y-2">
+            <div className="h-3 bg-slate-800/80 rounded w-full"></div>
+            <div className="h-3 bg-slate-800/80 rounded w-4/5"></div>
+            <div className="h-3 bg-slate-800/80 rounded w-2/3"></div>
+          </div>
+        </div>
+
+        {/* Competitor Cards Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {[1, 2, 3].map((i) => (
+            <div key={i} className="p-4 rounded-xl bg-slate-950/60 border border-slate-800 space-y-3">
+              <div className="h-4 bg-slate-800 rounded w-1/2"></div>
+              <div className="h-3 bg-slate-800/60 rounded w-3/4"></div>
+              <div className="grid grid-cols-2 gap-2 pt-2 border-t border-slate-800">
+                <div className="h-8 bg-slate-800/50 rounded"></div>
+                <div className="h-8 bg-slate-800/50 rounded"></div>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Table Skeleton */}
+        <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-4">
+          <div className="h-6 bg-slate-800 rounded w-1/4"></div>
+          <div className="space-y-2">
+            {[1, 2, 3, 4, 5].map((r) => (
+              <div key={r} className="h-12 bg-slate-800/30 rounded-lg flex items-center justify-between px-4">
+                <div className="h-4 bg-slate-800/80 rounded w-1/3"></div>
+                <div className="h-4 bg-slate-800/60 rounded w-1/6"></div>
+                <div className="h-4 bg-slate-800/60 rounded w-1/6"></div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // Live Competitor Crawling Simulation States
   const [isCrawling, setIsCrawling] = useState(true);

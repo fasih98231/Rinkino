@@ -7,7 +7,7 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #040815;
+  background: #121215;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -22,7 +22,31 @@
 /* For Firefox */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #1e293b #040815;
+  scrollbar-color: #1e293b #121215;
+}
+
+/* 2026 High-End Glassmorphism Styling */
+.glass-card {
+  background-color: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.35);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-card:hover {
+  border-color: rgba(163, 230, 53, 0.35);
+  box-shadow: 0 12px 40px -10px rgba(163, 230, 53, 0.12);
+  background-color: rgba(24, 24, 27, 0.75);
+}
+
+.glass-panel {
+  background-color: rgba(18, 18, 21, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.4);
 }
 
 /* Custom grid backgrounds to match Tech Finanza visual reference */

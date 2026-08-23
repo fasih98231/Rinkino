@@ -19,12 +19,14 @@ interface ClientReportModalProps {
   isOpen: boolean;
   onClose: () => void;
   report: AuditReport;
+  onOpenProposal?: () => void;
 }
 
 export const ClientReportModal: React.FC<ClientReportModalProps> = ({
   isOpen,
   onClose,
   report,
+  onOpenProposal,
 }) => {
   const [copied, setCopied] = useState(false);
 
@@ -122,6 +124,19 @@ ${p.actionItems.map((a) => `- [ ] [${a.priority.toUpperCase()}] **${a.task}** ($
               {copied ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5 text-lime-400" />}
               {copied ? 'Copied' : 'Copy Markdown'}
             </button>
+
+            {onOpenProposal && (
+              <button
+                onClick={() => {
+                  onClose();
+                  onOpenProposal();
+                }}
+                className="px-3 py-1.5 rounded-lg bg-lime-950 text-lime-400 hover:bg-lime-900 border border-lime-800/60 text-xs font-bold flex items-center gap-1.5 transition-colors cursor-pointer"
+              >
+                <Sparkles className="w-3.5 h-3.5 text-lime-400" />
+                90-Day Proposal
+              </button>
+            )}
 
             <button
               onClick={() => exportProjectToPDF(report)}

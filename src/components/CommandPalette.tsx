@@ -158,6 +158,26 @@ export function CommandPalette({
       },
     },
     {
+      id: 'nav-content-chronicles',
+      category: 'Navigation',
+      label: 'Open ContentChronicles CMS (Blog Post Writing & Scheduling)',
+      icon: FileText,
+      action: () => {
+        onSelectTab('content-chronicles');
+        onClose();
+      },
+    },
+    {
+      id: 'nav-admin-dashboard',
+      category: 'Navigation',
+      label: 'Open System Admin Center (User, Subscription & Infrastructure Management)',
+      icon: Sliders,
+      action: () => {
+        onSelectTab('admin-dashboard');
+        onClose();
+      },
+    },
+    {
       id: 'nav-schema',
       category: 'Navigation',
       label: 'Open Structured Schema Studio JSON-LD Builder',

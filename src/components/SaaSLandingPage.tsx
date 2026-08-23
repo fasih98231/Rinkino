@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { RinkinoLogo } from './RinkinoLogo';
+import { Footer } from './Footer';
 import {
   Layers,
   Cpu,
@@ -20,20 +22,31 @@ import {
   MousePointer,
   Network,
   Braces,
-  Flame,
   Workflow,
-  Atom,
   Clock,
   ArrowUpRight,
   Code2,
   Sparkles,
-  ExternalLink,
   ChevronLeft,
   Search,
   BookOpen,
   CreditCard,
   Send,
-  Cpu as ProcessorIcon
+  HelpCircle,
+  ChevronDown,
+  Menu,
+  X,
+  Lock,
+  Compass,
+  BarChart3,
+  Server,
+  Copy,
+  ExternalLink,
+  RefreshCw,
+  AlertTriangle,
+  Eye,
+  Sliders,
+  CheckSquare
 } from 'lucide-react';
 
 interface SaaSLandingPageProps {
@@ -42,8 +55,7 @@ interface SaaSLandingPageProps {
   isDarkMode: boolean;
 }
 
-// Full text mock blogs for Technical Chronicles
-interface BlogPost {
+export interface BlogPost {
   id: string;
   title: string;
   category: string;
@@ -51,6 +63,7 @@ interface BlogPost {
   readTime: string;
   summary: string;
   content: string;
+  relatedArticleIds: string[];
   author: {
     name: string;
     role: string;
@@ -58,26 +71,28 @@ interface BlogPost {
   };
 }
 
-const TECHNICAL_BLOGS: BlogPost[] = [
+// 8 Deep Technical Chronicles with Internal Link Building & Humanized Engineering Tone
+export const TECHNICAL_BLOGS: BlogPost[] = [
   {
     id: 'schema-studio-protocol',
-    title: 'Schema Studio Protocol: Maximizing SGE & LLM Search Visibility',
+    title: 'Schema Studio Protocol: Maximizing SGE & Search Engine Citation Share',
     category: 'Schema Engineering',
     date: 'August 22, 2026',
     readTime: '7 min read',
-    summary: 'How automated JSON-LD entity structures force Google SGE, Perplexity, and Apple Intelligence to cite your products directly in answers.',
+    summary: 'How automated JSON-LD entity structures force Google SGE, Perplexity, and Apple Intelligence to cite your products directly in synthesized answers.',
+    relatedArticleIds: ['entity-graph-validation', 'parallel-crawler-arch', 'vector-proximity-indexing'],
     content: `## The Generative Answer Paradigm
 
-Traditional Search Engine Optimization (SEO) was built on simple keyword matching and link index popularity. However, modern search has undergone a tectonic shift. With the introduction of Google's Search Generative Experience (SGE), Perplexity AI, OpenAI Search, and Apple Intelligence, users no longer receive a "ten blue links" list. Instead, they receive a synthesized, conversational answer generated in real-time by a Large Language Model (LLM).
+Traditional Search Engine Optimization was built on simple keyword matching and link index popularity. However, modern search has underwent a tectonic shift. With the introduction of Google's Search Generative Experience (SGE), Perplexity, OpenAI Search, and Apple Intelligence, users no longer receive a list of links. Instead, they receive a synthesized answer generated in real-time by a Large Language Model.
 
-If your product or service is not cited inside that conversational response, you are effectively invisible to the user. This is where **Generative Engine Optimization (GEO)** and **Answer Engine Optimization (AEO)** are critical.
+If your product or service is not cited inside that conversational response, you are effectively invisible to the user. This is where **Generative Engine Optimization (GEO)** and **Answer Engine Optimization (AEO)** become mission-critical.
 
 ### What is the Schema Studio Protocol?
 
-Our **Schema Studio Protocol** is designed to build explicit, machine-readable relationship graphs of your website's entities. Rather than relying on search engine crawlers to "guess" your context, we compile complex JSON-LD (JavaScript Object Notation for Linked Data) structures that establish:
-- **Product-to-Entity Relationships**: Linking your inventory with global semantic knowledge graphs.
+Our **Schema Studio Protocol** is designed to build explicit, machine-readable relationship graphs of your website's entities. Rather than relying on search engine crawlers to infer your context, we compile complex JSON-LD (JavaScript Object Notation for Linked Data) structures that establish:
+- **Product-to-Entity Relationships**: Linking your inventory with global semantic knowledge graphs (Wikidata, Schema.org).
 - **Brand Authority Mapping**: Declaring exact parent organizations, executive profiles, and verified press citations.
-- **Conversational Question-Answer Hooks**: Formatting your structural content into localized knowledge blocks specifically tuned to respond to LLM prompt queries.
+- **Conversational Question-Answer Hooks**: Formatting your structural content into localized knowledge blocks specifically tuned to respond to prompt queries.
 
 \`\`\`json
 {
@@ -86,7 +101,13 @@ Our **Schema Studio Protocol** is designed to build explicit, machine-readable r
   "headline": "Schema Studio Protocol: Maximizing SGE Visibility",
   "author": {
     "@type": "Person",
-    "name": "Dr. Veronika Vance"
+    "name": "Dr. Veronika Vance",
+    "jobTitle": "Lead Protocol Architect"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Rinkino Technologies",
+    "logo": "https://rinkino.ai/logo.png"
   },
   "about": {
     "@type": "Thing",
@@ -97,10 +118,10 @@ Our **Schema Studio Protocol** is designed to build explicit, machine-readable r
 
 ### Measured SGE Discovery Optimization
 
-By injecting precise, nested entity schemas, our system ensures your content is pre-tokenized correctly. Under testing, websites implementing the **Schema Studio Protocol** saw:
-1. **300%+ Citation Share Growth**: Becoming the direct reference link inside Google SGE cards.
+By injecting precise, nested entity schemas, our system ensures your content is pre-tokenized correctly. Under rigorous testing across enterprise e-commerce and SaaS properties, websites implementing the **Schema Studio Protocol** saw:
+1. **300%+ Citation Share Growth**: Becoming the direct reference link inside Google SGE cards and Perplexity sources.
 2. **Reduced Indexing Latency**: Forcing crawler agents to parse site changes inside a sub-second loop rather than waiting days.
-3. **Conversational Domination**: Securing top-recommender positions for long-tail query prompts.`,
+3. **Conversational Prominence**: Securing top-recommender positions for high-intent long-tail query prompts.`,
     author: {
       name: 'Dr. Veronika Vance',
       role: 'Lead Protocol Architect (ex-Google Systems)',
@@ -114,13 +135,14 @@ By injecting precise, nested entity schemas, our system ensures your content is 
     date: 'August 18, 2026',
     readTime: '10 min read',
     summary: 'Deep-dive analytical study into simulating user query results across Gemini, ChatGPT, and Claude clusters to pre-calculate search engine summary share.',
+    relatedArticleIds: ['citation-shield-strategy', 'schema-studio-protocol', 'semantic-entity-disambiguation'],
     content: `## Simulating the AI Search Core
 
-To rank inside LLM-driven search answers, you must understand how AI models perceive your domain. Traditional SEO tools check your position on standard keyword rankings. We built the **LLM Simulation Matrix** to perform real-time generative query audits.
+To rank inside LLM-driven search answers, you must understand how AI models perceive your domain. Traditional SEO tools check your position on standard keyword rankings. We built the **LLM Simulation Matrix** to perform real-time generative query audits before AI search engines re-index your pages.
 
 Our simulator deploys parallel API pipelines directly to various LLM clusters:
-- **Gemini Engine Cluster**: Testing Google's grounding index capabilities.
-- **ChatGPT Search Core**: Scanning real-time web retrieval prompt alignments.
+- **Gemini Engine Cluster**: Testing Google's grounding index capabilities and SGE citation cards.
+- **ChatGPT Search Core**: Scanning real-time web retrieval prompt alignments and Bing Index embeddings.
 - **Claude Sonnet Nodes**: Measuring contextual semantic density and recommendation weights.
 
 ### The Math Behind AI Citations
@@ -130,11 +152,11 @@ When a user triggers an AI-powered query, the model retrieves a window of web do
 \`\`\`
 User Query Prompt (Vector P) 
         ├──> Cosine Similarity Check ──> Web Grounding Index
-        └──> Top 3 Close Entities ──> [ Your Site (High Score) ] ──> Cited Link
+        └──> Top 3 Close Entities ──> [ Your Site (High Proximity Score) ] ──> Direct Citation
 \`\`\`
 
 Our matrix simulator computes this exact proximity. It runs thousands of user intent variations and scores your site's:
-1. **Citation Share Rate**: The percentage of times your URL is linked.
+1. **Citation Share Rate**: The percentage of times your URL is linked in synthesized summaries.
 2. **Contextual Authority Index**: Your brand's prominence in the model's summarization text.
 3. **Optimized Target Gaps**: Specific sentences or headers to add to bridge the prompt gap.`,
     author: {
@@ -150,36 +172,63 @@ Our matrix simulator computes this exact proximity. It runs thousands of user in
     date: 'August 15, 2026',
     readTime: '8 min read',
     summary: 'Leveraging parallel high-frequency coprocessor execution threads to auto-multiply raw document structures into semantic SGE citation targets.',
-    content: `## Content Scale Without the Slop
+    relatedArticleIds: ['parallel-crawler-arch', 'schema-studio-protocol'],
+    content: `## Quality Content at Scale
 
-The biggest challenge in the era of Artificial Intelligence is content dilution. Generative engines are becoming incredibly smart at filtering out low-effort "AI-generated slop" that repeats generic paragraphs. To rank high, your domain needs a **high volume of highly structured, unique, and deeply informative content**.
+Generative engines are becoming proficient at filtering out low-effort repetitive text that repeats generic paragraphs. To maintain top rankings, your domain needs a **high volume of highly structured, unique, and deeply informative content**.
 
-This requires a system that can take basic corporate documents, case studies, or catalog data, and multiply them into semantic assets.
+This requires a system that can take basic corporate documents, case studies, or catalog data, and expand them into structured semantic assets.
 
 ### Enter the Algorithmic Content Multiplier
 
 Our **Content Multiplier Engine** solves this by establishing structured parallel pipelines that:
-1. **Deconstruct Knowledge Nodes**: Extracting raw metrics, quotes, and processes from your source files.
-2. **Apply Multi-Agent Expansion**: Parallel threads compile specialized pages targeting specific technical questions.
-3. **Inject Authentic Prose and Natural Flow**: Eliminating AI footprint markers using our proprietary humanizer loop.
+1. **Deconstruct Knowledge Nodes**: Extracting raw metrics, quotes, and technical processes from your source files.
+2. **Apply Multi-Thread Expansion**: Parallel processes compile specialized pages targeting specific technical questions.
+3. **Inject Natural Flow**: Eliminating footprint markers through our humanization review loop.
 
-By running these pipelines inside a high-frequency thread coprocessor, we generate hundreds of optimized pages in seconds. Each page is a perfect, highly-targeted answer engine landing page containing structured schemas, localized Q&As, and clear external reference nodes—making your domain an unmissable authority in your niche.`,
+By running these pipelines inside a high-frequency execution coprocessor, we generate optimized pages efficiently. Each page is a structured answer engine landing page containing schemas, localized Q&As, and clear external reference nodes.`,
     author: {
       name: 'Sarah Chen',
       role: 'Head of AI Core (ex-Jane Street)',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face'
     }
-  }
-];
-
-export const INSIGHTS_POSTS = [
+  },
   {
-    id: 'schema-studio-protocol',
-    title: 'Schema Studio Protocol: Maximizing SGE & LLM Search Visibility',
+    id: 'entity-graph-validation',
+    title: 'Entity Graph Validation: Fixing Broken JSON-LD Markup at Scale',
     category: 'Schema Engineering',
-    date: 'August 22, 2026',
-    readTime: '7 min read',
-    summary: 'How automated JSON-LD entity structures force Google SGE, Perplexity, and Apple Intelligence to cite your products directly in answers.',
+    date: 'August 10, 2026',
+    readTime: '6 min read',
+    summary: 'Detecting and correcting broken entity links, missing schema fields, and invalid nested graphs before search engine crawlers penalize your domain.',
+    relatedArticleIds: ['schema-studio-protocol', 'citation-shield-strategy'],
+    content: `## The Hidden Cost of Schema Drift
+
+Over 68% of enterprise web properties suffer from **Schema Drift**—a condition where website content updates occur, but underlying JSON-LD markup remains static or malformed. When an AI crawler encounters conflicting data between the visible HTML and the embedded JSON-LD schema, it flags the domain's confidence score as uncertain.
+
+Uncertainty is fatal for citation rates. If a search engine cannot verify whether your organization operates in a specific location or offers a specific warranty, it simply omits your URL from the generated summary.
+
+### Automated Graph Diagnostics
+
+Rinkino's **Entity Graph Validator** performs continuous validation against the official Schema.org standards:
+- **Type Inheritance Checks**: Ensuring subclasses like \`TechArticle\` correctly inherit properties from \`Article\` and \`CreativeWork\`.
+- **Node Identifier Matching**: Validating that every \`@id\` URI resolves to a verified entity on your domain or an authoritative external registry (such as Wikidata).
+- **Circular Dependency Detection**: Cleaning up infinite loops in complex nested organizational charts.
+
+\`\`\`json
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://rinkino.ai/#organization",
+      "name": "Rinkino Technologies",
+      "sameAs": ["https://wikidata.org/wiki/Q123456"]
+    }
+  ]
+}
+\`\`\`
+
+By validating schema markup before deployment, engineering teams eliminate crawler parse errors and guarantee 100% structured data compliance.`,
     author: {
       name: 'Dr. Veronika Vance',
       role: 'Lead Protocol Architect (ex-Google Systems)',
@@ -187,12 +236,31 @@ export const INSIGHTS_POSTS = [
     }
   },
   {
-    id: 'llm-simulation-matrix',
-    title: 'LLM Simulation Matrix: Pre-Diagnosing Conversational AI Answers',
-    category: 'AEO/GEO Intelligence',
-    date: 'August 18, 2026',
-    readTime: '10 min read',
-    summary: 'Deep-dive analytical study into simulating user query results across Gemini, ChatGPT, and Claude clusters to pre-calculate search engine summary share.',
+    id: 'parallel-crawler-arch',
+    title: 'Parallel Crawler Architecture: Sub-Millisecond Site Structure Indexing',
+    category: 'Crawler Engineering',
+    date: 'August 05, 2026',
+    readTime: '9 min read',
+    summary: 'A deep dive into distributed multi-threaded web crawling, asynchronous DOM parsing, and sub-second schema graph extraction.',
+    relatedArticleIds: ['content-multiplier', 'llm-simulation-matrix'],
+    content: `## Breaking the Single-Thread Bottleneck
+
+Traditional SEO crawlers process pages sequentially: request URL, wait for response, parse HTML, extract links, repeat. For enterprise sites containing 50,000+ pages, a complete audit pass can take 12 to 36 hours.
+
+In 2026, where search engines re-index top news and product pages every few minutes, a 12-hour audit loop is far too slow.
+
+### The Rinkino Parallel Pipeline
+
+Rinkino utilizes a distributed **Parallel Crawler Architecture** built on Rust and asynchronous IO execution loops:
+1. **Asynchronous Thread Pool**: Distributing HTTP/3 connections across hundreds of concurrent micro-threads.
+2. **Streaming DOM Parser**: Extracting JSON-LD tags directly from incoming response streams without waiting for full HTML render completion.
+3. **Memory-Mapped Graph Buffers**: Storing site topology in zero-copy memory arrays for instant traversal.
+
+\`\`\`
+URL Queue ──> [ Worker Pool: Thread 1 .. Thread 64 ] ──> Zero-Copy Memory Graph ──> Instant Audit
+\`\`\`
+
+This architecture reduces full-site scan times from hours down to sub-second execution windows, allowing developers to test site changes during continuous integration pipeline builds.`,
     author: {
       name: 'Marcus Thorne',
       role: 'Principal Systems Engineer (ex-Worldcoin)',
@@ -200,83 +268,265 @@ export const INSIGHTS_POSTS = [
     }
   },
   {
-    id: 'content-multiplier',
-    title: 'Algorithmic Content Multiplier: Building Organic Domain Authority',
-    category: 'Systems Scaling',
-    date: 'August 15, 2026',
+    id: 'citation-shield-strategy',
+    title: 'Citation Shield Strategy: Protecting Brand Entity Authority Against Misattribution',
+    category: 'Brand Security',
+    date: 'August 01, 2026',
     readTime: '8 min read',
-    summary: 'Leveraging parallel high-frequency coprocessor execution threads to auto-multiply raw document structures into semantic SGE citation targets.',
+    summary: 'Preventing AI answer engines from misattributing your brand features, pricing details, or executive statements to competitor domains.',
+    relatedArticleIds: ['llm-simulation-matrix', 'entity-graph-validation'],
+    content: `## The Threat of AI Misattribution
+
+As AI models synthesize answer paragraphs from dozens of web sources, hallucination and misattribution are constant risks. A user asking "What are Rinkino's pricing tiers?" might receive an answer that accidentally mixes your features with a competitor's pricing structure due to proximity errors in the model's retrieval context.
+
+This damages conversion rates and confuses prospective enterprise buyers.
+
+### Implementing Citation Shield
+
+Rinkino's **Citation Shield** is a proactive defense protocol designed to anchor your brand entities firmly in search model memory:
+- **Canonical Claim Declarations**: Structuring press releases and product specifications with immutable \`ClaimReview\` and \`Dataset\` schema tags.
+- **Competitor Entity Disambiguation**: Explicitly defining \`differentFrom\` and \`knowsAbout\` schema attributes to prevent model confusion.
+- **Continuous Monitoring Alerts**: Tracking live Gemini, Perplexity, and Claude answers for trademark or feature misattributions and delivering real-time corrective schema recommendations.
+
+By establishing immutable schema anchors across your digital footprint, Citation Shield protects your brand's authority and ensures accurate AI recommendations.`,
     author: {
       name: 'Sarah Chen',
       role: 'Head of AI Core (ex-Jane Street)',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face'
     }
+  },
+  {
+    id: 'vector-proximity-indexing',
+    title: 'Vector Proximity Indexing: High-Dimensional Semantic Retrieval Alignment',
+    category: 'AEO/GEO Intelligence',
+    date: 'July 28, 2026',
+    readTime: '11 min read',
+    summary: 'How embedding vector spaces determine which web documents are retrieved into LLM context windows during real-time web searches.',
+    relatedArticleIds: ['llm-simulation-matrix', 'schema-studio-protocol'],
+    content: `## Inside Vector-Based Web Grounding
+
+When an AI search engine evaluates your page, it converts your text into dense mathematical floating-point vectors (e.g. 1536-dimensional embeddings). When a user types a query, that query is converted into a vector as well.
+
+The distance between these vectors—measured via Cosine Similarity or Dot Product—determines whether your page enters the LLM's grounding context window.
+
+### Mathematical Alignment Optimization
+
+To maximize vector closeness without falling into keyword-stuffing penalties, content must align with the semantic manifold of the query domain:
+1. **Dense Entity Clustering**: Grouping related technical terms in proximity to primary topic nodes.
+2. **Disambiguation Schema Injection**: Defining explicit \`about\` and \`mentions\` JSON-LD tags to eliminate vector drift.
+3. **Syntactic Precision**: Writing clear, declarative assertions that LLMs easily extract as factual knowledge blocks.`,
+    author: {
+      name: 'Marcus Thorne',
+      role: 'Principal Systems Engineer (ex-Worldcoin)',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+    }
+  },
+  {
+    id: 'semantic-entity-disambiguation',
+    title: 'Semantic Entity Disambiguation: Eliminating Brand Homonym Confusions',
+    category: 'Schema Engineering',
+    date: 'July 20, 2026',
+    readTime: '8 min read',
+    summary: 'A definitive guide to using Wikidata URIs, SameAs attributes, and explicit parent organization tags to prevent AI models from confusing your company name.',
+    relatedArticleIds: ['schema-studio-protocol', 'citation-shield-strategy'],
+    content: `## The Entity Collision Problem
+
+Many companies share names or acronyms with historical events, geographical locations, or open-source libraries. When AI models process a query about "Apex Technologies", they might retrieve Wikipedia articles about a mountain peak or an old gaming engine rather than your SaaS platform.
+
+### Resolving Collisions with SameAs Schema
+
+By embedding authoritative, persistent URI links directly into your web property's JSON-LD graph, you immediately inform the AI crawler of your exact identity:
+
+\`\`\`json
+{
+  "@context": "https://schema.org",
+  "@type": "Corporation",
+  "name": "Rinkino Technologies",
+  "url": "https://rinkino.ai",
+  "sameAs": [
+    "https://www.wikidata.org/wiki/Q123456789",
+    "https://www.crunchbase.com/organization/rinkino",
+    "https://github.com/rinkino"
+  ]
+}
+\`\`\`
+
+This explicit mapping grounds your domain's entity record permanently, eliminating AI confusion and guaranteeing pristine search recommendations.`,
+    author: {
+      name: 'Dr. Veronika Vance',
+      role: 'Lead Protocol Architect (ex-Google Systems)',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face'
+    }
+  },
+  {
+    id: 'autonomous-cwv-optimization',
+    title: 'Autonomous Core Web Vitals Optimization: Mitigating INP & LCP Regressions via Edge Workers',
+    category: 'Performance Engineering',
+    date: 'July 14, 2026',
+    readTime: '9 min read',
+    summary: 'Deploying edge compute middleware to intercept heavy DOM elements, defer third-party scripts, and stream pre-rendered HTML chunks for instantaneous INP and sub-1s LCP.',
+    relatedArticleIds: ['parallel-crawler-arch', 'content-multiplier'],
+    content: `## The Modern Web Performance Baseline
+
+With Google's 2026 Core Web Vitals algorithms prioritizing Interaction to Next Paint (INP) under 200ms and Largest Contentful Paint (LCP) under 2.5s on throttled mobile networks, client-side heavy JavaScript bundles are a major liability.
+
+### Edge Worker Invalidation Pipelines
+
+By executing AST transformation scripts directly inside Cloudflare Workers or Vercel Edge Functions, Rinkino intercepts server responses before they reach the client browser:
+1. **Critical CSS Inlining**: Dynamically extracting critical path styles and injecting them directly into the document head.
+2. **Heavy Script Deferral**: Auto-rewriting third-party analytics tags to execute during browser idle periods (\`requestIdleCallback\`).
+3. **Responsive Image Preloading**: Auto-generating AVIF/WebP srcset attributes based on client viewport hints.
+
+\`\`\`javascript
+// Edge Worker AST Transformation Snippet
+export async function handleRequest(request) {
+  const response = await fetch(request);
+  return new HTMLRewriter()
+    .on('img[data-[#a3e635]]', {
+      element(element) {
+        element.setAttribute('loading', 'eager');
+        element.setAttribute('fetchpriority', 'high');
+      }
+    })
+    .transform(response);
+}
+\`\`\`
+
+This autonomous edge layer guarantees near-perfect Core Web Vitals scores without manual refactoring of legacy monolithic codebases.`,
+    author: {
+      name: 'Marcus Thorne',
+      role: 'Principal Systems Engineer (ex-Worldcoin)',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+    }
+  },
+  {
+    id: 'perplexity-apple-search-grounding',
+    title: 'Perplexity & Apple Intelligence Search Grounding: Anatomy of Next-Gen AI Citation Cards',
+    category: 'AEO/GEO Intelligence',
+    date: 'July 08, 2026',
+    readTime: '10 min read',
+    summary: 'Analyzing how Apple Intelligence and Perplexity AI select, weigh, and cite web documents inside iOS Siri prompts and generative desktop research workflows.',
+    relatedArticleIds: ['llm-simulation-matrix', 'citation-shield-strategy'],
+    content: `## The Apple & Perplexity Citation Pipeline
+
+Apple Intelligence and Perplexity AI have redefined desktop and mobile information access. Rather than serving lists of blue links, these engines parse web documents using specialized low-latency RAG (Retrieval-Augmented Generation) architectures.
+
+### Key Factors for Top Citation Ranking
+
+Our empirical testing across 100,000 conversational query sweeps reveals three primary ranking drivers:
+- **Declarative Fact Density**: Bulleted tables, JSON-LD micro-data, and concise technical definitions score 4x higher in context extraction algorithms.
+- **Wikidata Authority Linking**: Domains mapped directly to global knowledge graphs receive preferential citation weights.
+- **Zero-Latency Content Freshness**: Webhooks providing real-time RSS/JSON feed updates trigger automated re-indexing in under 30 seconds.`,
+    author: {
+      name: 'Sarah Chen',
+      role: 'Head of AI Core (ex-Jane Street)',
+      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face'
+    }
+  },
+  {
+    id: 'eeat-schema-integration',
+    title: 'E-E-A-T Schema Integration: Encoding Experience, Expertise, Authoritativeness & Trustworthiness',
+    category: 'Schema Engineering',
+    date: 'June 30, 2026',
+    readTime: '7 min read',
+    summary: 'How to structure Person, Author, ReviewedBy, and Credentials schemas to communicate domain expertise directly to AI search evaluators.',
+    relatedArticleIds: ['schema-studio-protocol', 'semantic-entity-disambiguation'],
+    content: `## Quantifying E-E-A-T in 2026
+
+Google's Search Quality Rater Guidelines heavily emphasize Experience, Expertise, Authoritativeness, and Trustworthiness (E-E-A-T). In AI search, evaluators inspect your structured author profiles to confirm credentials before surfacing your content for medical, financial, or technical queries.
+
+### Building the Immutable Author Graph
+
+By embedding nested \`Person\` and \`EducationalOccupationalCredential\` schemas, you provide unverifiable claim proof:
+
+\`\`\`json
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "E-E-A-T Schema Integration Guide",
+  "author": {
+    "@type": "Person",
+    "name": "Dr. Veronika Vance",
+    "alumniOf": {
+      "@type": "EducationalOrganization",
+      "name": "Stanford University"
+    },
+    "hasCredential": "PhD Computer Science"
+  }
+}
+\`\`\`
+
+This machine-readable proof ensures your content passes AI quality thresholds across YMYL (Your Money Your Life) search topics.`,
+    author: {
+      name: 'Dr. Veronika Vance',
+      role: 'Lead Protocol Architect (ex-Google Systems)',
+      avatar: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=150&h=150&fit=crop&crop=face'
+    }
+  },
+  {
+    id: 'sub-ms-crawl-budget-ecommerce',
+    title: 'Sub-Millisecond Crawl Budget Allocation for Enterprise Headless E-Commerce',
+    category: 'Crawler Engineering',
+    date: 'June 22, 2026',
+    readTime: '12 min read',
+    summary: 'Eliminating crawler traps, dynamic faceted navigation loops, and stale inventory rendering to ensure maximum indexation efficiency for high-SKU stores.',
+    relatedArticleIds: ['parallel-crawler-arch', 'entity-graph-validation'],
+    content: `## E-Commerce Crawl Efficiency Bottlenecks
+
+Enterprise e-commerce catalogs with 100,000+ variants often waste up to 80% of search engine crawler budget on duplicate color, size, and sorting parameter combinations.
+
+### The Rinkino Facet Optimization Framework
+
+1. **Canonical Tag Hardening**: Forcing parameter URLs to self-referential parent product canonicals.
+2. **Dynamic Robots.txt Wildcard Filtering**: Automatically blocking non-indexable filter parameter combinations.
+3. **Edge XML Sitemap Partitioning**: Splitting sitemaps into micro-chunks sorted by stock availability and update timestamp.`,
+    author: {
+      name: 'Marcus Thorne',
+      role: 'Principal Systems Engineer (ex-Worldcoin)',
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face'
+    }
   }
 ];
 
-const InsightCard: React.FC<{ blog: any; onClick: () => void }> = ({ blog, onClick }) => {
-  const [tilt, setTilt] = useState({ x: 0, y: 0 });
-  const cardRef = useRef<HTMLDivElement>(null);
+export const INSIGHTS_POSTS = TECHNICAL_BLOGS.slice(0, 3);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return;
-    const rect = cardRef.current.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    const mouseX = e.clientX - rect.left - width / 2;
-    const mouseY = e.clientY - rect.top - height / 2;
-    
-    // Rotate max 12 degrees
-    const rX = -(mouseY / (height / 2)) * 12;
-    const rY = (mouseX / (width / 2)) * 12;
-    
-    setTilt({ x: rY, y: rX });
-  };
-
-  const handleMouseLeave = () => {
-    setTilt({ x: 0, y: 0 });
-  };
-
+// Glassmorphic Interactive Insight Card with Framer Motion Hover Effects
+const InsightCard: React.FC<{ blog: BlogPost; onClick: () => void }> = ({ blog, onClick }) => {
   return (
     <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
       onClick={onClick}
-      style={{
-        transform: `perspective(1000px) rotateX(${tilt.y}deg) rotateY(${tilt.x}deg)`,
-        transformStyle: 'preserve-3d',
-      }}
-      whileHover={{ scale: 1.03 }}
+      whileHover={{ y: -6, scale: 1.015 }}
+      whileTap={{ scale: 0.98 }}
       transition={{ type: "spring", stiffness: 350, damping: 25 }}
-      className="p-6 sm:p-8 rounded-xl border border-zinc-900 bg-zinc-950/50 hover:border-[#a3e635] shadow-lg group transition-all duration-300 relative overflow-hidden flex flex-col justify-between cursor-pointer min-h-[380px]"
+      className="glass-card p-6 sm:p-8 rounded-2xl flex flex-col justify-between cursor-pointer min-h-[380px] relative group overflow-hidden border border-zinc-800/80 hover:border-[#a3e635]/60 hover:shadow-[0_10px_30px_rgba(163,230,53,0.12)] transition-all duration-300"
     >
-      {/* Subtle Neon Grid overlay */}
-      <div className="absolute inset-0 bg-cyber-grid opacity-[0.015] group-hover:opacity-[0.04] transition-opacity pointer-events-none" />
-      
-      {/* 3D Depth Card Content wrapper */}
-      <div style={{ transform: 'translateZ(30px)' }} className="flex flex-col gap-4">
-        <div className="flex items-center justify-between text-[10px] font-mono">
-          <span className="text-[#a3e635] uppercase tracking-wider font-bold">{blog.category}</span>
-          <span className="text-zinc-500">{blog.readTime}</span>
+      <div className="flex flex-col gap-5">
+        <div className="flex items-center justify-between">
+          <span className="text-[11px] font-mono font-bold text-[#a3e635] tracking-widest uppercase bg-[#a3e635]/10 px-2.5 py-1 rounded border border-[#a3e635]/20">
+            {blog.category}
+          </span>
+          <span className="text-[11px] font-mono text-zinc-500">{blog.readTime}</span>
         </div>
-        <h4 className="text-lg sm:text-xl font-extrabold text-white tracking-tight group-hover:text-[#a3e635] transition-colors leading-snug">
+
+        <h4 className="text-xl font-bold text-white tracking-tight leading-snug group-hover:text-[#a3e635] transition-colors">
           {blog.title}
         </h4>
-        <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+
+        <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed line-clamp-3">
           {blog.summary}
         </p>
       </div>
 
-      <div style={{ transform: 'translateZ(20px)' }} className="flex items-center justify-between pt-6 border-t border-zinc-900/60 mt-4">
-        <div className="flex items-center gap-2.5">
-          <img src={blog.author.avatar} alt={blog.author.name} className="w-8 h-8 rounded-full border border-zinc-800 object-cover" />
+      <div className="flex items-center justify-between pt-6 border-t border-zinc-800/60 mt-6">
+        <div className="flex items-center gap-3">
+          <img src={blog.author.avatar} alt={blog.author.name} className="w-8 h-8 rounded-full border border-zinc-700 object-cover" />
           <div>
-            <div className="text-xs font-bold text-zinc-300">{blog.author.name}</div>
-            <div className="text-[9px] text-zinc-500 font-mono leading-none">{blog.author.role.split('(')[0]}</div>
+            <div className="text-xs font-semibold text-zinc-200">{blog.author.name}</div>
+            <div className="text-[10px] text-zinc-500 font-mono">{blog.author.role.split('(')[0]}</div>
           </div>
         </div>
-        <div className="w-8 h-8 rounded-full bg-zinc-950 flex items-center justify-center border border-zinc-800 text-zinc-400 group-hover:text-[#a3e635] group-hover:border-[#a3e635]/40 group-hover:bg-[#a3e635]/5 transition-all">
+
+        <div className="w-8 h-8 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-700 text-zinc-400 group-hover:text-[#a3e635] group-hover:border-[#a3e635]/50 transition-all">
           <ArrowUpRight className="w-4 h-4" />
         </div>
       </div>
@@ -291,1800 +541,1500 @@ export const SaaSLandingPage: React.FC<SaaSLandingPageProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'home' | 'about' | 'features' | 'pricing' | 'blogs' | 'contact'>('home');
   const [activeBlog, setActiveBlog] = useState<BlogPost | null>(null);
-  
-  // SEO integration states
-  const [seoDomain, setSeoDomain] = useState('fmfglasshardware.com');
-  const [isSeoHovered, setIsSeoHovered] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
+  const [quickHelpOpen, setQuickHelpOpen] = useState<boolean>(false);
 
-  // New lead calculation / contact portal states
+  // SEO Audit Bar state
+  const [seoDomain, setSeoDomain] = useState('fmfglasshardware.com');
+
+  // Contact Form state
   const [leadName, setLeadName] = useState('');
   const [leadEmail, setLeadEmail] = useState('');
   const [leadDomain, setLeadDomain] = useState('');
   const [leadMessage, setLeadMessage] = useState('');
-  const [selectedServices, setSelectedServices] = useState<string[]>(['SEO', 'GEO', 'AEO', 'AIO']);
-  const [leadSuccess, setLeadSuccess] = useState(false);
-  const [leadLoading, setLeadLoading] = useState(false);
-  const [projectedScore, setProjectedScore] = useState<number>(35);
-  const [isCalculatingScore, setIsCalculatingScore] = useState(false);
-
-  // New Interactive Floating Hero Mouse Coordinates
-  const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0 });
-
-  // Pricing Switch State
-  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('monthly');
-  const [seoVolume, setSeoVolume] = useState<number>(1);
-  const [seoScoreInput, setSeoScoreInput] = useState<number>(35);
+  const [selectedServices, setSelectedServices] = useState<string[]>(['Schema Studio Protocol', 'LLM Search Simulator']);
   const [contactSubmitted, setContactSubmitted] = useState<boolean>(false);
 
-  // HTML5 Canvas 3D Sphere references and state
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const mouseRef = useRef({ x: 0, y: 0, targetX: 0, targetY: 0 });
-  const isHoveredRef = useRef(false);
+  // Pricing State
+  const [billingCycle, setBillingCycle] = useState<'monthly' | 'annual'>('annual');
+  const [pricingPageCount, setPricingPageCount] = useState<number>(5000);
+  const [seoScoreInput, setSeoScoreInput] = useState<number>(42);
 
-  // Search Crawler Simulator States
+  // Blog Search & Category Filter State
+  const [blogSearchQuery, setBlogSearchQuery] = useState<string>('');
+  const [selectedBlogCategory, setSelectedBlogCategory] = useState<string>('All');
+
+  // Interactive Live Schema Playground State
+  const [playgroundType, setPlaygroundType] = useState<'Product' | 'Organization' | 'TechArticle' | 'FAQPage'>('Product');
+  const [playgroundCopied, setPlaygroundCopied] = useState(false);
+
+  // FAQ Accordion Toggle State
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0);
+
+  // Validator Playground State
+  const [customJsonInput, setCustomJsonInput] = useState<string>(`{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": "High-Precision Glass Hardware Hinge",
+  "image": "https://example.com/hinge.jpg",
+  "description": "Heavy duty stainless steel shower door hinge with self-closing mechanism.",
+  "brand": {
+    "@type": "Brand",
+    "name": "FMF Glass"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "89.99",
+    "priceCurrency": "USD",
+    "availability": "https://schema.org/InStock"
+  }
+}`);
+  const [validationResult, setValidationResult] = useState<{
+    valid: boolean;
+    score: number;
+    issues: string[];
+    nodesExtracted: number;
+  } | null>(null);
+
+  // Crawler Simulation State
   const [simVM, setSimVM] = useState<'Perplexity' | 'Gemini' | 'Claude'>('Perplexity');
   const [simStrategy, setSimStrategy] = useState<'Sequential' | 'Rinkino Parallel'>('Rinkino Parallel');
   const [simQPM, setSimQPM] = useState(8500);
   const [simStatus, setSimStatus] = useState<'idle' | 'running' | 'completed'>('idle');
   const [simLogs, setSimLogs] = useState<string[]>([]);
   const [simProgress, setSimProgress] = useState(0);
-  const [activeTxThread, setActiveTxThread] = useState<number[]>([1, 1, 1, 1, 1, 1, 1, 1]);
   const [liveMetrics, setLiveMetrics] = useState({
-    latency: '0.0ms',
-    throughput: '0 QPM',
-    efficiency: '0%',
-    blocksValidated: 0,
-    citationBoost: '+0.0%'
+    latency: '0.45ms',
+    throughput: '8,500 QPM',
+    efficiency: '99.8%',
+    blocksValidated: 1420,
+    citationBoost: '+340%'
   });
 
-  const logIntervalRef = useRef<any>(null);
-  const simAnimationRef = useRef<any>(null);
-
-  // 3D Canvas Sphere Animation Effect
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = canvas.width = canvas.parentElement?.clientWidth || 500;
-    let height = canvas.height = canvas.parentElement?.clientHeight || 500;
-
-    // Handle resizing
-    const handleResize = () => {
-      if (!canvas || !canvas.parentElement) return;
-      width = canvas.width = canvas.parentElement.clientWidth;
-      height = canvas.height = canvas.parentElement.clientHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Track Mouse
-    const handleMouseMove = (e: MouseEvent) => {
-      const rect = canvas.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / width - 0.5;
-      const y = (e.clientY - rect.top) / height - 0.5;
-      mouseRef.current.targetX = x * 3;
-      mouseRef.current.targetY = y * 3;
-    };
-    const handleMouseEnter = () => { isHoveredRef.current = true; };
-    const handleMouseLeave = () => {
-      isHoveredRef.current = false;
-      mouseRef.current.targetX = 0;
-      mouseRef.current.targetY = 0;
-    };
-
-    canvas.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('mouseenter', handleMouseEnter);
-    canvas.addEventListener('mouseleave', handleMouseLeave);
-
-    // Generate vertices using a Fibonacci lattice for uniform 3D sphere distribution
-    const numPoints = 140;
-    const points: { x: number; y: number; z: number; colorIndex: number; sizeMultiplier: number }[] = [];
-    for (let i = 0; i < numPoints; i++) {
-      const y = 1 - (i / (numPoints - 1)) * 2; // from 1 to -1
-      const radius = Math.sqrt(1 - y * y);
-      const theta = 3.669 * i; // golden angle
-      const x = Math.cos(theta) * radius;
-      const z = Math.sin(theta) * radius;
-      points.push({
-        x,
-        y,
-        z,
-        colorIndex: Math.floor(Math.random() * 3), // varying color highlights
-        sizeMultiplier: 0.7 + Math.random() * 0.8
-      });
-    }
-
-    // Static horizontal and vertical orbit rings
-    const rings: { points: { x: number; y: number; z: number }[] }[] = [];
-    const numRings = 4;
-    for (let r = 0; r < numRings; r++) {
-      const ringPoints = [];
-      const ringY = (r - (numRings - 1) / 2) * 0.45;
-      const ringRadius = Math.sqrt(1 - ringY * ringY);
-      const steps = 36;
-      for (let s = 0; s < steps; s++) {
-        const theta = (s / steps) * Math.PI * 2;
-        ringPoints.push({
-          x: Math.cos(theta) * ringRadius,
-          y: ringY,
-          z: Math.sin(theta) * ringRadius
-        });
-      }
-      rings.push({ points: ringPoints });
-    }
-
-    let time = 0;
-
-    // Render loop
-    const render = () => {
-      ctx.clearRect(0, 0, width, height);
-      time += 0.005;
-
-      // Smoothly interpolate mouse coordinates
-      mouseRef.current.x += (mouseRef.current.targetX - mouseRef.current.x) * 0.08;
-      mouseRef.current.y += (mouseRef.current.targetY - mouseRef.current.y) * 0.08;
-
-      // Base rotation speeds + mouse adjustments
-      const angleY = time * 0.4 + mouseRef.current.x;
-      const angleX = time * 0.15 + mouseRef.current.y;
-
-      const cosY = Math.cos(angleY);
-      const sinY = Math.sin(angleY);
-      const cosX = Math.cos(angleX);
-      const sinX = Math.sin(angleX);
-
-      const centerX = width / 2;
-      const centerY = height / 2;
-      const scale = Math.min(width, height) * 0.4;
-      const perspective = 2.4; // 3D projection constant
-
-      // Struct to store projected 2D nodes for connection checks
-      const projectedNodes: { px: number; py: number; z: number; colorIndex: number; orig: any }[] = [];
-
-      // 1. Project Sphere Vertices
-      points.forEach(pt => {
-        // Rotation around Y axis
-        let x1 = pt.x * cosY - pt.z * sinY;
-        let z1 = pt.x * sinY + pt.z * cosY;
-
-        // Rotation around X axis
-        let y2 = pt.y * cosX - z1 * sinX;
-        let z2 = pt.y * sinX + z1 * cosX;
-
-        // Perspective scaling
-        const factor = scale / (z2 + perspective);
-        const px = centerX + x1 * factor;
-        const py = centerY + y2 * factor;
-
-        projectedNodes.push({ px, py, z: z2, colorIndex: pt.colorIndex, orig: pt });
-      });
-
-      // 2. Draw connections (Lines) between nearby 3D points
-      ctx.lineWidth = 0.65;
-      for (let i = 0; i < projectedNodes.length; i++) {
-        const nodeA = projectedNodes[i];
-        for (let j = i + 1; j < projectedNodes.length; j++) {
-          const nodeB = projectedNodes[j];
-
-          // Compute Euclidean distance in raw 3D coordinate space (pre-rotation distance)
-          const dx = nodeA.orig.x - nodeB.orig.x;
-          const dy = nodeA.orig.y - nodeB.orig.y;
-          const dz = nodeA.orig.z - nodeB.orig.z;
-          const dist3D = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-          if (dist3D < 0.42) {
-            // Calculate opacity based on average depth (Z axis)
-            const avgZ = (nodeA.z + nodeB.z) / 2;
-            const opacity = Math.max(0.04, Math.min(0.55, (1.2 - avgZ) * 0.35));
-            
-            ctx.beginPath();
-            ctx.moveTo(nodeA.px, nodeA.py);
-            ctx.lineTo(nodeB.px, nodeB.py);
-            
-            // Neon Green to Slate-cyan link gradients
-            if (nodeA.colorIndex === 0) {
-              ctx.strokeStyle = `rgba(163, 230, 53, ${opacity})`; // Neon Lime
-            } else if (nodeA.colorIndex === 1) {
-              ctx.strokeStyle = `rgba(34, 197, 94, ${opacity})`;  // Emerald
-            } else {
-              ctx.strokeStyle = `rgba(14, 165, 233, ${opacity})`; // Cyber Cyan
-            }
-            ctx.stroke();
-          }
-        }
-      }
-
-      // 3. Draw Orbit Rings
-      rings.forEach((ring, rIdx) => {
-        ctx.beginPath();
-        ctx.lineWidth = 0.5;
-        ctx.strokeStyle = `rgba(163, 230, 53, ${rIdx === 0 ? 0.22 : 0.08})`;
-
-        const ringProjected: { px: number; py: number; z: number }[] = [];
-        ring.points.forEach(pt => {
-          let x1 = pt.x * cosY - pt.z * sinY;
-          let z1 = pt.x * sinY + pt.z * cosY;
-          let y2 = pt.y * cosX - z1 * sinX;
-          let z2 = pt.y * sinX + z1 * cosX;
-
-          const factor = scale / (z2 + perspective);
-          ringProjected.push({
-            px: centerX + x1 * factor,
-            py: centerY + y2 * factor,
-            z: z2
-          });
-        });
-
-        // Draw closed path for ring
-        for (let i = 0; i < ringProjected.length; i++) {
-          const pt = ringProjected[i];
-          if (i === 0) ctx.moveTo(pt.px, pt.py);
-          else ctx.lineTo(pt.px, pt.py);
-        }
-        ctx.closePath();
-        ctx.stroke();
-
-        // Put a dynamic sliding node indicator on the main ring
-        if (rIdx === 0 && ringProjected.length > 0) {
-          const slideIdx = Math.floor((time * 12) % ringProjected.length);
-          const slidePt = ringProjected[slideIdx];
-          const opacity = Math.max(0.1, Math.min(1.0, 1.2 - slidePt.z));
-
-          ctx.beginPath();
-          ctx.arc(slidePt.px, slidePt.py, 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(163, 230, 53, ${opacity})`;
-          ctx.shadowColor = '#a3e635';
-          ctx.shadowBlur = 6;
-          ctx.fill();
-          ctx.shadowBlur = 0; // Reset
-        }
-      });
-
-      // 4. Draw Sphere Vertices
-      projectedNodes.sort((a, b) => b.z - a.z); // Render depth order (Back-to-front)
-      projectedNodes.forEach(node => {
-        const pt = node.orig;
-        const opacity = Math.max(0.12, Math.min(0.95, (1.2 - node.z) * 0.45));
-        const baseRadius = 2.2 * pt.sizeMultiplier;
-
-        // Draw outer pulsing rings for specialized "Super-Nodes"
-        if (pt.colorIndex === 0 && pt.sizeMultiplier > 1.3) {
-          const pulseScale = 1 + Math.sin(time * 6 + pt.y * 10) * 0.4;
-          ctx.beginPath();
-          ctx.arc(node.px, node.py, baseRadius * pulseScale * 2.2, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(163, 230, 53, ${opacity * 0.25})`;
-          ctx.lineWidth = 0.55;
-          ctx.stroke();
-        }
-
-        ctx.beginPath();
-        ctx.arc(node.px, node.py, baseRadius, 0, Math.PI * 2);
-        
-        if (node.colorIndex === 0) {
-          ctx.fillStyle = `rgba(163, 230, 53, ${opacity})`; // Lime Neon
-        } else if (node.colorIndex === 1) {
-          ctx.fillStyle = `rgba(14, 165, 233, ${opacity})`;  // Sky Cyan
-        } else {
-          ctx.fillStyle = `rgba(244, 244, 245, ${opacity * 0.8})`; // Off-White
-        }
-        ctx.fill();
-      });
-
-      // 5. Draw Cyber Grid overlay behind sphere
-      ctx.strokeStyle = 'rgba(163, 230, 53, 0.025)';
-      ctx.lineWidth = 0.5;
-      const gridSpacing = 40;
-      for (let gX = 0; gX < width; gX += gridSpacing) {
-        ctx.beginPath();
-        ctx.moveTo(gX, 0);
-        ctx.lineTo(gX, height);
-        ctx.stroke();
-      }
-      for (let gY = 0; gY < height; gY += gridSpacing) {
-        ctx.beginPath();
-        ctx.moveTo(0, gY);
-        ctx.lineTo(width, gY);
-        ctx.stroke();
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      cancelAnimationFrame(animationFrameId);
-      window.removeEventListener('resize', handleResize);
-      canvas.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('mouseenter', handleMouseEnter);
-      canvas.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
-
-  // Search Indexer & Retrieval Sandbox Simulator Logic
   const handleStartSimulation = () => {
     if (simStatus === 'running') return;
-
     setSimStatus('running');
     setSimProgress(0);
-    setSimLogs([]);
-    setLiveMetrics({
-      latency: 'Calculating...',
-      throughput: '0 QPM',
-      efficiency: '0%',
-      blocksValidated: 0,
-      citationBoost: '+0.0%'
-    });
+    setSimLogs(['[INIT] Initializing Rinkino Parallel Coprocessor Thread Pool...']);
 
-    const isParallel = simStrategy === 'Rinkino Parallel';
-    const maxProgress = 100;
     let progress = 0;
-    
-    const logsTemplates = [
-      `[KERNEL] Spawning ${simVM}-optimized search simulation agent clusters...`,
-      `[SCHEDULER] Scanning target web hierarchy and structured schema elements. Strategy: ${simStrategy}.`,
-      isParallel 
-        ? `[SCHEDULER] Parallel entity extraction active. Entity paths mapped successfully.`
-        : `[SCHEDULER] Linear crawler sequence started. Queue locked for synchronous page parsing.`,
-      `[DATABASE] Fetching entity relation graph nodes and structured schema definitions.`,
-      `[COMPILER] Compiling semantic vectors and JSON-LD markup graph structures...`,
-      `[PIPELINE] Distributing query context vectors to neural retrieval engines...`,
-      `[PSS] Projecting authority citation probability based on cognitive relevance metrics.`,
-      `[COMMITTER] Resolving direct cite answers across LLM-grounded agent models...`,
-      `[FINALITY] Committing verified entity schema claims to the global search index.`
-    ];
+    const interval = setInterval(() => {
+      progress += 10;
+      setSimProgress(progress);
 
-    let logIndex = 0;
-    
-    // Simulate real logs feeding in
-    logIntervalRef.current = setInterval(() => {
-      if (logIndex < logsTemplates.length) {
-        setSimLogs(prev => [...prev, logsTemplates[logIndex]]);
-        logIndex++;
+      if (progress === 30) {
+        setSimLogs(prev => [...prev, `[CRAWL] Scanning domain schema graph against ${simVM} grounding index...`]);
+      } else if (progress === 60) {
+        setSimLogs(prev => [...prev, `[EXEC] Executing 8-thread JSON-LD validation pass at ${simQPM.toLocaleString()} QPM...`]);
+      } else if (progress === 90) {
+        setSimLogs(prev => [...prev, '[SUCCESS] 0 validation errors found. Entity graph synchronized across LLM nodes!']);
       }
-    }, 450);
 
-    // Speed up progress or slow down depending on strategy
-    const tickRate = isParallel ? 35 : 120;
-    
-    const simTick = () => {
-      progress += 2;
-      if (progress >= maxProgress) {
-        progress = maxProgress;
-        setSimProgress(progress);
+      if (progress >= 100) {
+        clearInterval(interval);
         setSimStatus('completed');
-        
-        // Populate final impressive stats based on configurations
-        const baseLatency = isParallel ? 0.45 : 5.8;
-        const computedLatency = (baseLatency + (simQPM / 25000) * (isParallel ? 0.05 : 2.5)).toFixed(2);
-        const efficiency = isParallel ? '98.4%' : '14.2%';
-        const finalQpm = isParallel ? simQPM : Math.min(1200, simQPM);
-        const projectedBoost = isParallel ? ((simQPM * 0.0035) + 12).toFixed(1) : '1.5';
-
         setLiveMetrics({
-          latency: `${computedLatency}ms`,
-          throughput: `${finalQpm.toLocaleString()} QPM`,
-          efficiency,
-          blocksValidated: isParallel ? Math.floor(Math.random() * 85 + 40) : 5,
-          citationBoost: `+${projectedBoost}%`
+          latency: simStrategy === 'Rinkino Parallel' ? '0.38ms' : '142.0ms',
+          throughput: `${simQPM.toLocaleString()} QPM`,
+          efficiency: simStrategy === 'Rinkino Parallel' ? '99.9%' : '42.1%',
+          blocksValidated: Math.floor(1000 + Math.random() * 800),
+          citationBoost: simStrategy === 'Rinkino Parallel' ? '+380%' : '+12%'
         });
-
-        setSimLogs(prev => [
-          ...prev, 
-          `[SUCCESS] Core crawl simulation finished. Time-to-index: ${computedLatency}ms. Search query volume: ${finalQpm.toLocaleString()} QPM.`,
-          isParallel
-            ? `[RANK BOOST] Authority optimization completed. Projected SGE citation probability increased by ${projectedBoost}%.`
-            : `[ALERT] Synchronous crawling delays detected. High schema drift risk on nested structures.`
-        ]);
-        
-        clearInterval(logIntervalRef.current);
-      } else {
-        setSimProgress(progress);
-        
-        // Keep logs rolling or thread activity pulsating
-        setActiveTxThread(prev => prev.map(() => Math.random() > 0.4 ? 1 : 0));
-        
-        // Live feedback metric updating during simulation
-        const currentQpm = isParallel 
-          ? Math.floor((progress / maxProgress) * simQPM) 
-          : Math.floor((progress / maxProgress) * Math.min(1200, simQPM));
-
-        setLiveMetrics(prev => ({
-          ...prev,
-          throughput: `${currentQpm.toLocaleString()} QPM`,
-          latency: `${(Math.random() * 0.2 + (isParallel ? 0.4 : 5.2)).toFixed(2)}ms`,
-          blocksValidated: Math.floor(progress / 5.2)
-        }));
-
-        simAnimationRef.current = setTimeout(simTick, tickRate);
       }
-    };
-
-    simAnimationRef.current = setTimeout(simTick, tickRate);
+    }, 180);
   };
 
-  // Cleanup simulation timers
-  useEffect(() => {
-    return () => {
-      if (logIntervalRef.current) clearInterval(logIntervalRef.current);
-      if (simAnimationRef.current) clearTimeout(simAnimationRef.current);
-    };
-  }, []);
+  const handleValidateCustomSchema = () => {
+    try {
+      const parsed = JSON.parse(customJsonInput);
+      const issues: string[] = [];
+      let score = 100;
 
-  const handleAuditInputSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (seoDomain.trim()) {
-      let cleaned = seoDomain.trim();
-      if (!cleaned.startsWith('http://') && !cleaned.startsWith('https://')) {
-        cleaned = 'https://' + cleaned;
+      if (!parsed['@context']) {
+        issues.push('Missing "@context": "https://schema.org" declaration.');
+        score -= 25;
       }
-      onStartAudit(cleaned);
+      if (!parsed['@type']) {
+        issues.push('Missing "@type" root entity declaration.');
+        score -= 25;
+      }
+      if (!parsed['name']) {
+        issues.push('Recommended property "name" is missing.');
+        score -= 15;
+      }
+      if (parsed['@type'] === 'Product' && !parsed['offers']) {
+        issues.push('Product schema missing "offers" property for SGE price extraction.');
+        score -= 20;
+      }
+
+      setValidationResult({
+        valid: issues.length === 0,
+        score: Math.max(10, score),
+        issues: issues.length > 0 ? issues : ['100% Valid Schema.org JSON-LD structure! Grounding index ready.'],
+        nodesExtracted: Object.keys(parsed).length + (parsed['offers'] ? 4 : 1)
+      });
+    } catch (err: any) {
+      setValidationResult({
+        valid: false,
+        score: 0,
+        issues: [`JSON Syntax Error: ${err.message || 'Invalid JSON format'}`],
+        nodesExtracted: 0
+      });
     }
   };
 
-  return (
-    <div className="w-full min-h-screen relative font-sans text-slate-100 bg-[#030305] selection:bg-[#a3e635]/20 selection:text-[#a3e635] overflow-x-hidden">
-      
-      {/* Visual background wireframe overlay and light glows */}
-      <div className="absolute inset-0 bg-cyber-grid opacity-[0.25] pointer-events-none" />
-      <div className="absolute top-[-10%] left-[-10%] w-[55%] h-[55%] rounded-full bg-[#a3e635]/[0.02] blur-[150px] pointer-events-none" />
-      <div className="absolute bottom-[20%] right-[-15%] w-[65%] h-[65%] rounded-full bg-[#0ea5e9]/[0.025] blur-[180px] pointer-events-none" />
+  const navigateToTab = (tab: 'home' | 'about' | 'features' | 'pricing' | 'blogs' | 'contact') => {
+    setActiveTab(tab);
+    setActiveBlog(null);
+    setMobileMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-      {/* Cybernetic Header */}
-      <header className="sticky top-0 z-50 backdrop-blur-xl border-b border-zinc-900/80 bg-[#030305]/80 transition-all">
+  const openBlogById = (id: string) => {
+    const blog = TECHNICAL_BLOGS.find(b => b.id === id);
+    if (blog) {
+      setActiveBlog(blog);
+      setActiveTab('blogs');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
+  const filteredBlogs = TECHNICAL_BLOGS.filter(blog => {
+    const matchesCategory = selectedBlogCategory === 'All' || blog.category === selectedBlogCategory;
+    const matchesQuery = blogSearchQuery === '' ||
+      blog.title.toLowerCase().includes(blogSearchQuery.toLowerCase()) ||
+      blog.summary.toLowerCase().includes(blogSearchQuery.toLowerCase()) ||
+      blog.category.toLowerCase().includes(blogSearchQuery.toLowerCase());
+    return matchesCategory && matchesQuery;
+  });
+
+  // Schema Playground Code Samples
+  const schemaSamples = {
+    Product: `{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": "Rinkino Enterprise GEO Suite",
+  "image": "https://rinkino.ai/product-hero.jpg",
+  "description": "Automated Schema.org JSON-LD generator for SGE & AI search engines.",
+  "sku": "RNK-2026-GEO",
+  "brand": {
+    "@type": "Brand",
+    "name": "Rinkino"
+  },
+  "offers": {
+    "@type": "Offer",
+    "url": "https://rinkino.ai/pricing",
+    "priceCurrency": "USD",
+    "price": "129.00",
+    "availability": "https://schema.org/InStock"
+  }
+}`,
+    Organization: `{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": "https://rinkino.ai/#organization",
+  "name": "Rinkino Technologies Inc.",
+  "url": "https://rinkino.ai",
+  "logo": "https://rinkino.ai/logo.png",
+  "sameAs": [
+    "https://wikidata.org/wiki/Q123456",
+    "https://crunchbase.com/organization/rinkino"
+  ],
+  "knowsAbout": [
+    "Generative Engine Optimization",
+    "Answer Engine Optimization",
+    "JSON-LD Schema Graphs"
+  ]
+}`,
+    TechArticle: `{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "Sub-Millisecond Parallel Crawler Architecture",
+  "datePublished": "2026-08-22",
+  "author": {
+    "@type": "Person",
+    "name": "Dr. Veronika Vance",
+    "jobTitle": "Lead Protocol Architect"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "Rinkino Technologies"
+  }
+}`,
+    FAQPage: `{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [{
+    "@type": "Question",
+    "name": "What is Generative Engine Optimization (GEO)?",
+    "acceptedAnswer": {
+      "@type": "Answer",
+      "text": "GEO is the discipline of structuring website data and entity graphs to ensure direct citation inside AI-generated search engine responses."
+    }
+  }]
+}`
+  };
+
+  const copyPlaygroundCode = () => {
+    navigator.clipboard.writeText(schemaSamples[playgroundType]);
+    setPlaygroundCopied(true);
+    setTimeout(() => setPlaygroundCopied(false), 2000);
+  };
+
+  // FAQ Items Data
+  const FAQ_ITEMS = [
+    {
+      q: 'How does Generative Engine Optimization (GEO) differ from traditional SEO?',
+      a: 'Traditional SEO focuses on keyword density, meta tags, and incoming backlink counts to rank on standard list result pages. GEO/AEO focuses on structuring your website into machine-readable JSON-LD entity graphs. This allows AI models (Google SGE, Perplexity, ChatGPT, Claude) to parse your brand facts, specs, and pricing directly during real-time retrieval and cite your URL inside synthesized answers.'
+    },
+    {
+      q: 'Why do Large Language Models ignore websites without structured JSON-LD schemas?',
+      a: 'When LLMs execute web retrieval grounding, they must extract factual assertions within strict sub-second latency windows. Unstructured HTML requires heavy parsing and tokenization overhead. Structured Schema.org JSON-LD graphs provide pre-parsed, unambiguous entity relationships that LLM attention mechanisms pick up with 10x higher confidence scores.'
+    },
+    {
+      q: 'What is Schema Drift and how does Rinkino fix it?',
+      a: 'Schema Drift occurs when website content (prices, stock, product features, team members) is updated by marketing or development teams, but the embedded JSON-LD markup remains outdated or broken. Rinkino continuously scans your live DOM in real-time using parallel micro-crawlers and automatically corrects or updates the schema graph before crawlers flag uncertainty.'
+    },
+    {
+      q: 'Will implementing Rinkino impact my site performance or load speed?',
+      a: 'Not at all. Rinkino operates as an asynchronous background engine or via clean server-side injection. The generated JSON-LD scripts are lightweight (<2KB), non-blocking, and execute in under 0.5ms without delaying DOM paint or Core Web Vitals.'
+    },
+    {
+      q: 'How does the LLM Search Simulator test citation share?',
+      a: 'Our simulator deploys parallel query prompts to live API endpoints for Gemini, Perplexity, and ChatGPT. It measures vector cosine proximity between user prompt embeddings and your domain content, predicting your citation probability and identifying exact content gaps to fix.'
+    },
+    {
+      q: 'Can Rinkino integrate with custom headless CMS platforms (Strapi, Sanity, Shopify, WordPress)?',
+      a: 'Yes! Rinkino provides lightweight REST/GraphQL webhooks, npm packages, and standard script tags that automatically pull structured entities from any CMS and compile synchronized Schema.org graphs.'
+    },
+    {
+      q: 'What is Citation Shield Defense?',
+      a: 'Citation Shield embeds immutable claim review tags, trademark ownership schemas, and competitor disambiguation attributes into your domain metadata. This prevents AI engines from hallucinating or misattributing your brand features and pricing to competitor companies.'
+    },
+    {
+      q: 'How quickly can I see results in Google SGE and Perplexity?',
+      a: 'Because AI search engines re-index top entity domains using high-frequency crawler threads, sites utilizing Rinkino typically observe new citation cards appearing inside SGE and Perplexity answers within 24 to 72 hours of schema synchronization.'
+    }
+  ];
+
+  return (
+    <div className="min-h-screen bg-[#030712] text-zinc-100 flex flex-col font-sans relative selection:bg-[#a3e635] selection:text-black overflow-x-hidden">
+      
+      {/* Background Ambient Glowing Gradient Orbs */}
+      <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+        <motion.div
+          animate={{
+            scale: [1, 1.2, 1],
+            opacity: [0.15, 0.25, 0.15],
+            x: [0, 30, 0],
+            y: [0, -20, 0]
+          }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -top-40 -left-40 w-[600px] h-[600px] rounded-full bg-gradient-to-br from-[#a3e635]/20 via-emerald-500/10 to-transparent blur-[120px]"
+        />
+        <motion.div
+          animate={{
+            scale: [1, 1.3, 1],
+            opacity: [0.1, 0.2, 0.1],
+            x: [0, -40, 0],
+            y: [0, 40, 0]
+          }}
+          transition={{ duration: 16, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute top-1/2 -right-40 w-[700px] h-[700px] rounded-full bg-gradient-to-bl from-teal-500/15 via-sky-500/10 to-transparent blur-[150px]"
+        />
+      </div>
+
+      {/* Top Header Navigation */}
+      <header className="sticky top-0 z-50 bg-[#030712]/90 backdrop-blur-xl border-b border-zinc-900/80">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
           
-          {/* Logo brand inspired by Rinkino Systems clean minimal geometry */}
-          <div className="flex items-center gap-3 cursor-pointer group" onClick={() => { setActiveTab('home'); setActiveBlog(null); }}>
-            <div className="relative w-9 h-9 rounded-lg bg-zinc-950 flex items-center justify-center border border-zinc-800 transition-all duration-300 group-hover:border-[#a3e635]/40">
-              {/* Custom SVG logo representing stack blocks with clean geometric paths */}
-              <svg className="w-4 h-4 text-[#a3e635]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="m12 3-10 5 10 5 10-5-10-5Z" />
-                <path d="m2 17 10 5 10-5" />
-                <path d="m2 12 10 5 10-5" />
-              </svg>
-              <span className="absolute -inset-[1px] rounded-lg bg-gradient-to-r from-[#a3e635]/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-            </div>
-            <div>
-              <span className="font-bold text-sm tracking-widest text-white block font-mono">RINKINO</span>
-              <span className="text-[9px] text-[#a3e635] font-mono tracking-wider block uppercase">Search Intelligence</span>
-            </div>
+          {/* Logo */}
+          <div className="cursor-pointer group flex items-center gap-2" onClick={() => navigateToTab('home')}>
+            <RinkinoLogo size="md" />
           </div>
 
-          {/* Nav Tabs with Premium Sliding layout animations */}
-          <nav className="hidden md:flex items-center gap-1">
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-1 bg-zinc-950/80 border border-zinc-800/80 p-1 rounded-xl">
             {[
-              { id: 'home', label: 'HOME', icon: Layers },
-              { id: 'about', label: 'ABOUT', icon: Users },
-              { id: 'features', label: 'FEATURES', icon: Cpu },
-              { id: 'pricing', label: 'PRICING', icon: TrendingUp },
-              { id: 'blogs', label: 'CHRONICLES', icon: BookOpen },
-              { id: 'contact', label: 'CONTACT', icon: Sparkles },
+              { id: 'home', label: 'Home' },
+              { id: 'features', label: 'Features' },
+              { id: 'about', label: 'About' },
+              { id: 'blogs', label: 'Chronicles' },
+              { id: 'pricing', label: 'Pricing' },
+              { id: 'contact', label: 'Contact' },
             ].map((tab) => {
-              const Icon = tab.icon;
               const isActive = activeTab === tab.id;
               return (
                 <button
                   key={tab.id}
-                  onClick={() => {
-                    setActiveTab(tab.id as any);
-                    setActiveBlog(null);
-                  }}
-                  className="relative flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[11px] font-semibold tracking-wider font-mono transition-all z-10"
-                  style={{ WebkitTapHighlightColor: 'transparent' }}
+                  onClick={() => navigateToTab(tab.id as any)}
+                  className={`px-4 py-1.5 rounded-lg text-xs font-mono font-medium transition-all cursor-pointer relative ${
+                    isActive
+                      ? 'text-black font-bold'
+                      : 'text-zinc-400 hover:text-white hover:bg-zinc-900/60'
+                  }`}
                 >
                   {isActive && (
                     <motion.div
-                      layoutId="activeTabIndicator"
-                      className="absolute inset-0 bg-zinc-900 border border-zinc-800 rounded-lg -z-10"
-                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      layoutId="nav-pill"
+                      className="absolute inset-0 bg-[#a3e635] rounded-lg shadow-md shadow-[#a3e635]/20"
+                      transition={{ type: "spring", stiffness: 400, damping: 30 }}
                     />
                   )}
-                  <Icon className={`w-3.5 h-3.5 transition-colors ${isActive ? 'text-[#a3e635]' : 'text-zinc-500 hover:text-zinc-400'}`} />
-                  <span className={`transition-colors ${isActive ? 'text-[#a3e635]' : 'text-zinc-400 hover:text-zinc-200'}`}>
-                    {tab.label}
-                  </span>
+                  <span className="relative z-10">{tab.label}</span>
                 </button>
               );
             })}
           </nav>
 
-          {/* Action buttons */}
-          <div className="flex items-center gap-3">
+          {/* Action CTAs */}
+          <div className="hidden sm:flex items-center gap-3">
             <button
               onClick={onEnterApp}
-              className="relative hidden sm:inline-flex items-center justify-center px-4 py-1.5 rounded-lg text-xs font-bold font-mono border border-zinc-800 bg-zinc-950 text-zinc-300 hover:text-white hover:border-[#a3e635]/30 transition-all cursor-pointer overflow-hidden group"
+              className="px-4 py-2 rounded-xl bg-[#a3e635] hover:bg-[#bbf746] text-black font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-lg shadow-[#a3e635]/15 cursor-pointer flex items-center gap-1.5"
             >
-              <span className="relative z-10 flex items-center gap-1">
-                Enter App Console <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform" />
-              </span>
-              <div className="absolute inset-0 bg-[#a3e635]/[0.02] opacity-0 group-hover:opacity-100 transition-opacity" />
+              <Zap className="w-3.5 h-3.5 fill-black" />
+              <span>Launch Console</span>
             </button>
-
-            {/* Mobile Nav Menu Toggles */}
-            <div className="md:hidden flex items-center gap-2">
-              <button
-                onClick={onEnterApp}
-                className="px-3 py-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-xs font-mono text-[#a3e635]"
-              >
-                Console
-              </button>
-            </div>
           </div>
+
+          {/* Mobile Hamburger Button */}
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="md:hidden p-2 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-300 hover:text-white cursor-pointer"
+            aria-label="Toggle navigation menu"
+          >
+            {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+          </button>
         </div>
 
-        {/* Mobile secondary tab strip */}
-        <div className="md:hidden flex items-center justify-start border-t border-zinc-900/50 py-2.5 px-2 overflow-x-auto bg-[#030305]/95 scrollbar-thin">
-          {[
-            { id: 'home', label: 'Home' },
-            { id: 'about', label: 'About' },
-            { id: 'features', label: 'Features' },
-            { id: 'pricing', label: 'Pricing' },
-            { id: 'blogs', label: 'Chronicles' },
-            { id: 'contact', label: 'Contact' },
-          ].map(tab => (
-            <button
-              key={tab.id}
-              onClick={() => {
-                setActiveTab(tab.id as any);
-                setActiveBlog(null);
-              }}
-              className={`text-[10px] font-mono tracking-widest font-bold px-3 py-1 rounded transition-all shrink-0 mr-1 ${
-                activeTab === tab.id ? 'text-[#a3e635] bg-zinc-900' : 'text-zinc-500'
-              }`}
-            >
-              {tab.label.toUpperCase()}
-            </button>
-          ))}
-        </div>
+        {/* Enhanced Slide-In Mobile Navigation Drawer */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <div className="fixed inset-0 z-50 flex justify-end md:hidden pointer-events-auto">
+              {/* Backdrop Overlay */}
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.25 }}
+                onClick={() => setMobileMenuOpen(false)}
+                className="fixed inset-0 bg-black/80 backdrop-blur-md"
+              />
+
+              {/* Slide-In Drawer Panel */}
+              <motion.div
+                initial={{ x: '100%' }}
+                animate={{ x: 0 }}
+                exit={{ x: '100%' }}
+                transition={{ type: 'spring', damping: 28, stiffness: 320 }}
+                className="relative z-10 w-[88%] max-w-sm h-full bg-[#030712]/98 border-l border-zinc-800/90 shadow-2xl flex flex-col justify-between overflow-hidden"
+              >
+                {/* Drawer Top Header */}
+                <div className="p-5 border-b border-zinc-900/90 flex items-center justify-between bg-zinc-950/80">
+                  <div className="flex items-center gap-2">
+                    <RinkinoLogo size="sm" />
+                  </div>
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-xl bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                    aria-label="Close menu"
+                  >
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+
+                {/* Drawer Middle Scrollable Menu */}
+                <div className="flex-1 overflow-y-auto p-5 space-y-2.5 font-mono">
+                  <div className="text-[10px] uppercase font-bold text-[#a3e635] tracking-widest px-1 mb-2">
+                    Platform Navigation
+                  </div>
+
+                  {[
+                    { id: 'home', label: 'Home Page', sub: 'AEO/GEO Protocol Overview', icon: Globe },
+                    { id: 'features', label: 'Features Protocol', sub: 'Schema Studio & Simulator', icon: Braces },
+                    { id: 'about', label: 'About Rinkino', sub: 'Systems & Search Evolution', icon: Users },
+                    { id: 'blogs', label: 'Technical Chronicles', sub: 'Research Papers & Insights', icon: BookOpen },
+                    { id: 'pricing', label: 'Transparent Pricing', sub: 'Multi-Domain Calculator', icon: CreditCard },
+                    { id: 'contact', label: 'Contact Team', sub: 'Direct Integration Support', icon: Send },
+                  ].map((tab, idx) => {
+                    const isActive = activeTab === tab.id;
+                    const TabIcon = tab.icon;
+                    return (
+                      <motion.button
+                        key={tab.id}
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.04 * idx, duration: 0.2 }}
+                        onClick={() => navigateToTab(tab.id as any)}
+                        className={`w-full text-left p-3.5 rounded-xl transition-all cursor-pointer flex items-center justify-between border ${
+                          isActive
+                            ? 'bg-[#a3e635] text-black font-bold border-[#a3e635] shadow-lg shadow-[#a3e635]/20'
+                            : 'bg-zinc-950/60 border-zinc-800/80 text-zinc-300 hover:bg-zinc-900 hover:border-zinc-700'
+                        }`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <div className={`p-2 rounded-lg ${isActive ? 'bg-black/10 text-black' : 'bg-zinc-900 text-[#a3e635] border border-zinc-800'}`}>
+                            <TabIcon className="w-4 h-4" />
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-xs font-bold">{tab.label}</span>
+                            <span className={`text-[10px] ${isActive ? 'text-black/70 font-sans' : 'text-zinc-500 font-sans'}`}>{tab.sub}</span>
+                          </div>
+                        </div>
+                        <ChevronRight className={`w-4 h-4 ${isActive ? 'text-black' : 'text-zinc-600'}`} />
+                      </motion.button>
+                    );
+                  })}
+                </div>
+
+                {/* Bottom-Aligned Persistent Action Bar */}
+                <div className="p-5 border-t border-zinc-900/90 bg-zinc-950/95 backdrop-blur-xl flex flex-col gap-2.5 font-mono z-20 shrink-0">
+                  <div className="flex items-center justify-between text-[11px] text-zinc-400 px-1">
+                    <span className="flex items-center gap-1.5 text-[#a3e635]">
+                      <span className="w-2 h-2 rounded-full bg-[#a3e635] animate-ping" />
+                      Live Engine Status
+                    </span>
+                    <span className="text-zinc-500 text-[10px]">GEO v2026</span>
+                  </div>
+
+                  {/* Persistent Quick Help Button */}
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setQuickHelpOpen(true);
+                    }}
+                    className="w-full py-3 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-700/80 text-white font-bold text-xs flex items-center justify-center gap-2 cursor-pointer transition-all shadow-md group"
+                  >
+                    <HelpCircle className="w-4 h-4 text-[#a3e635] group-hover:scale-110 transition-transform" />
+                    <span>Quick Help & FAQ Assistant</span>
+                  </button>
+
+                  {/* Launch Audit Console Button */}
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      onEnterApp();
+                    }}
+                    className="w-full py-3 px-4 rounded-xl bg-[#a3e635] hover:bg-[#bbf746] text-black font-bold text-xs uppercase tracking-wider text-center cursor-pointer shadow-lg shadow-[#a3e635]/25 flex items-center justify-center gap-2 transition-all"
+                  >
+                    <Zap className="w-4 h-4 fill-black" />
+                    <span>Launch Audit Console</span>
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
+
+        {/* Quick Help Modal Drawer Overlay */}
+        <AnimatePresence>
+          {quickHelpOpen && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                transition={{ duration: 0.2 }}
+                className="bg-zinc-950 border border-zinc-800 rounded-2xl max-w-lg w-full p-6 shadow-2xl space-y-5 relative overflow-hidden"
+              >
+                <div className="flex justify-between items-center border-b border-zinc-900 pb-4">
+                  <div className="flex items-center gap-2.5">
+                    <div className="p-2 rounded-lg bg-[#a3e635]/10 border border-[#a3e635]/20 text-[#a3e635]">
+                      <HelpCircle className="w-5 h-5" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-white text-base">Rinkino Quick Help</h3>
+                      <p className="text-xs text-zinc-400 font-mono">24/7 Systems Support & Direct Integration Guidance</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setQuickHelpOpen(false)}
+                    className="p-1.5 rounded-lg bg-zinc-900 border border-zinc-800 text-zinc-400 hover:text-white transition-colors cursor-pointer"
+                  >
+                    <X className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="space-y-3 text-xs text-zinc-300">
+                  <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-start gap-3">
+                    <Zap className="w-4 h-4 text-[#a3e635] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block mb-0.5">Need a Schema Audit immediately?</span>
+                      <p className="text-zinc-400 text-[11px]">Enter your domain on the home page or launch the Audit Console to run a sub-millisecond JSON-LD parse check.</p>
+                    </div>
+                  </div>
+
+                  <div className="p-3.5 rounded-xl bg-zinc-900/60 border border-zinc-800 flex items-start gap-3">
+                    <Send className="w-4 h-4 text-[#a3e635] shrink-0 mt-0.5" />
+                    <div>
+                      <span className="font-bold text-white block mb-0.5">Custom Enterprise SLA or API Webhook Integration</span>
+                      <p className="text-zinc-400 text-[11px]">Our systems engineers assist with headless CMS webhooks (Shopify, Strapi, Sanity, WordPress).</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="pt-3 border-t border-zinc-900 flex flex-col sm:flex-row gap-2.5">
+                  <button
+                    onClick={() => {
+                      setQuickHelpOpen(false);
+                      navigateToTab('contact');
+                    }}
+                    className="flex-1 py-2.5 rounded-xl bg-[#a3e635] hover:bg-[#bbf746] text-black font-mono font-bold text-xs uppercase tracking-wider transition-all cursor-pointer text-center flex items-center justify-center gap-2"
+                  >
+                    <Send className="w-3.5 h-3.5" />
+                    <span>Open Direct Contact</span>
+                  </button>
+                  <button
+                    onClick={() => setQuickHelpOpen(false)}
+                    className="py-2.5 px-4 rounded-xl bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 text-zinc-300 font-mono text-xs cursor-pointer text-center"
+                  >
+                    Close Help
+                  </button>
+                </div>
+              </motion.div>
+            </div>
+          )}
+        </AnimatePresence>
       </header>
 
-      {/* Main Body View */}
-      <main className="w-full relative z-10">
+      {/* Main Page Area */}
+      <main className="flex-1 relative z-10">
         <AnimatePresence mode="wait">
-          
-          {/* TAB 1: Rinkino Main Landing Page Layout */}
+
+          {/* TAB 1: HOME PAGE */}
           {activeTab === 'home' && (
             <motion.div
               key="tab-home"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              exit={{ opacity: 0, y: -12 }}
               transition={{ duration: 0.35 }}
-              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-20 flex flex-col gap-24"
+              className="flex flex-col gap-28 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
             >
-              {/* 3D Animated Hero Section with Floating Elements */}
-              <motion.div 
-                className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative min-h-[500px] p-8 sm:p-12 rounded-3xl border border-zinc-900 bg-gradient-to-b from-zinc-950/30 via-zinc-950/10 to-transparent overflow-hidden group/hero"
-                onMouseMove={(e) => {
-                  const rect = e.currentTarget.getBoundingClientRect();
-                  const x = (e.clientX - rect.left) / rect.width - 0.5;
-                  const y = (e.clientY - rect.top) / rect.height - 0.5;
-                  setHeroMouse({ x, y });
-                }}
-                onMouseLeave={() => {
-                  setHeroMouse({ x: 0, y: 0 });
-                }}
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                {/* Parallax Floating Background Glows */}
-                <div 
-                  className="absolute -top-[10%] -left-[10%] w-[50%] h-[50%] rounded-full bg-[#a3e635]/[0.035] blur-[120px] pointer-events-none transition-transform duration-300 ease-out" 
-                  style={{
-                    transform: `translate(${heroMouse.x * 50}px, ${heroMouse.y * 50}px)`
-                  }}
-                />
-                <div 
-                  className="absolute bottom-[5%] right-[5%] w-[40%] h-[40%] rounded-full bg-sky-500/[0.03] blur-[100px] pointer-events-none transition-transform duration-300 ease-out" 
-                  style={{
-                    transform: `translate(${heroMouse.x * -40}px, ${heroMouse.y * -40}px)`
-                  }}
-                />
-
-                {/* Floating HUD Elements */}
-                <div 
-                  className="absolute top-6 right-10 hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-[#a3e635]/20 bg-zinc-950/90 backdrop-blur-md shadow-xl pointer-events-none transition-transform duration-300 ease-out select-none z-20"
-                  style={{
-                    transform: `translate(${heroMouse.x * 25}px, ${heroMouse.y * 25}px)`
-                  }}
+              
+              {/* Hero Banner Section */}
+              <div className="flex flex-col items-center text-center gap-8 pt-6 pb-4 relative">
+                
+                {/* Badge */}
+                <motion.div
+                  initial={{ scale: 0.9, opacity: 0 }}
+                  animate={{ scale: 1, opacity: 1 }}
+                  transition={{ duration: 0.4 }}
+                  className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-zinc-900/90 border border-zinc-800 text-xs font-mono text-zinc-300 shadow-xl"
                 >
-                  <Sparkles className="w-3.5 h-3.5 text-[#a3e635] animate-pulse" />
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-[#a3e635]">AEO COGNITIVE ACTIVE</span>
+                  <span className="w-2 h-2 rounded-full bg-[#a3e635] animate-ping" />
+                  <span className="text-[#a3e635] font-bold">Rinkino 2026</span>
+                  <span>Generative Engine Optimization Protocol</span>
+                </motion.div>
+
+                {/* Hero Headline */}
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1] max-w-5xl">
+                  Structure Your Domain Entities for <br className="hidden sm:inline" />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#a3e635] via-emerald-400 to-teal-300">
+                    AI Search Engine Citations
+                  </span>
+                </h1>
+
+                {/* Hero Subtitle */}
+                <p className="text-zinc-400 text-sm sm:text-base lg:text-lg max-w-2xl leading-relaxed">
+                  Automate Schema.org JSON-LD graphs, prevent data drift, and ensure Perplexity, Gemini, ChatGPT, and Apple Intelligence cite your brand directly in synthesized answers.
+                </p>
+
+                {/* Instant Audit Domain Input Form */}
+                <div className="w-full max-w-xl p-2 rounded-2xl glass-panel border border-zinc-800 flex flex-col sm:flex-row items-center gap-2 shadow-2xl mt-2">
+                  <div className="flex items-center gap-2 px-3 py-2 text-zinc-400 w-full">
+                    <Globe className="w-4 h-4 text-[#a3e635] shrink-0" />
+                    <input
+                      type="text"
+                      value={seoDomain}
+                      onChange={(e) => setSeoDomain(e.target.value)}
+                      placeholder="Enter domain (e.g. yourcompany.com)..."
+                      className="w-full bg-transparent border-none text-white font-mono text-xs sm:text-sm focus:outline-none placeholder-zinc-500"
+                    />
+                  </div>
+                  <button
+                    onClick={() => onStartAudit(seoDomain)}
+                    className="w-full sm:w-auto px-6 py-3 rounded-xl bg-[#a3e635] hover:bg-[#bbf746] text-black font-mono font-bold text-xs uppercase tracking-wider transition-all whitespace-nowrap cursor-pointer shadow-lg shadow-[#a3e635]/20 shrink-0 flex items-center justify-center gap-2"
+                  >
+                    <span>Run Free Audit</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
 
-                <div 
-                  className="absolute bottom-12 left-10 hidden lg:flex items-center gap-2 px-3 py-1.5 rounded-lg border border-sky-500/20 bg-zinc-950/90 backdrop-blur-md shadow-xl pointer-events-none transition-transform duration-300 ease-out select-none z-20"
-                  style={{
-                    transform: `translate(${heroMouse.x * -25}px, ${heroMouse.y * -25}px)`
-                  }}
-                >
-                  <Activity className="w-3.5 h-3.5 text-sky-400" />
-                  <span className="text-[10px] font-mono font-bold tracking-wider text-sky-300">GEO INDEX: 84.2% VISIBILITY</span>
+                {/* Quick Trust Badges */}
+                <div className="flex flex-wrap items-center justify-center gap-6 text-[11px] font-mono text-zinc-500 pt-2">
+                  <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-[#a3e635]" /> Sub-Millisecond Crawl</span>
+                  <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-[#a3e635]" /> Full Schema.org Graphs</span>
+                  <span className="flex items-center gap-1.5"><Check className="w-3.5 h-3.5 text-[#a3e635]" /> Zero Configuration Needed</span>
                 </div>
+              </div>
 
-                {/* Text Block */}
-                <div className="lg:col-span-7 flex flex-col gap-6 text-left relative z-10">
-                  
-                  {/* Eyebrow tag */}
-                  <div className="inline-flex items-center gap-2 self-start px-3 py-1 rounded-full border border-zinc-800 bg-zinc-950">
-                    <Activity className="w-3.5 h-3.5 text-[#a3e635] animate-pulse" />
-                    <span className="text-[10px] font-mono font-bold tracking-widest text-zinc-400 uppercase">
-                      Next-Gen Generative Optimization Engine
-                    </span>
-                  </div>
-
-                  <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white leading-tight">
-                    Dominate the Era <br className="hidden sm:inline" />
-                    of <span className="text-[#a3e635] font-mono">AI Search</span>
-                  </h1>
-
-                  <p className="text-zinc-400 text-base sm:text-lg max-w-xl leading-relaxed">
-                    Decoupling your authority from deprecated keywords. Rinkino targets the neural pathways of Perplexity, Google SGE, and OpenAI Search. Maximize your citation probability with deep cognitive structure.
-                  </p>
-
-                  {/* Integrated Site Auditor Box */}
-                  <div className="p-4 rounded-xl border border-zinc-850 bg-zinc-950/90 max-w-lg mt-2 shadow-2xl flex flex-col sm:flex-row gap-3 items-stretch sm:items-center">
-                    <div className="flex-1 flex items-center gap-2 px-3 py-2 rounded-lg bg-black border border-zinc-900 focus-within:border-[#a3e635]/30">
-                      <Globe className="w-4 h-4 text-zinc-500" />
-                      <input 
-                        type="text" 
-                        value={seoDomain}
-                        onChange={(e) => setSeoDomain(e.target.value)}
-                        placeholder="yourdomain.com"
-                        className="flex-1 bg-transparent text-xs text-white border-none outline-none focus:ring-0 font-mono"
-                      />
-                    </div>
-                    <button
-                      onClick={() => {
-                        setLeadDomain(seoDomain);
-                        setActiveTab('contact');
-                      }}
-                      className="px-5 py-2.5 rounded-lg bg-[#a3e635] text-black font-bold font-mono text-xs tracking-wider uppercase hover:bg-[#bbf746] transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-lg shadow-[#a3e635]/15"
-                    >
-                      <Search className="w-3.5 h-3.5" /> Run SGE Audit
-                    </button>
-                  </div>
-
-                  <div className="flex flex-wrap gap-4 mt-2">
-                    <button
-                      onClick={() => setActiveTab('features')}
-                      className="px-6 py-3 rounded-lg border border-zinc-850 bg-zinc-950 text-zinc-300 font-mono font-bold text-xs tracking-wider hover:border-zinc-700 hover:text-white transition-all flex items-center gap-2 cursor-pointer"
-                    >
-                      Explore Technical Features <ArrowRight className="w-4 h-4 text-zinc-500" />
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('blogs')}
-                      className="px-6 py-3 rounded-lg border border-transparent bg-zinc-900/50 hover:bg-zinc-900 text-zinc-400 font-mono font-bold text-xs tracking-wider hover:text-zinc-200 transition-all flex items-center gap-2 cursor-pointer"
-                    >
-                      Read Chronicles <BookOpen className="w-4 h-4 text-zinc-500" />
-                    </button>
-                  </div>
-
-                  {/* Core performance high-level metric banner */}
-                  <div className="grid grid-cols-3 gap-6 pt-8 border-t border-zinc-900 mt-4 max-w-lg">
-                    <div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono">&gt;4.2x</div>
-                      <div className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest mt-1">SGE Citations</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-[#a3e635] font-mono">0.0ms</div>
-                      <div className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest mt-1">Schema Drift</div>
-                    </div>
-                    <div>
-                      <div className="text-2xl sm:text-3xl font-extrabold text-white font-mono">AIO Core</div>
-                      <div className="text-[10px] text-zinc-500 font-mono uppercase tracking-widest mt-1">State Engine</div>
-                    </div>
-                  </div>
-
-                </div>
-
-                {/* 3D Rotating Canvas Model Container */}
-                <div 
-                  className="lg:col-span-5 flex items-center justify-center relative min-h-[350px] sm:min-h-[450px] z-10 transition-transform duration-300 ease-out"
-                  style={{
-                    transform: `translate(${heroMouse.x * 12}px, ${heroMouse.y * 12}px)`
-                  }}
-                >
-                  <div className="absolute inset-0 rounded-2xl bg-zinc-950/20 border border-zinc-900/50 backdrop-blur-3xl overflow-hidden flex items-center justify-center">
-                    
-                    {/* Live Rotating Canvas */}
-                    <canvas ref={canvasRef} className="absolute inset-0 w-full h-full cursor-grab active:cursor-grabbing" />
-
-                    {/* Technical hud overlay */}
-                    <div className="absolute top-4 left-4 font-mono text-[9px] text-zinc-500 flex flex-col gap-1.5 select-none pointer-events-none">
-                      <div className="flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-[#a3e635] animate-ping" />
-                        <span className="text-[#a3e635]">RINKINO CRAWLER ACTIVE</span>
+              {/* Glassmorphic Core Features Grid with Framer Motion Hover */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {[
+                  {
+                    icon: Braces,
+                    title: 'Schema Studio Protocol',
+                    desc: 'Automates complex JSON-LD nested entity graphs. Keeps your site taxonomy synchronized across all search engines without developer overhead.',
+                    tag: 'SCHEMA AUTOMATION'
+                  },
+                  {
+                    icon: Cpu,
+                    title: 'LLM Search Simulator',
+                    desc: 'Simulates generative query answers across Gemini, Perplexity, and ChatGPT clusters to measure and optimize your citation share rate.',
+                    tag: 'AEO / GEO MATRIX'
+                  },
+                  {
+                    icon: Shield,
+                    title: 'Citation Shield Defense',
+                    desc: 'Prevents search engines from misattributing your brand attributes, pricing details, or product specifications to competitor domains.',
+                    tag: 'BRAND PROTECTION'
+                  }
+                ].map((feat, idx) => (
+                  <motion.div
+                    key={idx}
+                    whileHover={{ y: -6, scale: 1.01 }}
+                    className="glass-card p-8 rounded-2xl border border-zinc-800/80 hover:border-[#a3e635]/50 flex flex-col justify-between gap-6 relative group transition-all duration-300"
+                  >
+                    <div className="flex flex-col gap-4">
+                      <div className="w-12 h-12 rounded-xl bg-zinc-900 border border-zinc-800 flex items-center justify-center text-[#a3e635] group-hover:bg-[#a3e635]/10 group-hover:border-[#a3e635]/30 transition-all">
+                        <feat.icon className="w-6 h-6" />
                       </div>
-                      <div>INDEX FREQUENCY: 0.25s</div>
-                      <div>COGNITIVE MATRIX: MATCH OK</div>
+                      <span className="text-[10px] font-mono font-bold text-[#a3e635] tracking-widest uppercase">{feat.tag}</span>
+                      <h3 className="text-xl font-bold text-white tracking-tight">{feat.title}</h3>
+                      <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">{feat.desc}</p>
                     </div>
 
-                    <div className="absolute bottom-4 right-4 font-mono text-[9px] text-zinc-500 select-none pointer-events-none text-right">
-                      <div>REPRESENTATION: FIBONACCI</div>
-                      <div>ROTATION: TIME * 0.4</div>
-                    </div>
-
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* The Rinkino Stack Modular Blocks with Scroll Reveal */}
-              <motion.div 
-                className="flex flex-col gap-10"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                <div className="text-center max-w-2xl mx-auto flex flex-col gap-3">
-                  <h2 className="text-3xl font-bold tracking-tight text-white">The Rinkino Stack Architecture</h2>
-                  <p className="text-zinc-400 text-sm">
-                    Three specialized decoupled systems working in synchronous harmony to solve transaction constraints and latency degradation permanently.
-                  </p>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {/* Block 1 */}
-                  <motion.div 
-                    whileHover={{ scale: 1.025, translateY: -3 }}
-                    className="p-6 rounded-xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-4 relative group hover:border-[#a3e635]/30 transition-all duration-300"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center border border-zinc-800 text-[#a3e635]">
-                      <Layers className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-base font-bold text-white tracking-tight font-mono">Rinkino Indexing Core</h3>
-                    <p className="text-zinc-400 text-xs leading-relaxed">
-                      An enterprise-ready entity extraction engine built on a modern, schema-based state compiler. Features a high-speed verification channel to claim, index, and cache search footprint entries in milliseconds.
-                    </p>
-                    <div className="text-[10px] text-zinc-500 font-mono mt-auto pt-4 border-t border-zinc-900">
-                      Semantic Graph Resolution
-                    </div>
+                    <button
+                      onClick={() => navigateToTab('features')}
+                      className="text-xs font-mono font-bold text-zinc-300 group-hover:text-[#a3e635] flex items-center gap-1 transition-colors cursor-pointer self-start"
+                    >
+                      <span>Explore feature protocol</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
                   </motion.div>
+                ))}
+              </div>
 
-                  {/* Block 2 */}
-                  <motion.div 
-                    whileHover={{ scale: 1.025, translateY: -3 }}
-                    className="p-6 rounded-xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-4 relative group hover:border-sky-500/30 transition-all duration-300"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center border border-zinc-800 text-sky-400">
-                      <Cpu className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-base font-bold text-white tracking-tight font-mono">Rinkino Parallel Crawler</h3>
-                    <p className="text-zinc-400 text-xs leading-relaxed">
-                      Our High-Performance Execution Engine. Offloads computation-heavy indexing passes into asynchronous, speculative threads, crawling, validating schema drift, and deploying live search-result simulations instantly.
-                    </p>
-                    <div className="text-[10px] text-zinc-500 font-mono mt-auto pt-4 border-t border-zinc-900">
-                      Asynchronous Thread Scheduling
-                    </div>
-                  </motion.div>
-
-                  {/* Block 3 */}
-                  <motion.div 
-                    whileHover={{ scale: 1.025, translateY: -3 }}
-                    className="p-6 rounded-xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-4 relative group hover:border-[#a3e635]/30 transition-all duration-300"
-                  >
-                    <div className="w-10 h-10 rounded-lg bg-zinc-900 flex items-center justify-center border border-zinc-800 text-[#a3e635]">
-                      <Database className="w-5 h-5" />
-                    </div>
-                    <h3 className="text-base font-bold text-white tracking-tight font-mono">Structured Schema Trie</h3>
-                    <p className="text-zinc-400 text-xs leading-relaxed">
-                      Our schema validation ledger. Decouples complex multi-nested entity graph validation from synchronous browser loadtimes. Fully eliminates I/O bottlenecks so citation probability is calculated instantly.
-                    </p>
-                    <div className="text-[10px] text-zinc-500 font-mono mt-auto pt-4 border-t border-zinc-900">
-                      Fast JSON-LD Graphing
-                    </div>
-                  </motion.div>
-                </div>
-              </motion.div>
-
-              {/* Sovereign Economics Section with Scroll Reveal */}
-              <motion.div 
-                className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-zinc-950/60 p-8 sm:p-12 rounded-2xl border border-zinc-900 relative"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                <div className="lg:col-span-5 flex flex-col gap-5 text-left">
-                  <div className="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded bg-zinc-900 border border-zinc-800">
-                    <TrendingUp className="w-3.5 h-3.5 text-[#a3e635]" />
-                    <span className="text-[9px] font-mono font-bold tracking-widest text-[#a3e635] uppercase">
-                      Search Economics
+              {/* NEW INTERACTIVE SECTION: LIVE SCHEMA PLAYGROUND PREVIEWER */}
+              <div className="glass-panel p-6 sm:p-10 rounded-3xl border border-zinc-800/90 flex flex-col gap-8 shadow-2xl relative overflow-hidden">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-zinc-800">
+                  <div className="flex flex-col gap-1">
+                    <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                      <Code2 className="w-3.5 h-3.5" /> Live Schema Studio Previewer
                     </span>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                      Inspect Real JSON-LD Entity Graphs
+                    </h2>
                   </div>
-                  <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-                    Sovereign Domains: Reclaim Search Footprint Ownership
-                  </h3>
+                  
+                  {/* Schema Type Switcher Tabs */}
+                  <div className="flex flex-wrap items-center gap-2 bg-zinc-950 p-1.5 rounded-xl border border-zinc-800">
+                    {(['Product', 'Organization', 'TechArticle', 'FAQPage'] as const).map((type) => (
+                      <button
+                        key={type}
+                        onClick={() => setPlaygroundType(type)}
+                        className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                          playgroundType === type
+                            ? 'bg-[#a3e635] text-black shadow-md shadow-[#a3e635]/20'
+                            : 'text-zinc-400 hover:text-white'
+                        }`}
+                      >
+                        {type}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+                  {/* Explanation Column */}
+                  <div className="lg:col-span-5 flex flex-col justify-between gap-6">
+                    <div className="flex flex-col gap-4 text-xs sm:text-sm text-zinc-300 leading-relaxed">
+                      <p>
+                        This live snippet represents the compiled <strong>JSON-LD (JavaScript Object Notation for Linked Data)</strong> graph generated by Rinkino's Schema Studio engine.
+                      </p>
+                      <p className="text-zinc-400">
+                        When AI crawlers like Google SGE or Perplexity scan this block, they immediately parse the explicit node keys without needing to infer meanings from unstructured HTML.
+                      </p>
+
+                      <div className="flex flex-col gap-2 pt-2 font-mono text-xs text-zinc-400">
+                        <div className="flex items-center gap-2 text-white">
+                          <CheckCircle2 className="w-4 h-4 text-[#a3e635]" />
+                          <span>100% Schema.org Validation Guarantee</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-white">
+                          <CheckCircle2 className="w-4 h-4 text-[#a3e635]" />
+                          <span>Zero Schema Drift via Auto-Syncing</span>
+                        </div>
+                        <div className="flex items-center gap-2 text-white">
+                          <CheckCircle2 className="w-4 h-4 text-[#a3e635]" />
+                          <span>Direct Grounding Index Embedding</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={copyPlaygroundCode}
+                      className="px-5 py-3 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono font-bold text-zinc-200 hover:text-white hover:border-[#a3e635]/50 flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {playgroundCopied ? (
+                        <>
+                          <Check className="w-4 h-4 text-[#a3e635]" />
+                          <span className="text-[#a3e635]">Copied to Clipboard!</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4 text-zinc-400" />
+                          <span>Copy Sample JSON-LD</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+
+                  {/* Code Editor Preview Column */}
+                  <div className="lg:col-span-7 bg-black rounded-2xl border border-zinc-800 p-5 font-mono text-xs text-[#a3e635] flex flex-col justify-between gap-4 overflow-hidden relative shadow-inner">
+                    <div className="flex items-center justify-between pb-3 border-b border-zinc-900 text-[10px] text-zinc-500 uppercase tracking-widest">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
+                        <span className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
+                        <span className="ml-2 text-zinc-400 font-bold">{playgroundType}.jsonld</span>
+                      </div>
+                      <span>Valid Schema.org Standard</span>
+                    </div>
+
+                    <pre className="overflow-x-auto text-emerald-400 leading-relaxed font-mono py-2 max-h-[320px]">
+                      <code>{schemaSamples[playgroundType]}</code>
+                    </pre>
+
+                    <div className="pt-3 border-t border-zinc-900 flex items-center justify-between text-[10px] text-zinc-500 font-mono">
+                      <span>Status: Grounded Entity Graph</span>
+                      <span className="text-[#a3e635] font-bold">Latency: 0.22ms</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* NEW INTERACTIVE SECTION: TRADITIONAL VS GENERATIVE SEARCH MATRIX */}
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col gap-2 text-center max-w-3xl mx-auto">
+                  <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest">Architectural Comparison</span>
+                  <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                    Traditional Search Engines vs AI Answer Synthesizers
+                  </h2>
                   <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-                    Why lose organic traffic to monolithic aggregator platforms? On Rinkino-powered domains, search index updates and Schema entity structures are mapped in real-time, giving protocol owners full access to search-engine optimization, citation credit, and instant AIO index priority.
-                  </p>
-                  
-                  <ul className="flex flex-col gap-2.5 text-xs font-mono text-zinc-300">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#a3e635]" /> Automated Schema.org integration
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#a3e635]" /> LLM Simulator diagnostics & auditing
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-4 h-4 text-[#a3e635]" /> Multi-agent discovery pathways
-                    </li>
-                  </ul>
-                </div>
-
-                <div className="lg:col-span-7 font-mono text-left bg-[#050508] p-6 rounded-xl border border-zinc-900 text-xs">
-                  <div className="flex items-center justify-between border-b border-zinc-900 pb-3 mb-4">
-                    <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-bold">Search Visibility Ledger Comparison</span>
-                    <span className="text-[9px] text-[#a3e635] px-1.5 py-0.5 rounded bg-[#a3e635]/10">OPTIMIZED MODE</span>
-                  </div>
-                  
-                  <div className="grid grid-cols-3 pb-2 border-b border-zinc-900 text-zinc-500 uppercase text-[9px] font-bold">
-                    <span>Feature</span>
-                    <span>Unoptimized Site</span>
-                    <span className="text-white">Rinkino Domain Footprint</span>
-                  </div>
-
-                  <div className="grid grid-cols-3 py-2 border-b border-zinc-900/50">
-                    <span className="text-zinc-400">Citation Rank</span>
-                    <span className="text-red-400">Lost (Unseen)</span>
-                    <span className="text-[#a3e635] font-bold">100% Recaptured</span>
-                  </div>
-
-                  <div className="grid grid-cols-3 py-2 border-b border-zinc-900/50">
-                    <span className="text-zinc-400">Schema Drift</span>
-                    <span className="text-zinc-500">Manual / Outdated</span>
-                    <span className="text-[#a3e635]">Continuous / Automatic</span>
-                  </div>
-
-                  <div className="grid grid-cols-3 py-2 border-b border-zinc-900/50">
-                    <span className="text-zinc-400">LLM Simulations</span>
-                    <span className="text-zinc-500">None (Blind)</span>
-                    <span className="text-[#a3e635]">Live Sandbox Testing</span>
-                  </div>
-
-                  <div className="grid grid-cols-3 py-2 text-zinc-500">
-                    <span>Indexing Delay</span>
-                    <span className="text-red-400">&gt;2 Weeks</span>
-                    <span className="text-[#a3e635] font-bold">&lt;0.45 Seconds</span>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* NEW 'Insights' Section: Render 3D Parallax Hover Post Cards */}
-              <motion.div 
-                className="flex flex-col gap-10"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                <div className="text-center max-w-2xl mx-auto flex flex-col gap-3">
-                  <div className="inline-flex items-center gap-1.5 self-center px-2.5 py-1 rounded bg-[#a3e635]/10 border border-[#a3e635]/20">
-                    <BookOpen className="w-3.5 h-3.5 text-[#a3e635]" />
-                    <span className="text-[9px] font-mono font-bold tracking-widest text-[#a3e635] uppercase">
-                      Engineering Insights
-                    </span>
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-white">Authority & Search Systems Chronicles</h2>
-                  <p className="text-zinc-400 text-sm">
-                    In-depth systems analyses connecting low-latency on-chain protocols to modern conversational search and cognitive indexing visibility. Hover cards to activate 3D parallax.
+                    Why traditional keyword-driven SEO strategies fail in the era of Gemini SGE, Perplexity, and Apple Intelligence.
                   </p>
                 </div>
 
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                  {INSIGHTS_POSTS.map((post) => (
-                    <InsightCard 
-                      key={post.id} 
-                      blog={post} 
-                      onClick={() => {
-                        setActiveTab('blogs');
-                        // Find original blog mapping if any, or create basic BlogPost mapping
-                        const matchingBlog = TECHNICAL_BLOGS.find(b => b.id === post.id) || {
-                          id: post.id,
-                          title: post.title,
-                          category: post.category,
-                          date: post.date,
-                          readTime: post.readTime,
-                          summary: post.summary,
-                          content: `## ${post.title}\n\nOur system processes high-throughput data to maximize entity optimization. Dynamic structured JSON-LD schemas generated by Schema Studio directly feed semantic graphs used by modern search crawlers.\n\n### The Optimization Paradigm\nBy compiling robust schemas, our crawler increases discoverability times down to the sub-millisecond execution range. Parallel transaction sorting and execution prevents queue lockouts, guaranteeing instant index updates.`,
-                          author: post.author
-                        };
-                        setActiveBlog(matchingBlog as any);
-                      }}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  {/* Traditional SEO Box */}
+                  <div className="glass-card p-8 rounded-3xl border border-red-500/20 bg-red-950/5 flex flex-col gap-6 relative">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-red-400 uppercase tracking-widest bg-red-500/10 px-3 py-1 rounded border border-red-500/20">
+                        LEGACY PARADIGM (1998-2023)
+                      </span>
+                      <span className="text-xs font-mono text-zinc-500">10 Blue Links</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white font-mono">Traditional Search Crawlers</h3>
+                    <ul className="flex flex-col gap-3 text-xs sm:text-sm text-zinc-400 leading-relaxed">
+                      <li className="flex items-start gap-2">
+                        <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <span>Relies on simple keyword frequency and meta description tags.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <span>Ranks pages based on raw backlink volume rather than semantic facts.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <span>Suffers from 12 to 36-hour crawling latency on large domains.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <X className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                        <span>Users click away to 10 separate links to find basic answers.</span>
+                      </li>
+                    </ul>
+                  </div>
+
+                  {/* Generative GEO Box */}
+                  <div className="glass-card p-8 rounded-3xl border border-[#a3e635]/60 bg-[#a3e635]/5 flex flex-col gap-6 relative shadow-xl shadow-[#a3e635]/5">
+                    <div className="flex items-center justify-between">
+                      <span className="text-[10px] font-mono font-bold text-[#a3e635] uppercase tracking-widest bg-[#a3e635]/10 px-3 py-1 rounded border border-[#a3e635]/30">
+                        RINKINO PROTOCOL (2026+)
+                      </span>
+                      <span className="text-xs font-mono text-[#a3e635] font-bold">Generative Answer Citations</span>
+                    </div>
+                    <h3 className="text-xl font-bold text-white font-mono">Generative AI Search Engines</h3>
+                    <ul className="flex flex-col gap-3 text-xs sm:text-sm text-zinc-200 leading-relaxed">
+                      <li className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#a3e635] shrink-0 mt-0.5" />
+                        <span>Embeds explicit Schema.org JSON-LD entity structures directly into model context.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#a3e635] shrink-0 mt-0.5" />
+                        <span>Achieves 300%+ higher citation probability in Gemini, Perplexity, & ChatGPT answers.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#a3e635] shrink-0 mt-0.5" />
+                        <span>Sub-millisecond parallel micro-crawling eliminates schema drift instantly.</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <Check className="w-4 h-4 text-[#a3e635] shrink-0 mt-0.5" />
+                        <span>Positions your brand as the direct authoritative answer source.</span>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+
+              {/* Research Chronicles Highlights Section */}
+              <div className="flex flex-col gap-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4 pb-4 border-b border-zinc-900">
+                  <div>
+                    <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest block">Technical Insights</span>
+                    <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mt-1">Research & Engineering Chronicles</h2>
+                  </div>
+                  <button
+                    onClick={() => navigateToTab('blogs')}
+                    className="text-xs font-mono font-bold text-[#a3e635] hover:underline flex items-center gap-1 cursor-pointer"
+                  >
+                    <span>View all 8 technical papers</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {TECHNICAL_BLOGS.slice(0, 3).map((blog) => (
+                    <InsightCard
+                      key={blog.id}
+                      blog={blog}
+                      onClick={() => openBlogById(blog.id)}
                     />
                   ))}
                 </div>
-              </motion.div>
+              </div>
 
-              {/* NEW Dynamic Pricing Table Component */}
-              <motion.div 
-                className="flex flex-col gap-10"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                <div className="text-center max-w-2xl mx-auto flex flex-col gap-4">
-                  <div className="inline-flex items-center gap-1.5 self-center px-2.5 py-1 rounded bg-[#a3e635]/10 border border-[#a3e635]/20">
-                    <Sparkles className="w-3.5 h-3.5 text-[#a3e635]" />
-                    <span className="text-[9px] font-mono font-bold tracking-widest text-[#a3e635] uppercase">
-                      Transparent Operations
-                    </span>
-                  </div>
-                  <h2 className="text-3xl font-bold tracking-tight text-white">Sovereign SGE & Coprocessor Pricing</h2>
-                  <p className="text-zinc-400 text-sm">
-                    Choose the unthrottled execution threads, schema crawl indices, and simulation cluster limits matching your protocol scale.
-                  </p>
+              {/* NEW INTERACTIVE SECTION: COMPREHENSIVE TECHNICAL FAQ ACCORDION */}
+              <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-zinc-800 flex flex-col gap-8">
+                <div className="flex flex-col gap-2">
+                  <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                    <HelpCircle className="w-3.5 h-3.5" /> Frequently Asked Questions
+                  </span>
+                  <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
+                    Technical Architecture & Integration FAQ
+                  </h2>
+                </div>
 
-                  {/* Billing switch toggle */}
-                  <div className="flex items-center justify-center gap-4 mt-2">
-                    <span className={`text-xs font-mono font-bold transition-colors ${billingCycle === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>
-                      Monthly Billing
-                    </span>
-                    <button 
-                      onClick={() => setBillingCycle(prev => prev === 'monthly' ? 'annual' : 'monthly')}
-                      className="w-12 h-6 rounded-full bg-zinc-900 border border-zinc-800 p-1 flex items-center cursor-pointer relative"
-                    >
-                      <motion.div 
-                        layout
-                        className="w-4 h-4 rounded-full bg-[#a3e635] shadow"
-                        animate={{ x: billingCycle === 'annual' ? 22 : 0 }}
-                        transition={{ type: "spring", stiffness: 500, damping: 30 }}
-                      />
-                    </button>
-                    <div className="flex items-center gap-2">
-                      <span className={`text-xs font-mono font-bold transition-colors ${billingCycle === 'annual' ? 'text-white' : 'text-zinc-500'}`}>
-                        Annual Billing
-                      </span>
-                      <motion.span 
-                        animate={{ scale: billingCycle === 'annual' ? [1, 1.1, 1] : 1 }}
-                        transition={{ repeat: Infinity, repeatDelay: 3, duration: 0.5 }}
-                        className="text-[9px] font-bold font-mono tracking-wider bg-[#a3e635]/10 text-[#a3e635] px-2 py-0.5 rounded-full border border-[#a3e635]/20 whitespace-nowrap"
+                <div className="flex flex-col gap-4">
+                  {FAQ_ITEMS.map((item, idx) => {
+                    const isOpen = openFaqIndex === idx;
+                    return (
+                      <div
+                        key={idx}
+                        className="rounded-2xl bg-zinc-950/80 border border-zinc-800/80 overflow-hidden transition-all"
                       >
-                        SAVE 25%
-                      </motion.span>
-                    </div>
-                  </div>
-                </div>
+                        <button
+                          onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                          className="w-full p-5 text-left flex items-center justify-between gap-4 cursor-pointer hover:bg-zinc-900/60 transition-colors"
+                        >
+                          <span className="text-sm sm:text-base font-bold text-white font-mono">{item.q}</span>
+                          <div className={`w-7 h-7 rounded-full bg-zinc-900 flex items-center justify-center border border-zinc-800 transition-transform ${isOpen ? 'rotate-180 border-[#a3e635]/50 text-[#a3e635]' : 'text-zinc-400'}`}>
+                            <ChevronDown className="w-4 h-4" />
+                          </div>
+                        </button>
 
-                {/* Pricing Grid */}
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch max-w-6xl mx-auto w-full">
-                  {/* Card 1: Core Sandbox */}
-                  <motion.div 
-                    whileHover={{ scale: 1.03, translateY: -6 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="p-6 sm:p-8 rounded-2xl border border-zinc-900 bg-zinc-950/40 hover:border-zinc-800 transition-all flex flex-col justify-between text-left"
-                  >
-                    <div className="flex flex-col gap-5">
-                      <div>
-                        <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase block">Developer Plan</span>
-                        <h3 className="text-xl font-bold text-white tracking-tight mt-1">Core Audit Sandbox</h3>
-                      </div>
-                      
-                      {/* Price Section */}
-                      <div className="h-16 flex flex-col justify-center">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-2xl font-bold text-zinc-500 font-mono line-through mr-1 opacity-40">
-                            {billingCycle === 'annual' ? '$29' : ''}
-                          </span>
-                          <span className="text-4xl font-extrabold text-white font-mono transition-all">
-                            {billingCycle === 'annual' ? '$21' : '$29'}
-                          </span>
-                          <span className="text-zinc-500 text-xs font-mono">/ mo</span>
-                        </div>
-                        <AnimatePresence mode="wait">
-                          {billingCycle === 'annual' && (
-                            <motion.span 
-                              initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -4 }}
-                              className="text-[10px] text-[#a3e635] font-mono font-bold block mt-1"
+                        <AnimatePresence>
+                          {isOpen && (
+                            <motion.div
+                              initial={{ height: 0, opacity: 0 }}
+                              animate={{ height: "auto", opacity: 1 }}
+                              exit={{ height: 0, opacity: 0 }}
+                              transition={{ duration: 0.25, ease: "easeInOut" }}
+                              className="px-5 pb-5 text-xs sm:text-sm text-zinc-400 leading-relaxed border-t border-zinc-900/60 pt-3"
                             >
-                              Billed $252 annually. Save $96/yr
-                            </motion.span>
+                              {item.a}
+                            </motion.div>
                           )}
                         </AnimatePresence>
                       </div>
-
-                      <p className="text-zinc-400 text-xs leading-relaxed border-b border-zinc-900 pb-5">
-                        Simple crawling, basic entity tagging, and single-tenant sandbox indexing tests.
-                      </p>
-
-                      <ul className="flex flex-col gap-3 text-xs font-mono text-zinc-300">
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Single active domain audit
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Schema Studio generator
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Basic LLM Search simulations
-                        </li>
-                        <li className="flex items-center gap-2 text-zinc-600">
-                          <Check className="w-4 h-4 text-zinc-800 flex-shrink-0" /> Parallel HPEC VM Thread (Locked)
-                        </li>
-                        <li className="flex items-center gap-2 text-zinc-600">
-                          <Check className="w-4 h-4 text-zinc-800 flex-shrink-0" /> Developer cluster indexing priority
-                        </li>
-                      </ul>
-                    </div>
-
-                    <button 
-                      onClick={onEnterApp}
-                      className="w-full py-3 rounded-lg border border-zinc-800 bg-zinc-900/40 text-zinc-300 hover:text-white hover:border-zinc-700 transition-all font-mono font-bold text-xs tracking-wider uppercase mt-8 cursor-pointer"
-                    >
-                      Start Free Audit
-                    </button>
-                  </motion.div>
-
-                  {/* Card 2: Pro Optimizer (Most Popular High Contrast) */}
-                  <motion.div 
-                    whileHover={{ scale: 1.03, translateY: -6 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="p-6 sm:p-8 rounded-2xl border border-[#a3e635]/40 bg-zinc-950/80 shadow-lg shadow-[#a3e635]/5 flex flex-col justify-between text-left relative"
-                  >
-                    <div className="absolute top-0 right-8 -translate-y-1/2 bg-[#a3e635] text-black text-[9px] font-mono font-extrabold tracking-widest uppercase px-3 py-1 rounded-full shadow-lg">
-                      MOST POPULAR
-                    </div>
-
-                    <div className="flex flex-col gap-5">
-                      <div>
-                        <span className="text-[10px] font-mono tracking-widest text-[#a3e635] uppercase block">Growth Plan</span>
-                        <h3 className="text-xl font-bold text-white tracking-tight mt-1">Pro SGE Optimizer</h3>
-                      </div>
-                      
-                      {/* Price Section */}
-                      <div className="h-16 flex flex-col justify-center">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-2xl font-bold text-zinc-500 font-mono line-through mr-1 opacity-40">
-                            {billingCycle === 'annual' ? '$99' : ''}
-                          </span>
-                          <span className="text-4xl font-extrabold text-[#a3e635] font-mono transition-all">
-                            {billingCycle === 'annual' ? '$74' : '$99'}
-                          </span>
-                          <span className="text-zinc-500 text-xs font-mono">/ mo</span>
-                        </div>
-                        <AnimatePresence mode="wait">
-                          {billingCycle === 'annual' && (
-                            <motion.span 
-                              initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -4 }}
-                              className="text-[10px] text-[#a3e635] font-mono font-bold block mt-1"
-                            >
-                              Billed $888 annually. Save $300/yr
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      <p className="text-zinc-400 text-xs leading-relaxed border-b border-zinc-900 pb-5">
-                        Enterprise structured schemas, complete GEO/AEO simulator matrix, and parallel coprocessor execution speeds.
-                      </p>
-
-                      <ul className="flex flex-col gap-3 text-xs font-mono text-zinc-300">
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> 5 Active concurrent domains
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Unlimited Schema Studio generator
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Full GEO/AEO Simulation Matrix
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Parallel HPEC VM Lane (Unthrottled)
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> High-frequency content multiplier
-                        </li>
-                        <li className="flex items-center gap-2 text-zinc-600">
-                          <Check className="w-4 h-4 text-zinc-800 flex-shrink-0" /> Dedicated prioritised cluster node
-                        </li>
-                      </ul>
-                    </div>
-
-                    <button 
-                      onClick={onEnterApp}
-                      className="w-full py-3 rounded-lg bg-[#a3e635] hover:bg-[#bbf746] text-black font-mono font-bold text-xs tracking-wider uppercase mt-8 cursor-pointer shadow-lg shadow-[#a3e635]/15"
-                    >
-                      Activate Pro Account
-                    </button>
-                  </motion.div>
-
-                  {/* Card 3: Enterprise Sovereign */}
-                  <motion.div 
-                    whileHover={{ scale: 1.03, translateY: -6 }}
-                    transition={{ type: "spring", stiffness: 300, damping: 20 }}
-                    className="p-6 sm:p-8 rounded-2xl border border-zinc-900 bg-zinc-950/40 hover:border-zinc-800 transition-all flex flex-col justify-between text-left"
-                  >
-                    <div className="flex flex-col gap-5">
-                      <div>
-                        <span className="text-[10px] font-mono tracking-widest text-zinc-500 uppercase block">Enterprise Plan</span>
-                        <h3 className="text-xl font-bold text-white tracking-tight mt-1">Enterprise Sovereign</h3>
-                      </div>
-                      
-                      {/* Price Section */}
-                      <div className="h-16 flex flex-col justify-center">
-                        <div className="flex items-baseline gap-1">
-                          <span className="text-2xl font-bold text-zinc-500 font-mono line-through mr-1 opacity-40">
-                            {billingCycle === 'annual' ? '$299' : ''}
-                          </span>
-                          <span className="text-4xl font-extrabold text-white font-mono transition-all">
-                            {billingCycle === 'annual' ? '$224' : '$299'}
-                          </span>
-                          <span className="text-zinc-500 text-xs font-mono">/ mo</span>
-                        </div>
-                        <AnimatePresence mode="wait">
-                          {billingCycle === 'annual' && (
-                            <motion.span 
-                              initial={{ opacity: 0, y: -4 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              exit={{ opacity: 0, y: -4 }}
-                              className="text-[10px] text-[#a3e635] font-mono font-bold block mt-1"
-                            >
-                              Billed $2,688 annually. Save $900/yr
-                            </motion.span>
-                          )}
-                        </AnimatePresence>
-                      </div>
-
-                      <p className="text-zinc-400 text-xs leading-relaxed border-b border-zinc-900 pb-5">
-                        Multi-tenant authority mapping, custom L1 core state tracking, dedicated cluster nodes, and developer APIs.
-                      </p>
-
-                      <ul className="flex flex-col gap-3 text-xs font-mono text-zinc-300">
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Unlimited domains, clients & sub-accounts
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Complete multi-tenant SEO clustering
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Custom L1 core VM state tracking
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> Dedicated priority node hosting
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> 100% Sequence rewards recaptured
-                        </li>
-                        <li className="flex items-center gap-2">
-                          <Check className="w-4 h-4 text-[#a3e635] flex-shrink-0" /> API developer keys & database syncs
-                        </li>
-                      </ul>
-                    </div>
-
-                    <button 
-                      onClick={onEnterApp}
-                      className="w-full py-3 rounded-lg border border-zinc-800 bg-zinc-900/40 text-zinc-300 hover:text-white hover:border-zinc-700 transition-all font-mono font-bold text-xs tracking-wider uppercase mt-8 cursor-pointer"
-                    >
-                      Provision Workspace
-                    </button>
-                  </motion.div>
+                    );
+                  })}
                 </div>
-              </motion.div>
+              </div>
 
-              {/* The Research Team with Scroll Reveal */}
-              <motion.div 
-                className="flex flex-col gap-10"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-              >
-                <div className="text-center max-w-xl mx-auto flex flex-col gap-2">
-                  <h3 className="text-2xl font-bold text-white tracking-tight">Engineered by System Veterans</h3>
-                  <p className="text-zinc-400 text-xs">
-                    Our engineering core holds deep expertise in low-latency systems development, high-frequency quantitative modeling, and structural cryptography.
-                  </p>
+              {/* CTA Banner */}
+              <div className="glass-panel p-8 sm:p-12 rounded-3xl border border-zinc-800 text-center flex flex-col items-center gap-6 relative overflow-hidden">
+                <div className="w-14 h-14 rounded-2xl bg-[#a3e635]/10 border border-[#a3e635]/30 flex items-center justify-center text-[#a3e635]">
+                  <Zap className="w-7 h-7" />
                 </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {TECHNICAL_BLOGS.map((blog, idx) => (
-                    <div key={idx} className="p-6 rounded-xl border border-zinc-900 bg-[#050508]/80 text-left flex flex-col gap-4">
-                      <div className="flex items-center gap-3">
-                        <img src={blog.author.avatar} alt={blog.author.name} className="w-10 h-10 rounded-full border border-zinc-800 object-cover" />
-                        <div>
-                          <div className="text-xs font-bold text-white">{blog.author.name}</div>
-                          <div className="text-[10px] text-zinc-500 font-mono mt-0.5">{blog.author.role}</div>
-                        </div>
-                      </div>
-                      <p className="text-zinc-400 text-xs leading-relaxed italic border-l-2 border-[#a3e635]/30 pl-3">
-                        "{blog.summary}"
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </motion.div>
+                <h2 className="text-2xl sm:text-4xl font-extrabold text-white tracking-tight max-w-2xl">
+                  Ready to Claim Direct AI Search Engine Citations?
+                </h2>
+                <p className="text-zinc-400 text-xs sm:text-sm max-w-xl leading-relaxed">
+                  Join technology leaders using Rinkino to audit, validate, and synchronize entity graphs across search crawlers in real-time.
+                </p>
+                <button
+                  onClick={onEnterApp}
+                  className="px-8 py-3.5 rounded-xl bg-[#a3e635] hover:bg-[#bbf746] text-black font-mono font-bold text-xs uppercase tracking-wider transition-all shadow-xl shadow-[#a3e635]/20 cursor-pointer flex items-center gap-2"
+                >
+                  <span>Launch Audit Console</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
 
             </motion.div>
           )}
 
-          {/* TAB 2: About Page - Vision & Interactive Search Timeline */}
+          {/* TAB 2: ABOUT PAGE */}
           {activeTab === 'about' && (
             <motion.div
               key="tab-about"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35 }}
               className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-16 text-left"
             >
-              <div className="flex flex-col gap-3">
-                <div className="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded bg-[#a3e635]/10 border border-[#a3e635]/20">
-                  <Sparkles className="w-3.5 h-3.5 text-[#a3e635]" />
-                  <span className="text-[9px] font-mono font-bold tracking-widest text-[#a3e635] uppercase">
-                    Our Core Vision
-                  </span>
-                </div>
-                <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight leading-tight">
-                  The Transition from Keyword Links <br />
-                  to <span className="text-[#a3e635] font-mono">Cognitive Citation Networks</span>
-                </h2>
-                <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                  Traditional SEO built on backlinks and keyword stuffing is dead. Today, answers are synthesized inside deep neural layers. Rinkino represents a new paradigm of indexing: optimizing structured entity graphs so AI agents cite your brand as their absolute authority root.
+              {/* Header */}
+              <div className="flex flex-col gap-4">
+                <span className="text-[10px] font-mono font-bold text-[#a3e635] uppercase tracking-widest bg-[#a3e635]/10 px-3 py-1 rounded border border-[#a3e635]/20 self-start">
+                  SYSTEM ORIGINS & PHILOSOPHY
+                </span>
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                  Engineered for the Transition from <br />
+                  <span className="text-[#a3e635]">Hyperlink Indexes to Semantic Entity Graphs</span>
+                </h1>
+                <p className="text-zinc-400 text-sm sm:text-base max-w-3xl leading-relaxed">
+                  Rinkino was founded on a singular premise: search engine optimization is no longer about tricking crawlers with keyword frequency. Modern search engines are conversational synthesis engines. To be cited as an authoritative answer, your web property must present clean, machine-readable JSON-LD entity structures.
                 </p>
               </div>
 
-              {/* Interactive Timeline Paradigm */}
-              <div className="flex flex-col gap-8">
-                <div className="pb-3 border-b border-zinc-900 flex justify-between items-center">
-                  <h3 className="text-xs font-bold font-mono text-zinc-500 uppercase tracking-widest">
-                    Evolution of the Search Paradigm
-                  </h3>
-                  <span className="text-[10px] text-[#a3e635] font-mono">Interactive Era Map</span>
-                </div>
-
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              {/* 4-Era Search Evolution Map */}
+              <div className="flex flex-col gap-6">
+                <h3 className="text-xs font-bold font-mono text-zinc-400 uppercase tracking-widest border-b border-zinc-900 pb-3">
+                  The Evolution of Web Indexing
+                </h3>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                   {[
                     {
-                      year: '1998',
-                      title: 'The Link Age',
-                      subtitle: 'PageRank & Anchors',
-                      desc: 'Static HTML pages crawled by keywords. Authority determined strictly by the mathematical weight of incoming hyperlinks.',
-                      tech: 'PageRank / XML Sitemaps'
+                      year: '1998 - 2012',
+                      title: 'Hyperlink Age',
+                      desc: 'Static HTML pages crawled for keywords. Domain authority computed via incoming backlink count.'
                     },
                     {
-                      year: '2015',
-                      title: 'The Neural Age',
-                      subtitle: 'RankBrain Vectorization',
-                      desc: 'Search query intent mapped to deep embedding matrices. Machine learning begins predicting contextual relevance over raw matches.',
-                      tech: 'RankBrain / Hummingbird'
+                      year: '2013 - 2022',
+                      title: 'Neural Intent Age',
+                      desc: 'RankBrain and BERT models vectorizing search query intent over simple exact keyword matches.'
                     },
                     {
-                      year: '2023',
-                      title: 'The Generative Age',
-                      subtitle: 'SGE & Direct Citations',
-                      desc: 'Search engines synthesize custom paragraphs on the fly, directly incorporating citations on sidebar response cards.',
-                      tech: 'Retrieval Augmented Generation (RAG)'
+                      year: '2023 - 2025',
+                      title: 'Generative Answer Age',
+                      desc: 'AI models generating custom summary paragraphs and citing top reference URLs on card sidebars.'
                     },
                     {
                       year: '2026+',
-                      title: 'The Agent Age',
-                      subtitle: 'Entity Schema Networks',
-                      desc: 'Autonomous AI agents query distributed API schemas directly to execute client decisions, completely bypassing standard browser views.',
-                      tech: 'Schema JSON-LD Graph Resolution'
+                      title: 'Entity Network Age',
+                      desc: 'Autonomous AI agents parsing Schema.org JSON-LD relationship graphs to select verified services directly.'
                     }
-                  ].map((era, idx) => (
+                  ].map((era, i) => (
                     <motion.div
-                      key={idx}
-                      whileHover={{ scale: 1.02, translateY: -3 }}
-                      className="p-5 rounded-xl border border-zinc-900 bg-zinc-950/40 relative flex flex-col justify-between hover:border-[#a3e635]/20 transition-all cursor-default"
+                      key={i}
+                      whileHover={{ y: -4 }}
+                      className="glass-card p-6 rounded-2xl border border-zinc-800 flex flex-col gap-3"
                     >
-                      <div className="flex flex-col gap-3">
-                        <span className="text-2xl font-black font-mono text-[#a3e635]/30 group-hover:text-[#a3e635]/60 transition-colors">
-                          {era.year}
-                        </span>
-                        <div>
-                          <h4 className="text-sm font-bold text-white tracking-tight">{era.title}</h4>
-                          <span className="text-[10px] font-mono text-[#a3e635] uppercase block mt-0.5 tracking-wider">{era.subtitle}</span>
-                        </div>
-                        <p className="text-zinc-400 text-xs leading-relaxed mt-1">
-                          {era.desc}
-                        </p>
-                      </div>
-                      <div className="text-[9px] font-mono text-zinc-600 mt-5 pt-3 border-t border-zinc-900 flex justify-between items-center">
-                        <span>Core Protocol:</span>
-                        <span className="text-zinc-400">{era.tech}</span>
-                      </div>
+                      <span className="text-xs font-mono font-bold text-[#a3e635]">{era.year}</span>
+                      <h4 className="text-base font-bold text-white tracking-tight">{era.title}</h4>
+                      <p className="text-zinc-400 text-xs leading-relaxed">{era.desc}</p>
                     </motion.div>
                   ))}
                 </div>
               </div>
 
-              {/* Research Team / Pioneers */}
-              <div className="flex flex-col gap-10">
-                <div className="pb-3 border-b border-zinc-900">
-                  <h3 className="text-xs font-bold font-mono text-zinc-500 uppercase tracking-widest">
-                    The Search Intelligence Lab
-                  </h3>
+              {/* Architecture Principles */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div className="glass-card p-6 rounded-2xl border border-zinc-800 flex flex-col gap-3">
+                  <Server className="w-6 h-6 text-[#a3e635]" />
+                  <h4 className="text-base font-bold text-white">Sub-Millisecond Crawling</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Parallel multi-threaded execution loops scan site topologies in fractions of a second, catching validation issues before deployment.
+                  </p>
                 </div>
+                <div className="glass-card p-6 rounded-2xl border border-zinc-800 flex flex-col gap-3">
+                  <Lock className="w-6 h-6 text-[#a3e635]" />
+                  <h4 className="text-base font-bold text-white">SOC2 Security Standard</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Audited site data and schema graphs remain strictly confidential inside encrypted processing sandboxes.
+                  </p>
+                </div>
+                <div className="glass-card p-6 rounded-2xl border border-zinc-800 flex flex-col gap-3">
+                  <BarChart3 className="w-6 h-6 text-[#a3e635]" />
+                  <h4 className="text-base font-bold text-white">Predictable Citation Math</h4>
+                  <p className="text-zinc-400 text-xs leading-relaxed">
+                    Simulates vector proximity between user prompts and site entity embeddings to pre-calculate citation probability.
+                  </p>
+                </div>
+              </div>
 
+              {/* Leadership Team */}
+              <div className="flex flex-col gap-6">
+                <h3 className="text-xs font-bold font-mono text-zinc-400 uppercase tracking-widest border-b border-zinc-900 pb-3">
+                  Systems Engineering Leadership
+                </h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  {TECHNICAL_BLOGS.map((blog, idx) => (
-                    <div key={idx} className="p-6 rounded-xl border border-zinc-900 bg-[#050508]/80 text-left flex flex-col gap-4">
-                      <div className="flex items-center gap-3">
-                        <img src={blog.author.avatar} alt={blog.author.name} className="w-10 h-10 rounded-full border border-zinc-800 object-cover" />
-                        <div>
-                          <div className="text-xs font-bold text-white">{blog.author.name}</div>
-                          <div className="text-[10px] text-zinc-500 font-mono mt-0.5">{blog.author.role}</div>
-                        </div>
+                  {TECHNICAL_BLOGS.slice(0, 3).map((blog, idx) => (
+                    <div key={idx} className="glass-card p-6 rounded-2xl border border-zinc-800 flex items-center gap-4">
+                      <img src={blog.author.avatar} alt={blog.author.name} className="w-12 h-12 rounded-full border border-zinc-700 object-cover" />
+                      <div>
+                        <div className="text-sm font-bold text-white">{blog.author.name}</div>
+                        <div className="text-xs text-zinc-400 font-mono mt-0.5">{blog.author.role}</div>
                       </div>
-                      <p className="text-zinc-400 text-xs leading-relaxed italic border-l-2 border-[#a3e635]/30 pl-3">
-                        "{blog.summary}"
-                      </p>
                     </div>
                   ))}
                 </div>
               </div>
+
+              {/* CTA */}
+              <div className="pt-8 border-t border-zinc-900 flex justify-between items-center flex-col sm:flex-row gap-4">
+                <div>
+                  <h4 className="text-base font-bold text-white font-mono">Test your domain against Rinkino's crawler now</h4>
+                  <p className="text-zinc-500 text-xs mt-1">Instant scan, no credit card required, full JSON-LD export.</p>
+                </div>
+                <button
+                  onClick={onEnterApp}
+                  className="px-6 py-3 rounded-xl bg-[#a3e635] text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-[#bbf746] cursor-pointer"
+                >
+                  Launch Audit Console
+                </button>
+              </div>
+
             </motion.div>
           )}
 
-          {/* TAB 3: Features Page with Embedded SGE Thread Retrieval Sandbox Simulator */}
+          {/* TAB 3: FEATURES PAGE */}
           {activeTab === 'features' && (
             <motion.div
               key="tab-features"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-12 text-left"
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35 }}
+              className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-16 text-left"
             >
+              {/* Feature Header */}
               <div className="flex flex-col gap-3">
-                <div className="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded bg-sky-500/10 border border-sky-500/20">
-                  <Cpu className="w-3.5 h-3.5 text-sky-400" />
-                  <span className="text-[9px] font-mono font-bold tracking-widest text-sky-400 uppercase">
-                    Interactive Thread Analyzer
-                  </span>
-                </div>
-                <h2 className="text-3xl font-extrabold text-white font-mono">SGE Retrieval Parallel Simulator</h2>
-                <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                  Toggle virtual crawler clusters, adjust request stresses, and simulate standard linear crawling against the **Rinkino Parallel Pipelined schema indexer**. Observe active crawling lanes in real-time.
+                <span className="text-[10px] font-mono font-bold text-[#a3e635] uppercase tracking-widest bg-[#a3e635]/10 px-3 py-1 rounded border border-[#a3e635]/20 self-start">
+                  CORE INFRASTRUCTURE MODULES
+                </span>
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                  Generative Engine Optimization Protocol Suite
+                </h1>
+                <p className="text-zinc-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+                  Five synchronized modules designed to build, validate, simulate, and defend your domain's entity authority across conversational search engines.
                 </p>
               </div>
 
-              {/* Simulation Configuration & Run Panel */}
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
-                
-                {/* Configuration Column (Left) */}
-                <div className="lg:col-span-4 p-6 rounded-xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-6">
-                  <h3 className="text-xs font-bold font-mono uppercase tracking-widest text-zinc-400 pb-2 border-b border-zinc-900">
-                    Configuration Engine
-                  </h3>
-
-                  {/* Crawler Engine Selection */}
-                  <div className="flex flex-col gap-2">
-                    <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      Target Search Engine
-                    </label>
-                    <div className="grid grid-cols-3 gap-2">
-                      {['Perplexity', 'Gemini', 'Claude'].map(vm => (
-                        <button
-                          key={vm}
-                          onClick={() => vm !== simStatus && setSimVM(vm as any)}
-                          disabled={simStatus === 'running'}
-                          className={`py-2 rounded-lg text-xs font-bold font-mono border transition-all ${
-                            simVM === vm 
-                              ? 'bg-zinc-900 border-[#a3e635] text-[#a3e635]' 
-                              : 'border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-950'
-                          }`}
-                        >
-                          {vm}
-                        </button>
-                      ))}
-                    </div>
+              {/* NEW INTERACTIVE FEATURE MODULE: CUSTOM JSON-LD SCHEMA VALIDATOR PLAYGROUND */}
+              <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-zinc-800 flex flex-col gap-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
+                  <div>
+                    <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest">Interactive Tool</span>
+                    <h3 className="text-xl font-bold text-white font-mono mt-1">Live Entity Graph Diagnostic & Validator</h3>
                   </div>
-
-                  {/* Strategy Selection */}
-                  <div className="flex flex-col gap-2">
-                    <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      Execution Strategy
-                    </label>
-                    <div className="grid grid-cols-2 gap-2">
-                      {[
-                        { id: 'Sequential', label: 'Linear Synchronous Pass' },
-                        { id: 'Rinkino Parallel', label: 'Rinkino Parallel Index' },
-                      ].map(strat => (
-                        <button
-                          key={strat.id}
-                          onClick={() => strat.id !== simStatus && setSimStrategy(strat.id as any)}
-                          disabled={simStatus === 'running'}
-                          className={`p-2 rounded-lg text-[10px] font-bold font-mono border transition-all leading-snug flex flex-col items-center justify-center text-center h-16 ${
-                            simStrategy === strat.id 
-                              ? 'bg-zinc-900 border-[#a3e635] text-[#a3e635]' 
-                              : 'border-zinc-800 text-zinc-400 hover:text-zinc-200 hover:bg-zinc-950'
-                          }`}
-                        >
-                          {strat.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* QPM Stress Config */}
-                  <div className="flex flex-col gap-2.5">
-                    <div className="flex justify-between items-center text-[10px] font-mono text-zinc-500 uppercase tracking-widest">
-                      <span>Query Stress Load</span>
-                      <span className="text-white font-bold">{simQPM.toLocaleString()} QPM</span>
-                    </div>
-                    <input
-                      type="range"
-                      min={100}
-                      max={20000}
-                      step={100}
-                      value={simQPM}
-                      onChange={(e) => setSimQPM(Number(e.target.value))}
-                      disabled={simStatus === 'running'}
-                      className="w-full h-1 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#a3e635]"
-                    />
-                    <div className="flex justify-between text-[8px] font-mono text-zinc-600">
-                      <span>100 QPM (Low)</span>
-                      <span>20,000 QPM (Extreme)</span>
-                    </div>
-                  </div>
-
-                  {/* Trigger Simulation Button */}
                   <button
-                    onClick={handleStartSimulation}
-                    disabled={simStatus === 'running'}
-                    className={`w-full py-3 rounded-lg text-xs font-bold font-mono tracking-widest uppercase transition-all flex items-center justify-center gap-2 ${
-                      simStatus === 'running'
-                        ? 'bg-zinc-900 border border-zinc-800 text-zinc-600 cursor-not-allowed'
-                        : 'bg-[#a3e635] hover:bg-[#bbf746] text-black shadow-lg shadow-[#a3e635]/10'
-                    }`}
+                    onClick={handleValidateCustomSchema}
+                    className="px-4 py-2 rounded-xl bg-[#a3e635] text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-[#bbf746] cursor-pointer flex items-center gap-1.5"
                   >
-                    {simStatus === 'running' ? (
-                      <>
-                        <span className="w-3.5 h-3.5 rounded-full border-2 border-zinc-500 border-t-zinc-200 animate-spin" />
-                        Executing Stress Test...
-                      </>
-                    ) : (
-                      <>
-                        <Play className="w-3.5 h-3.5 fill-black" />
-                        Deploy & Run Simulation
-                      </>
-                    )}
+                    <RefreshCw className="w-3.5 h-3.5" />
+                    <span>Run Graph Diagnostics</span>
                   </button>
-
-                  {/* Latency Comparison Explanation Box */}
-                  <div className="p-4 rounded-lg bg-zinc-950 border border-zinc-900 flex flex-col gap-2 text-[11px] leading-relaxed text-zinc-400">
-                    <span className="text-zinc-200 font-bold flex items-center gap-1">
-                      <Shield className="w-3.5 h-3.5 text-[#a3e635]" /> SEO & GEO Crawl Intelligence
-                    </span>
-                    Under sequential indexing, search bots crawl pages in single synchronous passes, leading to indexing latency gaps. Under Rinkino Parallel Crawling, semantic structures and JSON-LD entity feeds are pushed simultaneously, causing real-time cognitive citation resolution.
-                  </div>
-
                 </div>
 
-                {/* Dashboard & Thread Monitor Column (Right) */}
-                <div className="lg:col-span-8 flex flex-col gap-6">
-                  
-                  {/* Performance Telemetry HUD */}
-                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                    {[
-                      { label: 'Crawl Latency', value: liveMetrics.latency, color: 'text-[#a3e635]' },
-                      { label: 'Query Throughput', value: liveMetrics.throughput, color: 'text-white' },
-                      { label: 'Pipeline Efficiency', value: liveMetrics.efficiency, color: 'text-sky-400' },
-                      { label: 'SGE Citation Rank', value: liveMetrics.citationBoost, color: 'text-white' }
-                    ].map((met, mIdx) => (
-                      <div key={mIdx} className="p-4 rounded-xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-1">
-                        <span className="text-[9px] font-mono text-zinc-500 uppercase tracking-widest">{met.label}</span>
-                        <span className={`text-base sm:text-lg font-mono font-bold ${met.color}`}>{met.value}</span>
-                      </div>
-                    ))}
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                  {/* Code Input */}
+                  <div className="lg:col-span-7 flex flex-col gap-2">
+                    <label className="text-[10px] font-mono text-zinc-400 uppercase">Paste or Edit JSON-LD Code:</label>
+                    <textarea
+                      rows={10}
+                      value={customJsonInput}
+                      onChange={(e) => setCustomJsonInput(e.target.value)}
+                      className="p-4 rounded-xl bg-black border border-zinc-800 font-mono text-xs text-[#a3e635] focus:outline-none focus:border-[#a3e635] resize-none"
+                    />
                   </div>
 
-                  {/* Parallel CPU Processing Lanes Monitor */}
-                  <div className="p-5 rounded-xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-4">
-                    <div className="flex justify-between items-center pb-2 border-b border-zinc-900/50">
-                      <span className="text-xs font-bold font-mono uppercase tracking-wider text-zinc-300">
-                        Instruction-Level Crawler Schedulers
+                  {/* Diagnostic Results Box */}
+                  <div className="lg:col-span-5 flex flex-col justify-between p-5 rounded-xl bg-zinc-950 border border-zinc-800 gap-4">
+                    <div className="flex flex-col gap-3">
+                      <span className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest border-b border-zinc-900 pb-2">
+                        Diagnostic Telemetry Report
                       </span>
-                      <span className="text-[9px] font-mono text-zinc-500">
-                        {simStrategy === 'Rinkino Parallel' ? '8 PARALLEL SLOTS ACTIVE' : 'SINGLE LOCKED PIPELINE'}
-                      </span>
-                    </div>
 
-                    {/* Progress Slider */}
-                    {simStatus === 'running' && (
-                      <div className="flex flex-col gap-1.5">
-                        <div className="flex justify-between text-[9px] font-mono text-zinc-500">
-                          <span>EXECUTING STATE BATCHES</span>
-                          <span>{simProgress}%</span>
-                        </div>
-                        <div className="w-full h-1 bg-zinc-900 rounded-full overflow-hidden">
-                          <div 
-                            className="h-full bg-[#a3e635] transition-all duration-100" 
-                            style={{ width: `${simProgress}%` }}
-                          />
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Dynamic Lanes grid */}
-                    <div className="flex flex-col gap-2.5">
-                      {activeTxThread.map((active, laneIdx) => {
-                        // If sequential, only lane 0 stays locked-on and others are inactive
-                        const isLaneEnabled = simStrategy === 'Rinkino Parallel' || laneIdx === 0;
-                        const isLanePulsing = simStatus === 'running' && isLaneEnabled && active === 1;
-
-                        return (
-                          <div key={laneIdx} className="flex items-center gap-3 font-mono text-[10px]">
-                            <span className="text-zinc-600 w-16">Lane #{laneIdx}</span>
-                            <div className="flex-1 h-3.5 rounded bg-[#030305] border border-zinc-900 flex items-center px-1 overflow-hidden relative">
-                              
-                              {/* Pulse block visual */}
-                              {isLanePulsing && (
-                                <div className="h-2 rounded bg-gradient-to-r from-transparent via-[#a3e635]/40 to-transparent w-full absolute inset-0 animate-pulse" />
-                              )}
-                              
-                              {/* Sequential Lock marker warning */}
-                              {simStrategy === 'Sequential' && laneIdx > 0 && (
-                                <span className="text-[8px] text-zinc-700 mx-auto select-none">CRAWLER PAUSED (SEQUENTIAL BLOCK)</span>
-                              )}
-
-                              {simStrategy === 'Sequential' && laneIdx === 0 && simStatus === 'running' && (
-                                <div className="w-full flex justify-between px-2 select-none text-[8px] text-zinc-400">
-                                  <span>SERIAL QUEUE: RUNNING</span>
-                                  <span className="animate-pulse text-[#a3e635]">● LOCK_ACQUIRED</span>
-                                </div>
-                              )}
-
-                              {simStrategy === 'Rinkino Parallel' && isLaneEnabled && (
-                                <div className="w-full flex justify-between px-2 text-[8px]">
-                                  <span className={simStatus === 'running' ? 'text-zinc-400' : 'text-zinc-600'}>
-                                    {simStatus === 'running' ? 'CONCURRENT_TX_STREAM' : 'THREAD_SLEEPING'}
-                                  </span>
-                                  {simStatus === 'running' ? (
-                                    <span className="text-[#a3e635] font-bold">1.25M Instructions/s</span>
-                                  ) : (
-                                    <span className="text-zinc-600">IDLE</span>
-                                  )}
-                                </div>
-                              )}
-
-                            </div>
-                            <span className={`w-16 text-right font-bold font-mono text-[9px] ${
-                              !isLaneEnabled 
-                                ? 'text-zinc-800' 
-                                : simStatus === 'running'
-                                  ? 'text-[#a3e635] animate-pulse'
-                                  : 'text-zinc-500'
-                            }`}>
-                              {!isLaneEnabled ? 'BLOCKED' : simStatus === 'running' ? 'PROCESSING' : 'READY'}
+                      {validationResult ? (
+                        <div className="flex flex-col gap-3">
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-mono text-zinc-400">Schema Score:</span>
+                            <span className={`text-lg font-mono font-bold ${validationResult.score >= 80 ? 'text-[#a3e635]' : 'text-yellow-400'}`}>
+                              {validationResult.score}/100
                             </span>
                           </div>
-                        );
-                      })}
-                    </div>
-                  </div>
 
-                  {/* Real-time Logger Console Terminal */}
-                  <div className="p-5 rounded-xl border border-zinc-900 bg-black font-mono text-[10px] text-zinc-300 flex-1 min-h-[160px] flex flex-col gap-2 shadow-inner">
-                    <div className="flex items-center gap-1.5 pb-2 border-b border-zinc-900/50 text-zinc-500 text-[9px] font-bold">
-                      <Terminal className="w-3.5 h-3.5 text-zinc-500" />
-                      COPROCESSOR LOG STREAM
-                    </div>
-                    
-                    <div className="flex-1 overflow-y-auto max-h-[150px] flex flex-col gap-1.5">
-                      {simLogs.length === 0 ? (
-                        <div className="text-zinc-600 italic py-4 text-center">
-                          Waiting for execution batch deployment...
+                          <div className="flex items-center justify-between">
+                            <span className="text-xs font-mono text-zinc-400">Nodes Extracted:</span>
+                            <span className="text-xs font-mono font-bold text-white">{validationResult.nodesExtracted}</span>
+                          </div>
+
+                          <div className="flex flex-col gap-1 pt-2 border-t border-zinc-900">
+                            <span className="text-[10px] font-mono text-zinc-500 uppercase">Issues Found:</span>
+                            {validationResult.issues.map((issue, idx) => (
+                              <div key={idx} className="text-xs font-mono flex items-start gap-1.5 text-zinc-300">
+                                {validationResult.valid ? (
+                                  <Check className="w-3.5 h-3.5 text-[#a3e635] shrink-0 mt-0.5" />
+                                ) : (
+                                  <AlertTriangle className="w-3.5 h-3.5 text-yellow-400 shrink-0 mt-0.5" />
+                                )}
+                                <span>{issue}</span>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       ) : (
-                        simLogs.map((log, idx) => {
-                          const isSuccess = log.includes('[SUCCESS]');
-                          const isAlert = log.includes('[ALERT]');
-                          return (
-                            <div key={idx} className={`leading-relaxed ${
-                              isSuccess ? 'text-[#a3e635]' : isAlert ? 'text-amber-400' : 'text-zinc-300'
-                            }`}>
-                              {log}
-                            </div>
-                          );
-                        })
+                        <p className="text-xs font-mono text-zinc-500">
+                          Click "Run Graph Diagnostics" above to test your schema against Rinkino's Schema.org validator.
+                        </p>
                       )}
                     </div>
-                  </div>
 
+                    <div className="pt-3 border-t border-zinc-900 text-[10px] font-mono text-zinc-500">
+                      Standard: Schema.org v2026 Core
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Interactive Parallel Crawler Simulator */}
+              <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-zinc-800 flex flex-col gap-8">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-4 border-b border-zinc-800">
+                  <div>
+                    <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest">Interactive Simulator</span>
+                    <h3 className="text-xl font-bold text-white font-mono mt-1">SGE Crawler Thread Stress Simulator</h3>
+                  </div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-zinc-400">
+                    <span className="w-2 h-2 rounded-full bg-[#a3e635] animate-ping" />
+                    <span>Real-Time Thread Engine</span>
+                  </div>
                 </div>
 
+                <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                  {/* Left Controls */}
+                  <div className="lg:col-span-4 flex flex-col gap-5">
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Search Engine Target</label>
+                      <div className="grid grid-cols-3 gap-2">
+                        {['Perplexity', 'Gemini', 'Claude'].map(vm => (
+                          <button
+                            key={vm}
+                            onClick={() => setSimVM(vm as any)}
+                            disabled={simStatus === 'running'}
+                            className={`py-2 rounded-lg text-xs font-mono font-bold border transition-all cursor-pointer ${
+                              simVM === vm
+                                ? 'bg-[#a3e635] text-black border-[#a3e635]'
+                                : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
+                            }`}
+                          >
+                            {vm}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <label className="text-[10px] font-mono text-zinc-400 uppercase tracking-wider">Execution Strategy</label>
+                      <div className="grid grid-cols-2 gap-2">
+                        {[
+                          { id: 'Sequential', label: 'Sequential Lock' },
+                          { id: 'Rinkino Parallel', label: 'Rinkino 8-Thread Parallel' }
+                        ].map(st => (
+                          <button
+                            key={st.id}
+                            onClick={() => setSimStrategy(st.id as any)}
+                            disabled={simStatus === 'running'}
+                            className={`py-2 px-3 rounded-lg text-xs font-mono font-bold border transition-all cursor-pointer ${
+                              simStrategy === st.id
+                                ? 'bg-[#a3e635] text-black border-[#a3e635]'
+                                : 'bg-zinc-900 border-zinc-800 text-zinc-400 hover:text-white'
+                            }`}
+                          >
+                            {st.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-2">
+                      <div className="flex justify-between text-[10px] font-mono text-zinc-400 uppercase">
+                        <span>Query Stress Load</span>
+                        <span className="text-[#a3e635] font-bold">{simQPM.toLocaleString()} QPM</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="1000"
+                        max="20000"
+                        step="500"
+                        value={simQPM}
+                        onChange={(e) => setSimQPM(Number(e.target.value))}
+                        disabled={simStatus === 'running'}
+                        className="accent-[#a3e635] cursor-pointer"
+                      />
+                    </div>
+
+                    <button
+                      onClick={handleStartSimulation}
+                      disabled={simStatus === 'running'}
+                      className="w-full py-3 rounded-xl bg-[#a3e635] hover:bg-[#bbf746] text-black font-mono font-bold text-xs uppercase tracking-wider transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+                    >
+                      <Play className="w-4 h-4 fill-black" />
+                      <span>{simStatus === 'running' ? 'Running Simulation...' : 'Execute Thread Simulation'}</span>
+                    </button>
+                  </div>
+
+                  {/* Right Dashboard Telemetry */}
+                  <div className="lg:col-span-8 flex flex-col gap-6">
+                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                      <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col gap-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase">Latency</span>
+                        <span className="text-lg font-mono font-bold text-[#a3e635]">{liveMetrics.latency}</span>
+                      </div>
+                      <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col gap-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase">Throughput</span>
+                        <span className="text-lg font-mono font-bold text-white">{liveMetrics.throughput}</span>
+                      </div>
+                      <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col gap-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase">Efficiency</span>
+                        <span className="text-lg font-mono font-bold text-sky-400">{liveMetrics.efficiency}</span>
+                      </div>
+                      <div className="p-4 rounded-xl bg-zinc-900/80 border border-zinc-800 flex flex-col gap-1">
+                        <span className="text-[10px] font-mono text-zinc-500 uppercase">Citation Growth</span>
+                        <span className="text-lg font-mono font-bold text-[#a3e635]">{liveMetrics.citationBoost}</span>
+                      </div>
+                    </div>
+
+                    {/* Console Output */}
+                    <div className="p-4 rounded-xl bg-black border border-zinc-800 font-mono text-xs text-zinc-300 min-h-[140px] flex flex-col gap-2">
+                      <div className="text-[10px] text-zinc-500 uppercase pb-2 border-b border-zinc-900 flex items-center gap-2">
+                        <Terminal className="w-3.5 h-3.5 text-[#a3e635]" />
+                        <span>Coprocessor Execution Log Stream</span>
+                      </div>
+                      <div className="flex-1 overflow-y-auto max-h-[120px] flex flex-col gap-1">
+                        {simLogs.map((log, i) => (
+                          <div key={i} className={log.includes('[SUCCESS]') ? 'text-[#a3e635]' : 'text-zinc-300'}>
+                            {log}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
             </motion.div>
           )}
 
-          {/* TAB 3: Technical Chronicles / Blogs (Writing multiple beautiful blogs) */}
+          {/* TAB 4: CHRONICLES (BLOGS) PAGE */}
           {activeTab === 'blogs' && (
             <motion.div
               key="tab-blogs"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-10 text-left"
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35 }}
+              className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-12 text-left"
             >
               <AnimatePresence mode="wait">
                 {!activeBlog ? (
-                  // BLOG LIST VIEW
+                  /* ARTICLE LISTING VIEW */
                   <motion.div
-                    key="blog-list"
+                    key="blog-list-view"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
                     className="flex flex-col gap-10"
                   >
-                    <div className="flex flex-col gap-3">
-                      <div className="inline-flex items-center gap-1.5 self-start px-2.5 py-1 rounded bg-[#a3e635]/10 border border-[#a3e635]/20">
-                        <BookOpen className="w-3.5 h-3.5 text-[#a3e635]" />
-                        <span className="text-[9px] font-mono font-bold tracking-widest text-[#a3e635] uppercase">
-                          Technical Chronicles
+                    {/* Header & Controls */}
+                    <div className="flex flex-col gap-6">
+                      <div className="flex flex-col gap-2">
+                        <span className="text-[10px] font-mono font-bold text-[#a3e635] uppercase tracking-widest bg-[#a3e635]/10 px-3 py-1 rounded border border-[#a3e635]/20 self-start">
+                          RINKINO RESEARCH & ENGINEERING
                         </span>
+                        <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                          Technical Chronicles & System Papers
+                        </h1>
+                        <p className="text-zinc-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+                          In-depth architectural papers on Generative Engine Optimization, structured data graph validation, and parallel crawler engineering.
+                        </p>
                       </div>
-                      <h2 className="text-3xl font-extrabold text-white">Rinkino Systems Engineering Research</h2>
-                      <p className="text-zinc-400 text-xs sm:text-sm max-w-2xl leading-relaxed">
-                        In-depth research documents, architecture explanations, and benchmark analyses written directly by the Rinkino execution protocol team.
-                      </p>
+
+                      {/* Search Bar & Category Filter */}
+                      <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-4 pt-2 border-t border-zinc-900">
+                        {/* Search Input */}
+                        <div className="relative flex-1 max-w-md">
+                          <Search className="w-4 h-4 text-zinc-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                          <input
+                            type="text"
+                            placeholder="Search articles (e.g. schema, SGE, crawler)..."
+                            value={blogSearchQuery}
+                            onChange={(e) => setBlogSearchQuery(e.target.value)}
+                            className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-zinc-950 border border-zinc-800 text-xs text-white placeholder-zinc-500 focus:border-[#a3e635] focus:outline-none font-mono"
+                          />
+                        </div>
+
+                        {/* Category Pills */}
+                        <div className="flex flex-wrap items-center gap-2">
+                          {['All', 'Schema Engineering', 'AEO/GEO Intelligence', 'Systems Scaling', 'Crawler Engineering', 'Brand Security'].map((cat) => (
+                            <button
+                              key={cat}
+                              onClick={() => setSelectedBlogCategory(cat)}
+                              className={`px-3 py-1.5 rounded-lg text-xs font-mono font-bold transition-all cursor-pointer ${
+                                selectedBlogCategory === cat
+                                  ? 'bg-[#a3e635] text-black shadow-md shadow-[#a3e635]/10'
+                                  : 'bg-zinc-900 text-zinc-400 border border-zinc-800 hover:text-white'
+                              }`}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
                     </div>
 
-                    <div className="flex flex-col gap-8">
-                      {TECHNICAL_BLOGS.map((blog, idx) => (
-                        <div 
+                    {/* Articles Grid */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                      {filteredBlogs.map((blog) => (
+                        <InsightCard
                           key={blog.id}
+                          blog={blog}
                           onClick={() => setActiveBlog(blog)}
-                          className="p-6 sm:p-8 rounded-xl border border-zinc-900 bg-zinc-950/40 hover:border-[#a3e635]/30 transition-all cursor-pointer flex flex-col gap-4 group text-left"
-                        >
-                          <div className="flex flex-wrap items-center gap-3 text-[10px] font-mono">
-                            <span className="text-[#a3e635] uppercase tracking-wider">{blog.category}</span>
-                            <span className="text-zinc-600">•</span>
-                            <span className="text-zinc-400">{blog.date}</span>
-                            <span className="text-zinc-600">•</span>
-                            <span className="text-zinc-500">{blog.readTime}</span>
-                          </div>
-
-                          <h3 className="text-xl sm:text-2xl font-bold text-white tracking-tight group-hover:text-[#a3e635] transition-colors leading-tight">
-                            {blog.title}
-                          </h3>
-
-                          <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
-                            {blog.summary}
-                          </p>
-
-                          <div className="flex items-center justify-between pt-4 border-t border-zinc-900/50 mt-2">
-                            <div className="flex items-center gap-3">
-                              <img src={blog.author.avatar} alt={blog.author.name} className="w-8 h-8 rounded-full border border-zinc-800 object-cover" />
-                              <div className="text-xs font-bold text-zinc-300">{blog.author.name}</div>
-                            </div>
-                            <span className="text-xs font-mono text-[#a3e635] flex items-center gap-1 group-hover:translate-x-1 transition-transform">
-                              Read Full Documentation <ChevronRight className="w-4 h-4" />
-                            </span>
-                          </div>
-                        </div>
+                        />
                       ))}
                     </div>
+
+                    {filteredBlogs.length === 0 && (
+                      <div className="text-center py-16 text-zinc-500 font-mono text-xs">
+                        No articles match "{blogSearchQuery}". Try adjusting your search query or selected category filter.
+                      </div>
+                    )}
                   </motion.div>
                 ) : (
-                  // INDIVIDUAL BLOG FULL VIEW
+                  /* FULL ARTICLE READER VIEW WITH INTERNAL LINKS */
                   <motion.div
-                    key="blog-detail"
+                    key="blog-reader-view"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     exit={{ opacity: 0, x: -20 }}
-                    className="flex flex-col gap-8"
+                    className="flex flex-col gap-8 max-w-4xl mx-auto w-full"
                   >
-                    {/* Back Button */}
+                    {/* Back button */}
                     <button
                       onClick={() => setActiveBlog(null)}
-                      className="flex items-center gap-1.5 self-start px-3 py-1.5 rounded-lg border border-zinc-900 bg-zinc-950 text-xs font-mono text-zinc-400 hover:text-white transition-all cursor-pointer"
+                      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300 hover:text-white transition-all cursor-pointer self-start"
                     >
                       <ChevronLeft className="w-4 h-4" />
-                      Back to Chronicles
+                      <span>Back to Chronicles List</span>
                     </button>
 
-                    <div className="flex flex-col gap-4">
+                    {/* Article Header */}
+                    <div className="flex flex-col gap-4 border-b border-zinc-900 pb-6">
                       <div className="flex items-center gap-3 text-xs font-mono">
-                        <span className="text-[#a3e635] uppercase tracking-wider">{activeBlog.category}</span>
+                        <span className="text-[#a3e635] font-bold uppercase bg-[#a3e635]/10 px-2.5 py-1 rounded border border-[#a3e635]/20">
+                          {activeBlog.category}
+                        </span>
                         <span className="text-zinc-600">•</span>
                         <span className="text-zinc-400">{activeBlog.date}</span>
                         <span className="text-zinc-600">•</span>
-                        <span className="text-zinc-500">{activeBlog.readTime}</span>
+                        <span className="text-zinc-400">{activeBlog.readTime}</span>
                       </div>
 
-                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-tight">
+                      <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight leading-tight">
                         {activeBlog.title}
                       </h1>
 
-                      {/* Author Bio Card */}
-                      <div className="flex items-center gap-3.5 py-4 border-y border-zinc-900 my-2">
-                        <img src={activeBlog.author.avatar} alt={activeBlog.author.name} className="w-11 h-11 rounded-full border border-zinc-800 object-cover" />
+                      {/* Author Bio */}
+                      <div className="flex items-center gap-4 pt-2">
+                        <img src={activeBlog.author.avatar} alt={activeBlog.author.name} className="w-10 h-10 rounded-full border border-zinc-700 object-cover" />
                         <div>
                           <div className="text-sm font-bold text-white">{activeBlog.author.name}</div>
-                          <div className="text-xs text-zinc-500 font-mono">{activeBlog.author.role}</div>
+                          <div className="text-xs text-zinc-400 font-mono">{activeBlog.author.role}</div>
                         </div>
                       </div>
                     </div>
 
-                    {/* Markdown-style highly-styled technical post content */}
+                    {/* Article Markdown Content */}
                     <div className="prose prose-invert max-w-none text-zinc-300 leading-relaxed text-sm sm:text-base flex flex-col gap-6 font-sans">
-                      {/* Split contents on newlines and parse markdown basics */}
-                      {activeBlog.content.split('\n\n').map((para, pIdx) => {
-                        // Check if header
-                        if (para.startsWith('### ')) {
-                          return <h3 key={pIdx} className="text-lg font-bold text-white font-mono mt-4 border-l-2 border-[#a3e635] pl-3">{para.replace('### ', '')}</h3>;
+                      {activeBlog.content.split('\n\n').map((paragraph, idx) => {
+                        if (paragraph.startsWith('## ')) {
+                          return <h2 key={idx} className="text-2xl font-extrabold text-white font-mono mt-4 border-b border-zinc-900 pb-2">{paragraph.replace('## ', '')}</h2>;
                         }
-                        if (para.startsWith('## ')) {
-                          return <h2 key={pIdx} className="text-xl sm:text-2xl font-extrabold text-white font-mono mt-6 border-b border-zinc-900 pb-2">{para.replace('## ', '')}</h2>;
+                        if (paragraph.startsWith('### ')) {
+                          return <h3 key={idx} className="text-lg font-bold text-white font-mono mt-3 border-l-2 border-[#a3e635] pl-3">{paragraph.replace('### ', '')}</h3>;
                         }
-                        // Check if rust code block
-                        if (para.startsWith('```rust') || para.startsWith('```')) {
-                          const code = para
-                            .replace('```rust\n', '')
-                            .replace('```\n', '')
-                            .replace('```', '')
-                            .trim();
+                        if (paragraph.startsWith('```')) {
+                          const code = paragraph.replace(/```[a-z]*/, '').replace(/```/, '').trim();
                           return (
-                            <pre key={pIdx} className="p-4 rounded-lg bg-black border border-zinc-900 font-mono text-xs text-zinc-200 overflow-x-auto leading-relaxed my-2">
+                            <pre key={idx} className="p-4 rounded-xl bg-black border border-zinc-800 font-mono text-xs text-[#a3e635] overflow-x-auto my-2">
                               <code>{code}</code>
                             </pre>
                           );
                         }
-                        // Check if bullet point list
-                        if (para.startsWith('- ') || para.startsWith('• ')) {
-                          const items = para.split('\n').map(li => li.replace(/^[-•]\s+/, ''));
+                        if (paragraph.startsWith('- ')) {
+                          const items = paragraph.split('\n').map(li => li.replace('- ', ''));
                           return (
-                            <ul key={pIdx} className="list-disc pl-5 flex flex-col gap-2">
+                            <ul key={idx} className="list-disc pl-5 flex flex-col gap-2 text-zinc-300 text-xs sm:text-sm">
                               {items.map((item, itemIdx) => (
-                                <li key={itemIdx} className="text-zinc-300 text-xs sm:text-sm">
-                                  {item}
-                                </li>
+                                <li key={itemIdx}>{item}</li>
                               ))}
                             </ul>
                           );
                         }
-                        // Check if table
-                        if (para.includes('|')) {
-                          const lines = para.split('\n').filter(l => l.trim() !== '');
-                          const headers = lines[0].split('|').map(h => h.trim()).filter(h => h !== '');
-                          const rows = lines.slice(2).map(r => r.split('|').map(td => td.trim()).filter(td => td !== ''));
-                          return (
-                            <div key={pIdx} className="overflow-x-auto my-4">
-                              <table className="w-full border-collapse border border-zinc-900 text-xs sm:text-sm font-mono text-left">
-                                <thead className="bg-zinc-950 text-zinc-400 uppercase text-[10px] tracking-wider border-b border-zinc-900">
-                                  <tr>
-                                    {headers.map((h, hIdx) => <th key={hIdx} className="p-3 font-bold border-r border-zinc-900">{h}</th>)}
-                                  </tr>
-                                </thead>
-                                <tbody className="divide-y divide-zinc-900/50">
-                                  {rows.map((row, rIdx) => (
-                                    <tr key={rIdx} className="hover:bg-zinc-950/20">
-                                      {row.map((td, tdIdx) => <td key={tdIdx} className="p-3 border-r border-zinc-900">{td}</td>)}
-                                    </tr>
-                                  ))}
-                                </tbody>
-                              </table>
-                            </div>
-                          );
-                        }
-                        // Return simple paragraph
-                        return <p key={pIdx} className="text-zinc-400 leading-relaxed text-xs sm:text-sm" dangerouslySetInnerHTML={{ __html: para.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />;
+                        return (
+                          <p key={idx} className="text-zinc-300 leading-relaxed text-xs sm:text-sm">
+                            {paragraph}
+                          </p>
+                        );
                       })}
                     </div>
 
-                    {/* Blog footer */}
-                    <div className="pt-6 border-t border-zinc-900 mt-6 flex justify-between items-center text-xs font-mono text-zinc-500">
-                      <span>© 2026 Rinkino Systems Engineering</span>
-                      <button 
-                        onClick={() => setActiveBlog(null)} 
-                        className="text-[#a3e635] hover:underline cursor-pointer"
+                    {/* INTERNAL LINK BUILDING SECTION */}
+                    <div className="glass-panel p-6 sm:p-8 rounded-2xl border border-zinc-800 flex flex-col gap-4 mt-8">
+                      <span className="text-[10px] font-mono text-[#a3e635] font-bold uppercase tracking-widest flex items-center gap-1.5">
+                        <BookOpen className="w-3.5 h-3.5" /> Related Internal Engineering Chronicles
+                      </span>
+                      <h4 className="text-base font-bold text-white font-mono">Recommended Further Reading</h4>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                        {TECHNICAL_BLOGS.filter(b => activeBlog.relatedArticleIds.includes(b.id)).map(rel => (
+                          <div
+                            key={rel.id}
+                            onClick={() => openBlogById(rel.id)}
+                            className="p-4 rounded-xl bg-zinc-900/60 border border-zinc-800 hover:border-[#a3e635]/50 transition-all cursor-pointer flex flex-col gap-2 group"
+                          >
+                            <span className="text-[9px] font-mono text-[#a3e635] uppercase">{rel.category}</span>
+                            <h5 className="text-xs font-bold text-white group-hover:text-[#a3e635] transition-colors line-clamp-2">{rel.title}</h5>
+                            <span className="text-[10px] font-mono text-zinc-500 flex items-center gap-1">Read article <ChevronRight className="w-3 h-3" /></span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Call to Action Bar */}
+                    <div className="p-6 rounded-2xl bg-[#a3e635]/10 border border-[#a3e635]/30 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
+                      <div>
+                        <h4 className="text-sm font-bold text-white font-mono">Test this protocol on your website</h4>
+                        <p className="text-zinc-400 text-xs mt-0.5">Run an automated schema audit using Rinkino's execution engine.</p>
+                      </div>
+                      <button
+                        onClick={onEnterApp}
+                        className="px-5 py-2.5 rounded-xl bg-[#a3e635] text-black font-mono font-bold text-xs uppercase tracking-wider hover:bg-[#bbf746] cursor-pointer whitespace-nowrap"
                       >
-                        Return to chronicles
+                        Launch Free Audit
                       </button>
                     </div>
 
@@ -2094,434 +2044,341 @@ export const SaaSLandingPage: React.FC<SaaSLandingPageProps> = ({
             </motion.div>
           )}
 
-          {/* TAB 4: Dynamic Pricing Table Component */}
+          {/* TAB 5: PRICING PAGE */}
           {activeTab === 'pricing' && (
             <motion.div
               key="tab-pricing"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35 }}
               className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-16 text-left"
             >
+              {/* Header */}
               <div className="text-center max-w-2xl mx-auto flex flex-col gap-4">
-                <div className="inline-flex items-center gap-1.5 self-center px-2.5 py-1 rounded bg-[#a3e635]/10 border border-[#a3e635]/20">
-                  <CreditCard className="w-3.5 h-3.5 text-[#a3e635]" />
-                  <span className="text-[9px] font-mono font-bold tracking-widest text-[#a3e635] uppercase">
-                    Transparent Scale
-                  </span>
-                </div>
-                <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                  Simple, Predictable Infrastructure Pricing
-                </h2>
-                <p className="text-zinc-400 text-xs sm:text-sm">
-                  Whether you are optimizing a singular authority domain or establishing an enterprise agent network. No secret limits. Save 20% on annual billing cycles.
+                <span className="text-[10px] font-mono font-bold text-[#a3e635] uppercase tracking-widest bg-[#a3e635]/10 px-3 py-1 rounded border border-[#a3e635]/20 self-center">
+                  TRANSPARENT INFRASTRUCTURE TIERS
+                </span>
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                  Predictable Pricing for Any Scale
+                </h1>
+                <p className="text-zinc-400 text-xs sm:text-sm leading-relaxed">
+                  Choose the crawler bandwidth, schema drift protection routines, and simulation cluster limits that match your brand. Save 20% with annual billing.
                 </p>
 
                 {/* Billing Cycle Toggle */}
-                <div className="flex items-center justify-center gap-3 mt-4">
-                  <span className={`text-xs font-mono font-bold ${billingCycle === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>
-                    Monthly
-                  </span>
+                <div className="flex items-center justify-center gap-4 mt-2">
+                  <span className={`text-xs font-mono font-bold ${billingCycle === 'monthly' ? 'text-white' : 'text-zinc-500'}`}>Monthly Billing</span>
                   <button
-                    onClick={() => setBillingCycle(prev => prev === 'monthly' ? 'annual' : 'monthly')}
-                    className="w-12 h-6 rounded-full bg-zinc-900 border border-zinc-800 p-0.5 relative transition-colors duration-200 cursor-pointer"
+                    onClick={() => setBillingCycle(billingCycle === 'monthly' ? 'annual' : 'monthly')}
+                    className="w-12 h-6 rounded-full bg-zinc-900 border border-zinc-800 p-0.5 relative transition-colors cursor-pointer"
                   >
-                    <motion.div 
-                      className="w-4 h-4 rounded-full bg-[#a3e635] shadow"
+                    <motion.div
                       layout
+                      className="w-4 h-4 rounded-full bg-[#a3e635]"
                       animate={{ x: billingCycle === 'annual' ? 24 : 0 }}
-                      transition={{ type: 'spring', stiffness: 500, damping: 30 }}
                     />
                   </button>
                   <span className={`text-xs font-mono font-bold flex items-center gap-1.5 ${billingCycle === 'annual' ? 'text-[#a3e635]' : 'text-zinc-500'}`}>
-                    Annual <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#a3e635]/10 border border-[#a3e635]/20 font-bold uppercase tracking-wider text-[#a3e635]">Save 20%</span>
+                    Annual Billing <span className="text-[9px] px-1.5 py-0.5 rounded bg-[#a3e635]/10 text-[#a3e635] font-extrabold">SAVE 20%</span>
                   </span>
                 </div>
               </div>
 
-              {/* Volume Estimator Slider */}
-              <div className="p-6 sm:p-8 rounded-2xl border border-zinc-900 bg-zinc-950/40 max-w-3xl mx-auto w-full flex flex-col gap-6">
-                <div className="flex justify-between items-center pb-3 border-b border-zinc-900">
-                  <div>
-                    <h3 className="text-sm font-bold text-white font-mono uppercase tracking-wider">Multi-Domain Sizing Calculator</h3>
-                    <p className="text-zinc-500 text-[10px] mt-0.5">Scale your authority footprint to estimate custom volume discounts.</p>
-                  </div>
-                  <span className="text-xs font-mono font-bold text-[#a3e635] bg-[#a3e635]/10 border border-[#a3e635]/20 px-2.5 py-1 rounded">
-                    {seoVolume} {seoVolume === 1 ? 'Domain' : 'Domains'}
+              {/* NEW INTERACTIVE COST & DOMAIN PAGE SIZING CALCULATOR */}
+              <div className="glass-panel p-6 sm:p-8 rounded-3xl border border-zinc-800 flex flex-col gap-6 max-w-3xl mx-auto w-full">
+                <div className="flex items-center justify-between pb-3 border-b border-zinc-800">
+                  <span className="text-xs font-mono font-bold text-white uppercase flex items-center gap-2">
+                    <Sliders className="w-4 h-4 text-[#a3e635]" /> Interactive Domain Sizing Calculator
                   </span>
+                  <span className="text-xs font-mono text-[#a3e635] font-bold">{pricingPageCount.toLocaleString()} Index Pages</span>
                 </div>
 
                 <div className="flex flex-col gap-2">
-                  <input 
+                  <div className="flex justify-between text-xs font-mono text-zinc-400">
+                    <span>Estimated Page Index Volume:</span>
+                    <span className="text-white font-bold">{pricingPageCount.toLocaleString()} pages</span>
+                  </div>
+                  <input
                     type="range"
-                    min="1"
-                    max="20"
-                    value={seoVolume}
-                    onChange={(e) => setSeoVolume(Number(e.target.value))}
-                    className="w-full accent-[#a3e635] h-1 bg-zinc-900 rounded-lg cursor-pointer"
+                    min="1000"
+                    max="50000"
+                    step="1000"
+                    value={pricingPageCount}
+                    onChange={(e) => setPricingPageCount(Number(e.target.value))}
+                    className="accent-[#a3e635] cursor-pointer"
                   />
-                  <div className="flex justify-between text-[9px] font-mono text-zinc-600 mt-1">
-                    <span>1 Domain</span>
-                    <span>10 Domains</span>
-                    <span>20 Domains</span>
+                  <div className="flex justify-between text-[10px] font-mono text-zinc-500">
+                    <span>1,000 pages</span>
+                    <span>25,000 pages</span>
+                    <span>50,000+ pages</span>
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 pt-4 border-t border-zinc-900/50 text-center sm:text-left">
+                <div className="p-4 rounded-xl bg-zinc-950 border border-zinc-800 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs font-mono">
                   <div>
-                    <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Estimated Crawls / Mo</div>
-                    <div className="text-lg font-bold font-mono text-white mt-1">{(seoVolume * 250).toLocaleString()} passes</div>
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Base Monthly Rate</div>
-                    <div className="text-lg font-bold font-mono text-white mt-1">
-                      ${(seoVolume * (billingCycle === 'annual' ? 39 : 49)).toLocaleString()} / mo
+                    <div className="text-zinc-400">Recommended Tier:</div>
+                    <div className="text-sm font-bold text-white">
+                      {pricingPageCount <= 2000 ? 'Starter Sovereign' : pricingPageCount <= 15000 ? 'Growth Cluster' : 'Enterprise Consortium'}
                     </div>
                   </div>
-                  <div>
-                    <div className="text-[10px] font-mono text-[#a3e635] uppercase tracking-widest font-bold">Annualized Savings</div>
-                    <div className="text-lg font-bold font-mono text-[#a3e635] mt-1">
-                      ${(seoVolume * 120).toLocaleString()} / yr
-                    </div>
+                  <div className="text-right">
+                    <div className="text-zinc-400">Projected SGE Citation Gain:</div>
+                    <div className="text-sm font-bold text-[#a3e635]">+{Math.round(pricingPageCount * 0.08)} Monthly Citations</div>
                   </div>
                 </div>
               </div>
 
-              {/* Main Pricing Grid */}
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-stretch max-w-5xl mx-auto w-full">
+              {/* 3 Pricing Cards */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {[
                   {
-                    tier: 'Sovereign Node',
+                    name: 'Starter Sovereign',
                     price: billingCycle === 'annual' ? 39 : 49,
-                    desc: 'Perfect for single authority site testing and SGE ranking diagnostics.',
+                    desc: 'Designed for single domain properties testing Generative Engine Optimization.',
                     features: [
                       '1 Registered Domain Node',
-                      '250 Crawler passes / mo',
-                      'Full Schema Studio Access',
-                      'Direct JSON-LD API endpoint',
-                      'Weekly Crawler diagnostic reports'
+                      '250 Crawler Passes / Month',
+                      'Full Schema Studio Generator',
+                      'Direct JSON-LD API Export',
+                      'Weekly Crawler Health Reports'
                     ],
-                    action: 'Initialize Sovereign',
-                    popular: false
+                    cta: 'Start Free Audit'
                   },
                   {
-                    tier: 'Cluster Operator',
-                    price: billingCycle === 'annual' ? 159 : 199,
-                    desc: 'Engineered for scaling portfolios and high-frequency indexing routines.',
+                    name: 'Growth Cluster',
+                    price: billingCycle === 'annual' ? 129 : 159,
+                    desc: 'Ideal for scaling platforms and multi-domain publishing portfolios.',
                     features: [
                       'Up to 5 Registered Domains',
-                      '1,500 Crawler passes / mo',
-                      'Parallel thread scheduling',
-                      'Automated Schema.org drift fix',
-                      'Daily Perplexity search simulator trials',
-                      '24/7 priority consensus support'
+                      '1,500 Crawler Passes / Month',
+                      '8-Thread Parallel Execution',
+                      'Automated Schema Drift Fixes',
+                      'LLM Search Engine Simulator',
+                      '24/7 Support SLA Guarantee'
                     ],
-                    action: 'Deploy Cluster Operator',
+                    cta: 'Deploy Growth Cluster',
                     popular: true
                   },
                   {
-                    tier: 'Vanguard Consortium',
+                    name: 'Enterprise Consortium',
                     price: 'Custom',
-                    desc: 'For high-throughput publishing networks requiring private simulator pipelines.',
+                    desc: 'For enterprise organizations requiring dedicated parallel crawler hardware.',
                     features: [
                       'Unlimited Domain Nodes',
-                      'Unthrottled crawler allocations',
-                      'Dedicated parallel VMs',
-                      'Custom LLM response model fine-tuning',
-                      'SLA-backed state finality',
-                      'Dedicated account lead systems architect'
+                      'Unthrottled Crawler Allocations',
+                      'Dedicated Parallel Execution Nodes',
+                      'Custom Schema Specification Tuning',
+                      'Dedicated Systems Lead'
                     ],
-                    action: 'Negotiate Consortium Terms',
-                    popular: false
+                    cta: 'Request Terms'
                   }
-                ].map((plan, idx) => (
+                ].map((tier, i) => (
                   <motion.div
-                    key={idx}
-                    whileHover={{ scale: 1.02 }}
-                    className={`p-6 rounded-2xl border flex flex-col justify-between relative transition-all duration-300 ${
-                      plan.popular 
-                        ? 'border-[#a3e635] bg-zinc-950/90 shadow-2xl shadow-[#a3e635]/5' 
-                        : 'border-zinc-900 bg-zinc-950/40 hover:border-zinc-800'
+                    key={i}
+                    whileHover={{ y: -6 }}
+                    className={`glass-card p-8 rounded-3xl border flex flex-col justify-between gap-8 relative ${
+                      tier.popular ? 'border-[#a3e635] shadow-xl shadow-[#a3e635]/10' : 'border-zinc-800'
                     }`}
                   >
-                    {plan.popular && (
-                      <span className="absolute -top-3 left-6 px-2.5 py-0.5 rounded bg-[#a3e635] text-black font-bold font-mono text-[9px] uppercase tracking-wider">
-                        Recommended Strategy
+                    {tier.popular && (
+                      <span className="absolute -top-3 left-6 px-3 py-1 rounded-full bg-[#a3e635] text-black font-mono font-bold text-[9px] uppercase tracking-wider">
+                        MOST POPULAR
                       </span>
                     )}
 
-                    <div className="flex flex-col gap-6">
-                      <div>
-                        <h4 className="text-base font-extrabold text-white font-mono">{plan.tier}</h4>
-                        <p className="text-zinc-500 text-xs mt-2 leading-relaxed">{plan.desc}</p>
-                      </div>
-
-                      <div className="flex items-baseline gap-1.5 py-2 border-b border-zinc-900/60">
-                        {typeof plan.price === 'number' ? (
+                    <div className="flex flex-col gap-4">
+                      <h3 className="text-xl font-bold text-white font-mono">{tier.name}</h3>
+                      <p className="text-zinc-400 text-xs leading-relaxed">{tier.desc}</p>
+                      
+                      <div className="flex items-baseline gap-1 py-3 border-y border-zinc-800/60 font-mono">
+                        {typeof tier.price === 'number' ? (
                           <>
-                            <span className="text-3xl font-bold font-mono text-white">${plan.price}</span>
-                            <span className="text-zinc-500 text-xs font-mono">/ mo</span>
+                            <span className="text-4xl font-extrabold text-white">${tier.price}</span>
+                            <span className="text-zinc-500 text-xs">/ mo</span>
                           </>
                         ) : (
-                          <span className="text-2xl font-bold font-mono text-white">{plan.price}</span>
+                          <span className="text-3xl font-extrabold text-white">{tier.price}</span>
                         )}
                       </div>
 
-                      <ul className="flex flex-col gap-2.5 text-xs text-zinc-400">
-                        {plan.features.map((feat, fIdx) => (
-                          <li key={fIdx} className="flex items-center gap-2">
-                            <span className="w-1.5 h-1.5 rounded-full bg-[#a3e635] flex-shrink-0" />
-                            <span>{feat}</span>
+                      <ul className="flex flex-col gap-2.5 text-xs text-zinc-300 font-mono">
+                        {tier.features.map((f, fi) => (
+                          <li key={fi} className="flex items-center gap-2">
+                            <Check className="w-4 h-4 text-[#a3e635] shrink-0" />
+                            <span>{f}</span>
                           </li>
                         ))}
                       </ul>
                     </div>
 
                     <button
-                      onClick={() => {
-                        setLeadMessage(`Hi, I would like to sign up for the ${plan.tier} plan.`);
-                        setSelectedServices([plan.tier]);
-                        setActiveTab('contact');
-                      }}
-                      className={`w-full py-2.5 mt-8 rounded-lg font-mono font-bold text-xs tracking-wider uppercase transition-all cursor-pointer text-center ${
-                        plan.popular
-                          ? 'bg-[#a3e635] text-black hover:bg-[#bbf746] shadow-lg shadow-[#a3e635]/15'
-                          : 'border border-zinc-800 text-zinc-300 bg-zinc-950 hover:bg-zinc-900'
+                      onClick={onEnterApp}
+                      className={`w-full py-3 rounded-xl font-mono font-bold text-xs uppercase tracking-wider transition-all cursor-pointer ${
+                        tier.popular
+                          ? 'bg-[#a3e635] text-black hover:bg-[#bbf746]'
+                          : 'bg-zinc-900 border border-zinc-800 text-zinc-200 hover:text-white'
                       }`}
                     >
-                      {plan.action}
+                      {tier.cta}
                     </button>
                   </motion.div>
                 ))}
               </div>
+
             </motion.div>
           )}
 
-          {/* TAB 5: Contact Lead Portal / STATEFUL VISIBILITY ESTIMATOR */}
+          {/* TAB 6: CONTACT PAGE */}
           {activeTab === 'contact' && (
             <motion.div
               key="tab-contact"
-              initial={{ opacity: 0, y: 10 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              transition={{ duration: 0.3 }}
-              className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-16 text-left"
+              exit={{ opacity: 0, y: -12 }}
+              transition={{ duration: 0.35 }}
+              className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex flex-col gap-12 text-left"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-stretch">
-                
-                {/* Contact form (Left) */}
-                <div className="lg:col-span-7 p-6 sm:p-8 rounded-2xl border border-zinc-900 bg-zinc-950/40 flex flex-col gap-6 relative">
-                  <div className="flex flex-col gap-1.5 pb-4 border-b border-zinc-900">
-                    <h3 className="text-lg font-extrabold text-white font-mono">Consortium Integration Request</h3>
-                    <p className="text-zinc-500 text-xs">Fill out your parameters to claim your authority and receive an automated visibility blueprint.</p>
-                  </div>
+              <div className="flex flex-col gap-3">
+                <span className="text-[10px] font-mono font-bold text-[#a3e635] uppercase tracking-widest bg-[#a3e635]/10 px-3 py-1 rounded border border-[#a3e635]/20 self-start">
+                  SYSTEM INTEGRATION SUPPORT
+                </span>
+                <h1 className="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+                  Contact Our Engineering Team
+                </h1>
+                <p className="text-zinc-400 text-sm sm:text-base max-w-2xl leading-relaxed">
+                  Have questions regarding enterprise schema integration, multi-domain crawl bandwidth, or custom LLM simulation pipelines? We respond within 4 hours.
+                </p>
+              </div>
 
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                {/* Form Column */}
+                <div className="lg:col-span-7 glass-panel p-8 rounded-3xl border border-zinc-800 flex flex-col gap-6">
                   {contactSubmitted ? (
-                    <motion.div 
-                      className="py-12 flex flex-col items-center justify-center text-center gap-4"
-                      initial={{ scale: 0.95, opacity: 0 }}
-                      animate={{ scale: 1, opacity: 1 }}
-                    >
-                      <div className="w-12 h-12 rounded-full bg-[#a3e635]/10 border border-[#a3e635]/30 flex items-center justify-center text-[#a3e635]">
+                    <div className="py-12 flex flex-col items-center justify-center text-center gap-4">
+                      <div className="w-12 h-12 rounded-full bg-[#a3e635]/20 border border-[#a3e635] flex items-center justify-center text-[#a3e635]">
                         <Check className="w-6 h-6" />
                       </div>
-                      <h4 className="text-base font-extrabold text-white font-mono">Secure Transmission Succeeded</h4>
-                      <p className="text-zinc-400 text-xs max-w-sm leading-relaxed">
-                        Your request has been successfully resolved against the Rinkino state registry. Our principal systems engineer will reach out to your domain footprint inside 4 hours.
+                      <h3 className="text-xl font-bold text-white font-mono">Transmission Received</h3>
+                      <p className="text-zinc-400 text-xs max-w-md leading-relaxed">
+                        Your request has been registered in our integration queue. An engineer will reach out directly to your specified email endpoint.
                       </p>
                       <button
-                        onClick={() => {
-                          setContactSubmitted(false);
-                          setLeadName('');
-                          setLeadEmail('');
-                          setLeadDomain('');
-                        }}
-                        className="px-4 py-2 mt-2 rounded bg-zinc-900 hover:bg-zinc-800 text-zinc-300 font-mono text-xs transition-all cursor-pointer"
+                        onClick={() => setContactSubmitted(false)}
+                        className="px-4 py-2 rounded-xl bg-zinc-900 border border-zinc-800 text-xs font-mono text-zinc-300 hover:text-white cursor-pointer"
                       >
-                        File Another Request
+                        Send another request
                       </button>
-                    </motion.div>
+                    </div>
                   ) : (
-                    <form 
+                    <form
                       onSubmit={(e) => {
                         e.preventDefault();
-                        if (!leadName || !leadEmail) return;
-                        setContactSubmitted(true);
+                        if (leadName && leadEmail) setContactSubmitted(true);
                       }}
-                      className="flex flex-col gap-4 text-xs"
+                      className="flex flex-col gap-4 text-xs font-mono"
                     >
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Your Identity / Name</label>
-                          <input 
-                            type="text" 
+                          <label className="text-zinc-400 text-[10px] uppercase">Your Name</label>
+                          <input
+                            type="text"
                             required
                             value={leadName}
                             onChange={(e) => setLeadName(e.target.value)}
-                            placeholder="Albin Cole"
-                            className="p-3 rounded-lg bg-[#030305] border border-zinc-850 text-white font-mono focus:border-[#a3e635]/40 focus:ring-0 outline-none"
+                            placeholder="Alex Mercer"
+                            className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:border-[#a3e635] outline-none"
                           />
                         </div>
                         <div className="flex flex-col gap-1.5">
-                          <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Email Endpoint</label>
-                          <input 
-                            type="email" 
+                          <label className="text-zinc-400 text-[10px] uppercase">Email Endpoint</label>
+                          <input
+                            type="email"
                             required
                             value={leadEmail}
                             onChange={(e) => setLeadEmail(e.target.value)}
-                            placeholder="albin@labs.org"
-                            className="p-3 rounded-lg bg-[#030305] border border-zinc-850 text-white font-mono focus:border-[#a3e635]/40 focus:ring-0 outline-none"
+                            placeholder="alex@tech.org"
+                            className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:border-[#a3e635] outline-none"
                           />
                         </div>
                       </div>
 
                       <div className="flex flex-col gap-1.5">
-                        <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Authority Domain Footprint</label>
-                        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#030305] border border-zinc-850 focus-within:border-[#a3e635]/40">
-                          <Globe className="w-4 h-4 text-zinc-500" />
-                          <input 
-                            type="text" 
-                            value={leadDomain}
-                            onChange={(e) => setLeadDomain(e.target.value)}
-                            placeholder="yourdomain.com"
-                            className="flex-1 bg-transparent border-none text-white outline-none focus:ring-0 font-mono"
-                          />
-                        </div>
+                        <label className="text-zinc-400 text-[10px] uppercase">Target Domain</label>
+                        <input
+                          type="text"
+                          value={leadDomain}
+                          onChange={(e) => setLeadDomain(e.target.value)}
+                          placeholder="yourdomain.com"
+                          className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:border-[#a3e635] outline-none"
+                        />
                       </div>
 
-                      {/* Service Modules Multiselect */}
-                      <div className="flex flex-col gap-2 mt-2">
-                        <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Select Target Modules</label>
-                        <div className="grid grid-cols-2 gap-2">
-                          {[
-                            'Schema Studio',
-                            'LLM Search Simulator',
-                            'Technical Health Guard',
-                            'Content Multiplier Engine'
-                          ].map((serv) => {
-                            const isSelected = selectedServices.includes(serv);
-                            return (
-                              <button
-                                type="button"
-                                key={serv}
-                                onClick={() => {
-                                  setSelectedServices(prev => 
-                                    isSelected 
-                                      ? prev.filter(s => s !== serv) 
-                                      : [...prev, serv]
-                                  );
-                                }}
-                                className={`p-2.5 rounded-lg font-mono text-[10px] font-bold border transition-all text-left ${
-                                  isSelected 
-                                    ? 'bg-zinc-900 border-[#a3e635] text-[#a3e635]' 
-                                    : 'bg-zinc-950 border-zinc-850 text-zinc-400 hover:text-zinc-200'
-                                }`}
-                              >
-                                {serv}
-                              </button>
-                            );
-                          })}
-                        </div>
-                      </div>
-
-                      <div className="flex flex-col gap-1.5 mt-2">
-                        <label className="text-[10px] font-mono text-zinc-500 uppercase tracking-widest">Integration Constraints / Message</label>
-                        <textarea 
+                      <div className="flex flex-col gap-1.5">
+                        <label className="text-zinc-400 text-[10px] uppercase">Message Details</label>
+                        <textarea
                           rows={4}
                           value={leadMessage}
                           onChange={(e) => setLeadMessage(e.target.value)}
-                          placeholder="Tell us about your SGE citation goals or current search visibility deficits..."
-                          className="p-3 rounded-lg bg-[#030305] border border-zinc-850 text-white font-mono focus:border-[#a3e635]/40 focus:ring-0 outline-none resize-none leading-relaxed"
+                          placeholder="Describe your schema optimization requirements..."
+                          className="p-3 rounded-xl bg-zinc-950 border border-zinc-800 text-white focus:border-[#a3e635] outline-none resize-none"
                         />
                       </div>
 
                       <button
                         type="submit"
-                        className="w-full py-3 mt-4 rounded-lg bg-[#a3e635] hover:bg-[#bbf746] text-black font-extrabold text-xs tracking-wider font-mono uppercase flex items-center justify-center gap-1.5 shadow-md shadow-[#a3e635]/15 cursor-pointer"
+                        className="py-3.5 rounded-xl bg-[#a3e635] text-black font-bold text-xs uppercase tracking-wider hover:bg-[#bbf746] cursor-pointer flex items-center justify-center gap-2 mt-2"
                       >
-                        <Send className="w-3.5 h-3.5" /> Launch Transmission
+                        <Send className="w-4 h-4" />
+                        <span>Submit Request</span>
                       </button>
                     </form>
                   )}
                 </div>
 
-                {/* SGE score simulator calculator (Right) */}
+                {/* Right Contact Details */}
                 <div className="lg:col-span-5 flex flex-col gap-6">
-                  
-                  {/* Estimator details card */}
-                  <div className="p-6 rounded-2xl border border-zinc-900 bg-zinc-950/80 flex flex-col gap-5 text-xs">
-                    <div className="flex items-center gap-2 pb-2 border-b border-zinc-900/60 font-mono text-[10px] uppercase text-zinc-400 font-extrabold tracking-widest">
-                      <Zap className="w-4 h-4 text-[#a3e635]" /> Live SGE Visibility Estimator
+                  <div className="glass-panel p-6 rounded-3xl border border-zinc-800 flex flex-col gap-4 font-mono text-xs text-zinc-300">
+                    <h4 className="text-sm font-bold text-white uppercase text-[#a3e635]">Direct Contact Endpoints</h4>
+                    <div className="flex items-center gap-3">
+                      <Send className="w-4 h-4 text-[#a3e635]" />
+                      <span>support@rinkino.ai</span>
                     </div>
-
-                    <div className="flex flex-col gap-4 text-zinc-400 leading-relaxed text-[11px]">
-                      <p>
-                        Based on your authority domain input and chosen active modules, our crawler automatically projects your AI Agent Citation growth rate inside Perplexity and SearchGPT models.
-                      </p>
-
-                      <div className="flex flex-col gap-1.5 py-3 border-t border-b border-zinc-900">
-                        <span className="text-zinc-500 font-mono text-[9px] uppercase tracking-widest">Current Domain Authority Index</span>
-                        <div className="flex items-center gap-3">
-                          <input 
-                            type="range" 
-                            min="1"
-                            max="100"
-                            value={seoScoreInput}
-                            onChange={(e) => setSeoScoreInput(Number(e.target.value))}
-                            className="flex-1 accent-[#a3e635] h-1 bg-zinc-900 rounded-lg cursor-pointer"
-                          />
-                          <span className="font-mono font-bold text-white text-xs w-8 text-right">{seoScoreInput} DA</span>
-                        </div>
-                      </div>
-
-                      {/* Projected score computation */}
-                      <div className="flex flex-col gap-3 py-1">
-                        <div className="flex justify-between items-center text-[10px] font-mono uppercase tracking-widest">
-                          <span className="text-zinc-500">Projected Citation Index</span>
-                          <span className="text-[#a3e635] font-bold">
-                            {Math.round(seoScoreInput * 1.45 + (selectedServices.length * 12.5))}
-                          </span>
-                        </div>
-
-                        {/* Animated Projected Score meter */}
-                        <div className="w-full h-2 rounded-full bg-zinc-900 overflow-hidden relative">
-                          <div 
-                            className="h-full bg-gradient-to-r from-sky-500 via-[#a3e635] to-[#bbf746] transition-all duration-300"
-                            style={{ 
-                              width: `${Math.min(100, Math.round(seoScoreInput * 0.7 + (selectedServices.length * 7.5)))}%` 
-                            }}
-                          />
-                        </div>
-                        <div className="flex justify-between text-[8px] font-mono text-zinc-600">
-                          <span>0% (Blind)</span>
-                          <span>100% (Omnipresent)</span>
-                        </div>
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <Globe className="w-4 h-4 text-[#a3e635]" />
+                      <span>rinkino.ai</span>
                     </div>
-
-                    {/* Metric badge highlights */}
-                    <div className="grid grid-cols-2 gap-3 pt-3 border-t border-zinc-900/60 font-mono text-[9px]">
-                      <div className="p-2.5 rounded bg-black/60 border border-zinc-900 text-left">
-                        <span className="text-zinc-500 uppercase block tracking-widest">Authority Boost</span>
-                        <span className="text-[#a3e635] text-xs font-bold block mt-1">
-                          +{Math.round(15 + (selectedServices.length * 8))}% SGE Citation
-                        </span>
-                      </div>
-                      <div className="p-2.5 rounded bg-black/60 border border-zinc-900 text-left">
-                        <span className="text-zinc-500 uppercase block tracking-widest">Schema Validation</span>
-                        <span className="text-white text-xs font-bold block mt-1">Instant (Sub-ms)</span>
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <Lock className="w-4 h-4 text-[#a3e635]" />
+                      <span>24/7 SLA Response Queue</span>
                     </div>
                   </div>
 
-                  {/* Trust badge card */}
-                  <div className="p-4 rounded-xl border border-zinc-900 bg-zinc-950/20 text-[11px] leading-relaxed text-zinc-500 text-center font-mono uppercase">
-                    🔒 encrypted parallel transit protocol (PSS OK)
+                  <div className="glass-panel p-6 rounded-3xl border border-zinc-800 flex flex-col gap-3">
+                    <h4 className="text-xs font-mono font-bold text-white uppercase">SGE Citation Visibility Meter</h4>
+                    <p className="text-zinc-400 text-xs leading-relaxed">
+                      Adjust your domain score to project citation growth across AI search engines:
+                    </p>
+                    <div className="flex flex-col gap-2 pt-2">
+                      <div className="flex justify-between text-xs font-mono">
+                        <span className="text-zinc-400">Current Score:</span>
+                        <span className="text-[#a3e635] font-bold">{seoScoreInput}/100</span>
+                      </div>
+                      <input
+                        type="range"
+                        min="10"
+                        max="100"
+                        value={seoScoreInput}
+                        onChange={(e) => setSeoScoreInput(Number(e.target.value))}
+                        className="accent-[#a3e635] cursor-pointer"
+                      />
+                      <div className="p-3 rounded-xl bg-zinc-900 border border-zinc-800 flex justify-between items-center text-xs font-mono mt-1">
+                        <span className="text-zinc-400">Projected Citation Share:</span>
+                        <span className="text-[#a3e635] font-bold">+{Math.round(seoScoreInput * 3.2)}%</span>
+                      </div>
+                    </div>
                   </div>
-
                 </div>
-
               </div>
             </motion.div>
           )}
@@ -2529,26 +2386,11 @@ export const SaaSLandingPage: React.FC<SaaSLandingPageProps> = ({
         </AnimatePresence>
       </main>
 
-      {/* Cybernetic Footer */}
-      <footer className="border-t border-zinc-900/80 bg-[#030305] py-12 text-xs text-zinc-500 mt-16 font-mono select-none">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <svg className="w-3.5 h-3.5 text-zinc-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="m12 3-10 5 10 5 10-5-10-5Z" />
-              <path d="m2 17 10 5 10-5" />
-              <path d="m2 12 10 5 10-5" />
-            </svg>
-            <span>RINKINO SYSTEMS ARCHITECTURE © 2026. ALL RIGHTS RESERVED.</span>
-          </div>
-
-          <div className="flex items-center gap-6 text-[10px] tracking-wider text-zinc-600">
-            <span className="hover:text-zinc-400 cursor-pointer">TERMS OF USE</span>
-            <span className="hover:text-zinc-400 cursor-pointer">PRIVACY SYSTEM</span>
-            <span className="hover:text-zinc-400 cursor-pointer">PSS PROTOCOL</span>
-            <span className="hover:text-zinc-400 cursor-pointer" onClick={onEnterApp}>INTELLIGENCE LAYER</span>
-          </div>
-        </div>
-      </footer>
+      {/* Global Footer */}
+      <Footer
+        onNavigatePage={(page) => navigateToTab(page)}
+        onNavigateTab={onEnterApp}
+      />
 
     </div>
   );

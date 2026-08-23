@@ -1,4 +1,5 @@
 import React from 'react';
+import { motion } from 'motion/react';
 import {
   Sparkles,
   Globe,
@@ -16,6 +17,7 @@ import {
   Menu,
 } from 'lucide-react';
 import { AuditReport } from '../types';
+import { RinkinoLogo } from './RinkinoLogo';
 
 interface HeaderProps {
   currentProject: AuditReport;
@@ -24,6 +26,7 @@ interface HeaderProps {
   onOpenNewAudit: () => void;
   onOpenCostEstimator: () => void;
   onOpenClientReport: () => void;
+  onOpenProposal?: () => void;
   onOpenSettings: () => void;
   activeTab: string;
   onSelectTab: (tabId: string) => void;
@@ -45,6 +48,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenNewAudit,
   onOpenCostEstimator,
   onOpenClientReport,
+  onOpenProposal,
   onOpenSettings,
   activeTab,
   onSelectTab,
@@ -73,24 +77,13 @@ export const Header: React.FC<HeaderProps> = ({
           )}
 
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 bg-gradient-to-br from-lime-500 to-emerald-400 rounded-lg flex items-center justify-center shadow-[0_0_15px_rgba(132,204,22,0.2)] shrink-0">
-              <div className="w-4 h-4 border-2 border-white rounded-full"></div>
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-sm font-bold tracking-tight text-white font-mono">AUTHORITY.X</span>
-                <span className="bg-lime-500/10 text-lime-400 text-[9px] font-bold px-1.5 py-0.2 rounded border border-lime-500/20 uppercase tracking-wider hidden sm:inline-block">
-                  Engine v4.3
-                </span>
-                {isDeepWork && (
-                  <span className="flex items-center gap-1 bg-emerald-500/15 text-emerald-400 text-[9px] font-bold px-1.5 py-0.2 rounded border border-emerald-500/20 uppercase tracking-wider animate-pulse">
-                    <span className="w-1 h-1 rounded-full bg-emerald-400"></span>
-                    Focus Active
-                  </span>
-                )}
-              </div>
-              <p className="text-[9px] text-slate-500 font-semibold tracking-wider uppercase hidden sm:block">Master SEO Agent & Citation Optimizer</p>
-            </div>
+            <RinkinoLogo size="sm" />
+            {isDeepWork && (
+              <span className="flex items-center gap-1 bg-emerald-500/15 text-emerald-400 text-[9px] font-bold px-1.5 py-0.2 rounded border border-emerald-500/20 uppercase tracking-wider animate-pulse hidden sm:flex">
+                <span className="w-1 h-1 rounded-full bg-emerald-400"></span>
+                Focus Active
+              </span>
+            )}
           </div>
 
           <div className="h-6 w-px bg-slate-800 hidden md:block" />
@@ -138,19 +131,35 @@ export const Header: React.FC<HeaderProps> = ({
         {/* Action Controls */}
         <div className="flex items-center gap-2 sm:gap-3">
           
-          {/* Deep Work Focus Mode Toggle */}
-          <button
-            onClick={onToggleDeepWork}
-            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg border transition-all text-xs font-semibold cursor-pointer ${
-              isDeepWork
-                ? 'bg-lime-500 text-black border-lime-400 font-bold shadow-[0_0_15px_rgba(132,204,22,0.4)]'
-                : 'bg-slate-900/40 border border-slate-800 text-slate-300 hover:border-lime-500/40 hover:text-lime-400'
-            }`}
-            title={isDeepWork ? "Exit Deep Work Focus Mode" : "Enter Deep Work Focus Mode (Hides Sidebar)"}
-          >
-            {isDeepWork ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 text-lime-400" />}
-            <span>{isDeepWork ? 'Exit Focus' : 'Deep Work'}</span>
-          </button>
+          {/* Deep Work Focus Mode Animated Switch */}
+          <div className="flex items-center gap-2 bg-slate-900/60 border border-slate-800 rounded-xl px-2.5 py-1">
+            <span className="text-[11px] font-mono font-bold text-slate-300 hidden sm:inline flex items-center gap-1">
+              <span>Deep Work</span>
+              {isDeepWork && <span className="w-1.5 h-1.5 rounded-full bg-lime-400 animate-ping"></span>}
+            </span>
+            <button
+              type="button"
+              onClick={onToggleDeepWork}
+              className={`relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-300 ease-in-out focus:outline-none ${
+                isDeepWork ? 'bg-lime-400 shadow-[0_0_12px_rgba(163,230,53,0.6)]' : 'bg-slate-800 hover:bg-slate-700'
+              }`}
+              title={isDeepWork ? "Exit Deep Work Focus Mode (Restores Grids & Navigation)" : "Enter Deep Work Focus Mode (Dims Background Grids & Hides Navigation)"}
+            >
+              <motion.span
+                layout
+                transition={{ type: 'spring', stiffness: 500, damping: 30 }}
+                className={`pointer-events-none inline-block h-5 w-5 rounded-full shadow-md flex items-center justify-center transition-transform ${
+                  isDeepWork ? 'translate-x-5 bg-slate-950 text-lime-400' : 'translate-x-0 bg-slate-400 text-slate-900'
+                }`}
+              >
+                {isDeepWork ? (
+                  <Eye className="w-3 h-3 text-lime-400 stroke-[2.5]" />
+                ) : (
+                  <EyeOff className="w-3 h-3 text-slate-900 stroke-[2]" />
+                )}
+              </motion.span>
+            </button>
+          </div>
 
           {/* Session Snapshots Dropdown */}
           <div className="relative group">
@@ -235,6 +244,16 @@ export const Header: React.FC<HeaderProps> = ({
             <FileText className="w-3.5 h-3.5 text-lime-400" />
             <span className="hidden sm:inline">Client Pitch Report</span>
           </button>
+
+          {onOpenProposal && (
+            <button
+              onClick={onOpenProposal}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-lime-950/80 border border-lime-800/60 hover:bg-lime-900/80 text-lime-300 text-xs font-bold transition-all cursor-pointer"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-lime-400" />
+              <span className="hidden md:inline">90-Day Proposal</span>
+            </button>
+          )}
 
           <button
             onClick={onOpenSettings}

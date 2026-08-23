@@ -22,14 +22,65 @@ import { OrganicTrafficTrendChart } from './OrganicTrafficTrendChart';
 interface ExecutiveOverviewProps {
   report: AuditReport;
   onNavigateTab: (tabId: string) => void;
+  onOpenProposal?: () => void;
+  isLoading?: boolean;
 }
 
 export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({
   report,
   onNavigateTab,
+  onOpenProposal,
+  isLoading = false,
 }) => {
   const [activePhaseIndex, setActivePhaseIndex] = useState(0);
   const [completedTasks, setCompletedTasks] = useState<Record<string, boolean>>({});
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6 animate-pulse">
+        {/* Top Metric Cards Skeleton */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="p-5 rounded-2xl bg-white/[0.03] border border-white/[0.08] backdrop-blur-md space-y-3">
+              <div className="flex justify-between items-start">
+                <div className="space-y-2 w-2/3">
+                  <div className="h-3 bg-slate-800/80 rounded w-full"></div>
+                  <div className="h-8 bg-slate-700/80 rounded w-1/2"></div>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-slate-800/80"></div>
+              </div>
+              <div className="h-2 bg-slate-800/80 rounded-full w-full"></div>
+            </div>
+          ))}
+        </div>
+
+        {/* Diagnosis Skeleton */}
+        <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 space-y-3">
+          <div className="flex items-center gap-3">
+            <div className="w-11 h-11 rounded-xl bg-slate-800 shrink-0"></div>
+            <div className="space-y-2 flex-1">
+              <div className="h-4 bg-slate-800 rounded w-3/4"></div>
+              <div className="h-3 bg-slate-800/60 rounded w-1/2"></div>
+            </div>
+          </div>
+          <div className="space-y-2 pt-2">
+            <div className="h-3 bg-slate-800/60 rounded w-full"></div>
+            <div className="h-3 bg-slate-800/60 rounded w-5/6"></div>
+          </div>
+        </div>
+
+        {/* Chart Skeleton */}
+        <div className="p-6 rounded-2xl bg-slate-900/40 border border-slate-800 h-64 flex flex-col justify-between">
+          <div className="h-4 bg-slate-800 rounded w-1/4"></div>
+          <div className="h-40 bg-slate-800/30 rounded-xl w-full flex items-end p-4 gap-2">
+            {[40, 65, 30, 85, 50, 90, 75, 60, 95].map((h, idx) => (
+              <div key={idx} className="flex-1 bg-slate-800/80 rounded-t" style={{ height: `${h}%` }}></div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   const toggleTask = (taskKey: string) => {
     setCompletedTasks((prev) => ({
@@ -184,6 +235,44 @@ export const ExecutiveOverview: React.FC<ExecutiveOverviewProps> = ({
               Inspect AI <ChevronRight className="w-3 h-3 ml-0.5" />
             </span>
           </div>
+        </div>
+      </div>
+
+      {/* 90-Day Working Execution Plan & Client Proposal Ready Banner */}
+      <div className="p-4 rounded-2xl bg-gradient-to-r from-lime-950/80 via-slate-900 to-emerald-950/80 border border-lime-500/30 flex flex-col sm:flex-row items-center justify-between gap-4 shadow-xl">
+        <div className="flex items-center gap-3">
+          <div className="p-2.5 rounded-xl bg-lime-400 text-black shrink-0 font-bold">
+            <Sparkles className="w-5 h-5 fill-black" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <h3 className="font-bold text-white text-sm">90-Day Working Execution Roadmap & Client Proposal Ready</h3>
+              <span className="text-[9px] font-mono font-extrabold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/40">
+                1-Click Direct Send
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 mt-0.5">
+              Comprehensive Month 1–3 technical, schema, content & citation plan generated for <strong className="text-white">{report.domain}</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2 shrink-0 w-full sm:w-auto">
+          {onOpenProposal && (
+            <button
+              onClick={onOpenProposal}
+              className="w-full sm:w-auto px-4 py-2 rounded-xl bg-lime-400 hover:bg-lime-300 text-black font-mono font-bold text-xs flex items-center justify-center gap-1.5 transition-all shadow-md shadow-lime-500/20 cursor-pointer"
+            >
+              <span>View & Send Proposal</span>
+            </button>
+          )}
+          <button
+            onClick={() => exportProjectToPDF(report)}
+            className="w-full sm:w-auto px-3.5 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-mono font-semibold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer border border-slate-700"
+          >
+            <Download className="w-3.5 h-3.5 text-lime-400" />
+            <span>Export PDF</span>
+          </button>
         </div>
       </div>
 

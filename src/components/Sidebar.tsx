@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { RinkinoLogo } from './RinkinoLogo';
 import {
   Compass,
   Cpu,
@@ -131,6 +132,22 @@ function AnimatedSidebarIcon({ tabId, isActive }: { tabId: string; isActive: boo
           <line x1="15.41" y1="6.51" x2="8.59" y2="10.49" />
         </svg>
       );
+    case 'content-chronicles':
+      return (
+        <svg className={`w-4 h-4 transition-all duration-300 ${baseColor} ${glow} group-hover:scale-110`} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-0.5-5" className={isActive ? 'fill-lime-500/20' : ''} />
+          <path d="M6 6h10M6 10h10M6 14h6" />
+        </svg>
+      );
+    case 'admin-dashboard':
+      return (
+        <svg className={`w-4 h-4 transition-all duration-300 ${baseColor} ${glow} group-hover:rotate-45`} viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="3" width="7" height="9" rx="1" className={isActive ? 'fill-lime-500/20' : ''} />
+          <rect x="14" y="3" width="7" height="5" rx="1" />
+          <rect x="14" y="12" width="7" height="9" rx="1" />
+          <rect x="3" y="16" width="7" height="5" rx="1" />
+        </svg>
+      );
     default:
       return null;
   }
@@ -181,28 +198,19 @@ export function Sidebar({
     { id: 'schema-studio', label: 'Schema Studio', icon: Braces },
     { id: 'file-diff', label: 'Source File Updater', icon: GitCompare, highlight: true },
     { id: 'content-studio', label: '4-Pass Content', icon: PenTool, highlight: true },
+    { id: 'content-chronicles', label: 'ContentChronicles CMS', icon: PenTool, highlight: true, badge: 'CMS' },
     { id: 'multiplier', label: 'Content Multiplier', icon: Share2, highlight: true },
+    { id: 'admin-dashboard', label: 'System Admin Center', icon: Sliders, highlight: true, badge: 'Super' },
     { id: 'alerts', label: 'Performance Alerts', icon: Bell, badge: 'Live' },
   ];
 
   return (
-    <aside className="w-64 bg-[#0a0f1d] border-r border-slate-900 flex flex-col h-screen shrink-0 text-slate-300 select-none z-30 sticky top-0">
+    <aside className="w-64 bg-zinc-950 border-r border-zinc-900 flex flex-col h-screen shrink-0 text-zinc-300 select-none z-30 sticky top-0">
       
       {/* Branding logo console section */}
       <div className="p-5 border-b border-slate-900 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gradient-to-br from-lime-500 via-emerald-500 to-teal-400 rounded-lg flex items-center justify-center shadow-[0_0_20px_rgba(132,204,22,0.25)] border border-lime-400/20 animate-pulse">
-            <div className="w-3.5 h-3.5 border-2 border-white rounded-full"></div>
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="text-sm font-bold tracking-tight text-white font-mono">AUTHORITY.X</span>
-              <span className="bg-lime-500/10 text-lime-400 text-[8px] font-bold px-1.5 py-0.2 rounded border border-lime-500/20">
-                PRO
-              </span>
-            </div>
-            <p className="text-[9px] text-slate-500 font-medium tracking-wider uppercase">SEO & GEO Citations Core</p>
-          </div>
+          <RinkinoLogo size="sm" />
         </div>
 
         {onCloseMobileSidebar && (
@@ -220,17 +228,17 @@ export function Sidebar({
         <div className="relative">
           <button
             onClick={() => setIsProjectDropdownOpen(!isProjectDropdownOpen)}
-            className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-[#0d1527] border border-slate-900/80 hover:border-lime-500/30 transition-all text-xs cursor-pointer"
+            className="w-full flex items-center justify-between gap-2 px-3 py-2 rounded-lg bg-zinc-900 border border-zinc-800/80 hover:border-lime-500/30 transition-all text-xs cursor-pointer"
           >
             <div className="flex items-center gap-2 truncate">
               <Globe className="w-3.5 h-3.5 text-lime-400 shrink-0" />
-              <span className="font-semibold text-slate-200 truncate">{currentProject.domain}</span>
+              <span className="font-semibold text-zinc-200 truncate">{currentProject.domain}</span>
             </div>
-            <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${isProjectDropdownOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-3.5 h-3.5 text-zinc-500 transition-transform ${isProjectDropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
           {isProjectDropdownOpen && (
-            <div className="absolute top-full left-0 right-0 mt-1 bg-[#0a0f1d] border border-slate-800 rounded-lg shadow-2xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
+            <div className="absolute top-full left-0 right-0 mt-1 bg-zinc-950 border border-zinc-800 rounded-lg shadow-2xl p-1 z-50 animate-in fade-in slide-in-from-top-1 duration-150">
               <div className="px-2 py-1 text-[9px] font-bold uppercase tracking-wider text-slate-500">
                 Audited Properties
               </div>

@@ -19,11 +19,16 @@ import { LlmSimulator } from './components/LlmSimulator';
 import { SchemaStudio } from './components/SchemaStudio';
 import { PerformanceAlerts } from './components/PerformanceAlerts';
 import { ContentMultiplier } from './components/ContentMultiplier';
+import { ContentChronicles } from './components/ContentChronicles';
+import { AdminDashboard } from './components/AdminDashboard';
 import { CostEstimatorModal } from './components/CostEstimatorModal';
 import { ClientReportModal } from './components/ClientReportModal';
+import { ProposalModal } from './components/ProposalModal';
+import { GlobalProgressBar } from './components/GlobalProgressBar';
 import { SettingsModal } from './components/SettingsModal';
 import { CommandPalette } from './components/CommandPalette';
 import { SaaSLandingPage } from './components/SaaSLandingPage';
+import { Footer } from './components/Footer';
 
 export function App() {
   const [showLandingPage, setShowLandingPage] = useState<boolean>(true);
@@ -31,6 +36,15 @@ export function App() {
   const [currentProject, setCurrentProject] = useState<AuditReport>(SAMPLE_PROJECTS[0]);
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [showCommandPalette, setShowCommandPalette] = useState(false);
+  const [toasts, setToasts] = useState<{ id: string; message: string; type: 'success' | 'info' | 'error' }[]>([]);
+
+  const addToast = (message: string, type: 'success' | 'info' | 'error' = 'info') => {
+    const id = Date.now().toString();
+    setToasts((prev) => [...prev, { id, message, type }]);
+    setTimeout(() => {
+      setToasts((prev) => prev.filter((t) => t.id !== id));
+    }, 4000);
+  };
 
   const [isDarkMode, setIsDarkMode] = useState<boolean>(() => {
     const saved = localStorage.getItem('isDarkMode');
@@ -149,6 +163,7 @@ export function App() {
   // Modals State
   const [showCostEstimator, setShowCostEstimator] = useState(false);
   const [showClientReport, setShowClientReport] = useState(false);
+  const [showProposalModal, setShowProposalModal] = useState(false);
   const [showNewAuditModal, setShowNewAuditModal] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
@@ -157,6 +172,18 @@ export function App() {
   const [isGeneratingContent, setIsGeneratingContent] = useState(false);
   const [isFileEditing, setIsFileEditing] = useState(false);
   const [isSimulatingLlm, setIsSimulatingLlm] = useState(false);
+
+  // Global Loading State Computation
+  const isGlobalLoading = isAuditing || isGeneratingContent || isFileEditing || isSimulatingLlm;
+  const globalLoadingLabel = isAuditing
+    ? (auditStepLabel || 'Auditing site architecture & synthesizing 90-day proposal...')
+    : isGeneratingContent
+    ? 'Synthesizing 4-pass humanized technical content...'
+    : isFileEditing
+    ? 'Executing Edge AST worker code patch...'
+    : isSimulatingLlm
+    ? 'Simulating SGE & Perplexity query extraction...'
+    : 'Processing request...';
 
   // Crawl params
   const [crawlDepth, setCrawlDepth] = useState(25);
@@ -371,7 +398,7 @@ export function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsMobileSidebarOpen(false)}
-              className="absolute inset-0 bg-[#020512]/80 backdrop-blur-sm"
+              className="absolute inset-0 bg-zinc-950/80 backdrop-blur-sm"
             />
 
             {/* Slide-out Panel */}
@@ -380,7 +407,7 @@ export function App() {
               animate={{ x: 0 }}
               exit={{ x: '-100%' }}
               transition={{ type: 'spring', damping: 25, stiffness: 220 }}
-              className="relative w-64 h-full bg-[#0a0f1d] shadow-2xl flex flex-col"
+              className="relative w-64 h-full bg-zinc-950 shadow-2xl flex flex-col"
             >
               <Sidebar
                 currentProject={currentProject}
@@ -424,8 +451,18 @@ export function App() {
         )}
       </AnimatePresence>
 
+      {/* Global Top Loading Progress Bar */}
+      <GlobalProgressBar isLoading={isGlobalLoading} label={globalLoadingLabel} />
+
       {/* Main viewport with upper console controls */}
-      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto bg-[#040815]">
+      <div className="flex-1 flex flex-col min-w-0 h-screen overflow-y-auto bg-[#121215] relative">
+        
+        {/* Background Grid Pattern Overlay (dims in Deep Work focus mode for distraction-free analysis) */}
+        <div
+          className={`fixed inset-0 pointer-events-none bg-[linear-gradient(to_right,#1e293b18_1px,transparent_1px),linear-gradient(to_bottom,#1e293b18_1px,transparent_1px)] bg-[size:36px_36px] transition-opacity duration-500 z-0 ${
+            isDeepWork ? 'opacity-10' : 'opacity-100'
+          }`}
+        />
         <Header
           currentProject={currentProject}
           projects={projects}
@@ -436,6 +473,7 @@ export function App() {
           onOpenNewAudit={() => setShowNewAuditModal(true)}
           onOpenCostEstimator={() => setShowCostEstimator(true)}
           onOpenClientReport={() => setShowClientReport(true)}
+          onOpenProposal={() => setShowProposalModal(true)}
           onOpenSettings={() => setShowSettings(true)}
           activeTab={activeTab}
           onSelectTab={setActiveTab}
@@ -493,6 +531,7 @@ export function App() {
                 <ExecutiveOverview
                   report={currentProject}
                   onNavigateTab={setActiveTab}
+                  onOpenProposal={() => setShowProposalModal(true)}
                 />
               )}
 
@@ -597,6 +636,14 @@ export function App() {
                   currentProject={currentProject}
                 />
               )}
+
+              {activeTab === 'content-chronicles' && (
+                <ContentChronicles />
+              )}
+
+              {activeTab === 'admin-dashboard' && (
+                <AdminDashboard />
+              )}
             </motion.div>
           </AnimatePresence>
         ) : null}
@@ -615,6 +662,14 @@ export function App() {
       <ClientReportModal
         isOpen={showClientReport}
         onClose={() => setShowClientReport(false)}
+        report={currentProject}
+        onOpenProposal={() => setShowProposalModal(true)}
+      />
+
+      {/* 90-Day Execution Working Plan & Proposal Modal */}
+      <ProposalModal
+        isOpen={showProposalModal}
+        onClose={() => setShowProposalModal(false)}
         report={currentProject}
       />
 
@@ -643,6 +698,27 @@ export function App() {
 
       {/* Floating Persistent AI Copilot Quick Ask */}
       <QuickAskChat currentProject={currentProject} isDarkMode={isDarkMode} />
+
+      {/* Toast Notification Container */}
+      <div className="fixed bottom-6 right-6 z-[100] flex flex-col gap-2">
+        <AnimatePresence>
+          {toasts.map((toast) => (
+            <motion.div
+              key={toast.id}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, x: 20 }}
+              className={`px-4 py-3 rounded-lg shadow-lg text-sm font-medium border ${
+                toast.type === 'success' ? 'bg-zinc-900 border-lime-500/50 text-lime-400' :
+                toast.type === 'error' ? 'bg-zinc-900 border-red-500/50 text-red-400' :
+                'bg-zinc-900 border-zinc-700 text-zinc-200'
+              }`}
+            >
+              {toast.message}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
